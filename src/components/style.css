@@ -1,0 +1,11 @@
+* {
+    font-size: 0.8rem;
+}
+
+.chatbot-scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.chatbot-scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

@@ -1,9 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CommentForm from "../form/CommentForm";
 import InputsForm from "../form/InputsForm";
 import RatingForm from "../form/RatingForm";
 import SingleChoiceForm from "../form/SingleChoiceForm";
 import "../style.css"
+import * as clientFormService from "../../services/ClientFormService"
+
 function FormClient() {
     const [clientInfos, setClientInfos] = useState({
         raison_sociale: "",
@@ -13,6 +15,27 @@ function FormClient() {
         service: "",
         comment: "",
     });
+    
+    const [clientInfosErrors, setClientInfosErrors] = useState({
+      raison_sociale: "",
+      email: "",
+      telephone: "",
+      adresse: "",
+      service: "",
+      comment: "",
+    });
+
+    useEffect(() => {
+      console.log(clientInfos)
+    }, [clientInfos]);
+
+    // let raison_sociale_ref = useRef()
+    // let email_ref = useRef()
+    // let telephone_ref = useRef()
+    // let adresse_ref = useRef()
+    // let service_ref = useRef()
+    // let comment_ref = useRef()
+
     const firstPage = {
         raison_sociale: "Raison sociale",
         email: "Email",
@@ -52,6 +75,10 @@ function FormClient() {
         (page < last_page) ? setPage((page) => page + 1) : setPage(last_page)
     }
 
+    const handleSendForm = () => {
+      setClientInfosErrors(clientFormService.verifyClientInfos(clientInfos))
+    }
+
 // TODO is active in calendar apres recoi de l email
   return (
     <>
@@ -62,15 +89,15 @@ function FormClient() {
           <div className="w-11/12 p-3 ml-3">
             {
                 (page === 1) ? (
-                    <InputsForm content={firstPage} />
+                    <InputsForm content={firstPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
                 ) : (
                     (page === 2) ? (
-                        <InputsForm content={secondPage} />
+                        <InputsForm content={secondPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
                     ) : (
                         (page === 3) ? (
-                            <SingleChoiceForm content={Object.entries(thirdPage).at(0)} choices={services}/>
+                            <SingleChoiceForm content={Object.entries(thirdPage).at(0)} choices={services} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
                         ) : (
-                            <CommentForm content={Object.entries(fourthPage).at(0)}/>
+                            <CommentForm content={Object.entries(fourthPage).at(0)} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
                         )
                     )
                 )
@@ -114,7 +141,12 @@ function FormClient() {
           </div>
         </div>
       </div>
-      <button className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 hover:bg-teal-500 hover:text-white">
+      {/* TODO deactivate until last page */}
+      <button 
+        className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 enabled:hover:bg-teal-500 enabled:hover:text-white disabled:text-gray-300"
+        disabled={(page === last_page) ? false : true}
+        onClick={handleSendForm}
+      >
         OK
       </button>
     </div>

@@ -1,3 +1,5 @@
+import * as api from "../api"
+
 export const verifyClientInfos = (client_infos) => {
     const client_infos_reference = {
         raison_sociale: "",
@@ -8,14 +10,16 @@ export const verifyClientInfos = (client_infos) => {
         comment: "",
     }
 
-    let errors = {
-        raison_sociale: "",
-        email: "",
-        telephone: "",
-        adresse: "",
-        service: "",
-        comment: "",
-    }
+    // let errors = {
+    //     raison_sociale: "",
+    //     email: "",
+    //     telephone: "",
+    //     adresse: "",
+    //     service: "",
+    //     comment: "",
+    // }
+
+    let errors = {}
 
     // TODO if errors .. page 5 with .. return to previous pages
 
@@ -72,4 +76,47 @@ export const verifyClientInfos = (client_infos) => {
     // TODO service existant
 
     return errors
+}
+
+export const saveClient = async (client_infos) => {
+    let response = {
+        data: {},
+        errors: {}
+    }
+
+    let res
+
+    let server_error_message = "Nous sommes désolés, nous avons rencontré une erreur interne !"
+    let comment = "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer"
+
+    response.errors = verifyClientInfos(client_infos)
+
+    if(Object.keys(response.errors).length > 0) {
+        response.errors = {...response.errors, comment: comment}
+        return response
+    }
+
+    try {
+        res = await api.saveClient(client_infos)
+        console.log(res)
+        // if (res.status !== 200) {
+            // console.log("1")
+            if (res.data.error != null && res.data.error !== undefined) {
+            // console.log("2")
+                response.errors = {...response.errors, server_error: res.data.error}
+            } 
+            // else {
+            // console.log("3")
+                // response.errors = {...response.errors, server_error: server_error_message}
+            // }
+        // } 
+        else {
+            response.data = res.data
+        }
+    } catch (error) {
+        console.log(error)
+        response.errors = {...response.errors, server_error:(res?.data?.error) ? res.data.error : server_error_message}
+    }
+
+    return response
 }

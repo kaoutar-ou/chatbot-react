@@ -24,20 +24,27 @@ const SingleChoiceForm = (props) => {
                         return (
                             <button 
                                 onClick={(e) => handleChoiceClick(e)}
-                                key={choice[0]} 
-                                value={choice[0]} 
+                                key={choice[1].id} 
+                                value={choice[1].id} 
                                 className={`w-full bg-gray-100 rounded-xl m-1 p-1 outline-dotted outline-1 outline-gray-500 ${
-                                    choice[0] === choiceState
+                                    choice[1].id == infos[content[0]]
                                       ? "bg-teal-500 text-white"
                                       : "enabled:hover:bg-amber-200"
                                   } hover:outline-offset-2`}
                             >
-                                {choice[1]}
+                                {choice[1].name}
                             </button>
                         )
                     })
                 }
             </div>
+            {
+                (infosErrors[content[0]] && infosErrors[content[0]] !== "") ? (
+                    <div className='text-red-500'>{infosErrors[content[0]]}</div>
+                ) : (
+                    null
+                )
+            }
         </div>
     )
 }

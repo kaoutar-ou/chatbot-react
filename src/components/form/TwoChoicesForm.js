@@ -25,7 +25,7 @@ const TwoChoicesForm = (props) => {
               className={`w-1/2 h-14 bg-gray-100 rounded-xl m-4 p-1 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 flex items-center justify-center ${
                 Object.keys(content).at(0) === choice
                   ? "bg-teal-500 text-white"
-                  : "hover:bg-white"
+                  : "enabled:hover:bg-amber-200"
               }`}
               name={Object.keys(content).at(0)}
               onClick={() => handleChoice(Object.keys(content).at(0))}

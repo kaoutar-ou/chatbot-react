@@ -5,6 +5,8 @@ import RatingForm from "../form/RatingForm";
 import SingleChoiceForm from "../form/SingleChoiceForm";
 import "../style.css"
 import * as clientFormService from "../../services/ClientFormService"
+import * as serviceService from "../../services/ServiceServices"
+
 
 function FormClient() {
     const [clientInfos, setClientInfos] = useState({
@@ -51,13 +53,29 @@ function FormClient() {
         comment: "Commentaire",
     }
 
-    const services = {
-        1: "Service 1",
-        2: "Service 2",
-        3: "Service 3",
-        4: "Service 4",
-        5: "Service 5"
-    }
+    const [services, setServices] = useState(null);
+
+    const [clientToken, setClientToken] = useState(null);
+
+    useEffect(() => {
+
+      const getAllServices = async () => {
+        let response = await serviceService.getAllServices()
+        setServices(response.data.services)
+        console.log(response.data.services)
+      }
+
+      getAllServices()
+
+    }, []);
+
+    // const services = {
+    //     1: "Service 1",
+    //     2: "Service 2",
+    //     3: "Service 3",
+    //     4: "Service 4",
+    //     5: "Service 5"
+    // }
 
     const [rating, setRating] = useState({
         rate: null,
@@ -75,29 +93,58 @@ function FormClient() {
         (page < last_page) ? setPage((page) => page + 1) : setPage(last_page)
     }
 
-    const handleSendForm = () => {
-      setClientInfosErrors(clientFormService.verifyClientInfos(clientInfos))
+    const handleSendForm = async () => {
+      // setClientInfosErrors(clientFormService.verifyClientInfos(clientInfos))
+      let response = await clientFormService.saveClient(clientInfos)
+      console.log(response)
+      setClientInfosErrors((prev) => ({...prev, comment: ""}))
+      if(Object.keys(response.errors).length > 0) {
+        console.log(response.errors)
+        if(response.errors.server_error !== undefined && response.errors.server_error !== null) {
+          console.log("server")
+          console.log(response.errors.server_error)
+          setClientInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
+        } else {
+          console.log("here")
+          setClientInfosErrors(response.errors)
+        }
+      }
+      else {
+        console.log(response.data.token)
+        setClientToken(response.data.token)
+        setClientInfosErrors((prev) => ({...prev, server_error:""}))
+        // TODO .. show a success message or error
+      }
     }
 
 // TODO is active in calendar apres recoi de l email
   return (
     <>
-    <RatingForm setRating={setRating}/>
+    {/* <RatingForm setRating={setRating}/> */}
     <div className="relative">
       <div className="w-full flex flex-row">
         <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="w-11/12 p-3 ml-3">
             {
                 (page === 1) ? (
-                    <InputsForm content={firstPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                    <InputsForm key={"FirstClientInputsForm"} content={firstPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
                 ) : (
                     (page === 2) ? (
-                        <InputsForm content={secondPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                        <InputsForm key={"SecondClientInputsForm"} content={secondPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
                     ) : (
                         (page === 3) ? (
-                            <SingleChoiceForm content={Object.entries(thirdPage).at(0)} choices={services} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                            <SingleChoiceForm key={"ClientSingleChoiceForm"} content={Object.entries(thirdPage).at(0)} choices={services} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
                         ) : (
-                            <CommentForm content={Object.entries(fourthPage).at(0)} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                            <>
+                              <CommentForm content={Object.entries(fourthPage).at(0)} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                              {
+                                (clientInfosErrors["server_error"] && clientInfosErrors["server_error"] !== "") ? (
+                                  <div className='text-red-500'>{clientInfosErrors["server_error"]}</div>
+                                ) : (
+                                    null
+                                )
+                              }
+                            </>
                         )
                     )
                 )
@@ -144,7 +191,7 @@ function FormClient() {
       {/* TODO deactivate until last page */}
       <button 
         className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 enabled:hover:bg-teal-500 enabled:hover:text-white disabled:text-gray-300"
-        disabled={(page === last_page) ? false : true}
+        disabled={(page === last_page && (clientToken === null || clientToken === "" || clientToken === undefined)) ? false : true}
         onClick={handleSendForm}
       >
         OK

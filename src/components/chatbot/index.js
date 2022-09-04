@@ -95,28 +95,12 @@ function Chatbot() {
       <ChatbotHeader />
       {/* Body */}
       <div className="overflow-y-scroll min-h-screen max-h-screen flex flex-col-reverse py-20 chatbot-messages">
-        {/* <TwoChoicesForm content={formOrChatChoices} setFormOrChat={setFormOrChat}/>
-        <FormClient />
-        <MultiChoices content={userTypeChoices} setUserType={setUserType}/>
-        <DotsMessage />
-        <UserMessage />
-        <BotMessage />
-        <UserMessage />
-        <BotMessage />
-        <UserMessage />
-        <BotMessage />
-        <UserMessage />
-        <BotMessage />
-        <UserMessage /> */}
-        {/* {(messages != null) ? messages.map((val)=> {return val}) : null } */}
         {(isLoading) ? <DotsMessage /> : null}
         {messages.map((message) => message)}
         {/* <BotMessage /> */}
       </div>
       {/* Footer */}
-      {/* <div className="">hi</div> */}
       <ChatbotFooter />
-        {/* <button onClick={() => handleAddNewMessage(<BotMessage />)}>hi</button> */}
     </div>
   );
 }

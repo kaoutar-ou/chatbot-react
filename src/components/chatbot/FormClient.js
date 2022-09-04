@@ -31,13 +31,6 @@ function FormClient() {
       console.log(clientInfos)
     }, [clientInfos]);
 
-    // let raison_sociale_ref = useRef()
-    // let email_ref = useRef()
-    // let telephone_ref = useRef()
-    // let adresse_ref = useRef()
-    // let service_ref = useRef()
-    // let comment_ref = useRef()
-
     const firstPage = {
         raison_sociale: "Raison sociale",
         email: "Email",
@@ -69,14 +62,6 @@ function FormClient() {
 
     }, []);
 
-    // const services = {
-    //     1: "Service 1",
-    //     2: "Service 2",
-    //     3: "Service 3",
-    //     4: "Service 4",
-    //     5: "Service 5"
-    // }
-
     const [rating, setRating] = useState({
         rate: null,
         comment: "",
@@ -94,7 +79,6 @@ function FormClient() {
     }
 
     const handleSendForm = async () => {
-      // setClientInfosErrors(clientFormService.verifyClientInfos(clientInfos))
       let response = await clientFormService.saveClient(clientInfos)
       console.log(response)
       setClientInfosErrors((prev) => ({...prev, comment: ""}))
@@ -188,7 +172,6 @@ function FormClient() {
           </div>
         </div>
       </div>
-      {/* TODO deactivate until last page */}
       <button 
         className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 enabled:hover:bg-teal-500 enabled:hover:text-white disabled:text-gray-300"
         disabled={(page === last_page && (clientToken === null || clientToken === "" || clientToken === undefined)) ? false : true}

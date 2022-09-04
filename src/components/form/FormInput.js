@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 const FormInput = (props) => {
     const {content, setInfos, infos, setInfosErrors, infosErrors, ...others} = props
     
-    let key = content[0]
-    // const [input, setInput] = useState("");
     const handleInputChange = (e) => {
         if(infosErrors[content[0]] !== "") {
             setInfosErrors((previous) => ({...previous, [content[0]]: ""}))
@@ -14,9 +12,7 @@ const FormInput = (props) => {
         console.log(infosErrors)
         let value = e.target.value
         console.log(value)
-        // setInfos((previous) => ({...previous, content[0]: value}))
         setInfos((previous) => ({...previous, [content[0]]: value}))
-        // setInfos((previous) => (previous[content[0]] = value))
     }
 
     return (

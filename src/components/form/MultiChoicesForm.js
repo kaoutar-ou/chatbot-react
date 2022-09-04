@@ -37,9 +37,6 @@ function MultiChoices(props) {
               </button>
             );
           })}
-          {/* <div className="bg-gray-100 rounded-xl m-4 p-1 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 hover:bg-white cursor-pointer">Choice</div>
-          <div className="bg-gray-100 rounded-xl m-4 p-1 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 hover:bg-white cursor-pointer">Choice</div>
-          <div className="bg-gray-100 rounded-xl m-4 p-1 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 hover:bg-white cursor-pointer">Choice</div> */}
         </div>
       </div>
       <button

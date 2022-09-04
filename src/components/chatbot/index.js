@@ -33,13 +33,18 @@ function Chatbot() {
 
   const [isDisabled, setIsDisabled] = useState(false);
 
+  // TODO make generate key global
+  const generateKey = (pre) => {
+    return `${ pre }_${ new Date().getTime() }`;
+  }
+
   useEffect(() => {
     console.log(formOrChat)
     setIsLoading(true)
     if(formOrChat === "form_choice") {
       setIsDisabled(true)
       setTimeout(() => {
-        handleAddNewMessage(<BotMessage key={keyState} content="Parmi les quatres type, qui est le plus proche à votre situation ?" />)
+        handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content="Parmi les quatres type, qui est le plus proche à votre situation ?" />)
         handleAddNewMessage(<MultiChoices key={"MultiChoices"} content={userTypeChoices} handleConfirm={setUserType}/>)
         setIsLoading(false)
     }, [3000])
@@ -54,7 +59,7 @@ function Chatbot() {
     if(userType === "type_client") {
       setTimeout(() => {
         // TODO add cancel to cancel process and enable main input
-        handleAddNewMessage(<BotMessage key={keyState} content="Bienvenue cher client, veuillez nous fournir plus d'information en remplissant le formulaire suivant." />)
+        handleAddNewMessage(<BotMessage  key={ generateKey("chatbot") } content="Bienvenue cher client, veuillez nous fournir plus d'information en remplissant le formulaire suivant." />)
         handleAddNewMessage(<FormClient key={"FormClient"} handleAddNewMessage={handleAddNewMessage} setMainInputDisabled={setIsDisabled}/>)
         setIsLoading(false)
     }, [3000])
@@ -68,7 +73,7 @@ function Chatbot() {
   }, [userType])
   
   // TODO Content aleatoire .. multi choices here random choice
-  const [messages, setMessages] = useState([<BotMessage content="Bonjour .. nous espérons que vous allez bien"/>]);
+  const [messages, setMessages] = useState([<BotMessage  key={ generateKey("chatbot") } content="Bonjour .. nous espérons que vous allez bien"/>]);
   // TODO if null then welcome screen .. logo architeo
 
   const handleAddNewMessage = (new_message) => {
@@ -86,7 +91,7 @@ function Chatbot() {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
-      handleAddNewMessage(<BotMessage key={keyState} content="Qu'est ce que vous préférez ?" />)
+      handleAddNewMessage(<BotMessage  key={ generateKey("chatbot") } content="Qu'est ce que vous préférez ?" />)
       setIsLoading(true)
       setTimeout(() => {
         // TODO give a deneral name to the function .. handleConfirm

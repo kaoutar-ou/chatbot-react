@@ -23,6 +23,17 @@ export const verifyClientInfos = (client_infos) => {
 
   // TODO if errors .. page 5 with .. return to previous pages
 
+  // Verifications in backend
+
+  // Format
+  if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(client_infos.email)) {
+    errors["email"] = "Le format de votre email n'est pas valide";
+  }
+
+  if(!/^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/.test(client_infos.telephone)) {
+    errors["telephone"] = "Le format de votre numéro de téléphone n'est pas valide";
+  }
+
   // Undefined / Empty
   if (
     client_infos.raison_sociale === undefined ||
@@ -79,10 +90,6 @@ export const verifyClientInfos = (client_infos) => {
 
   if ([...client_infos?.comment].length > 255) {
     errors["comment"] = "Veuillez ne pas dépasser 255 caractères";
-  }
-
-  if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(client_infos.email)) {
-    errors["email"] = "Le format de votre email n'est pas valide";
   }
 
   // TODO email verification

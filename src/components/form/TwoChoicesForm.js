@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const TwoChoicesForm = (props) => {
   const { content, choiceValue, ...others } = props;
@@ -16,8 +16,15 @@ const TwoChoicesForm = (props) => {
     props.handleConfirm(choice);
   };
 
+  const [scale, setScale] = useState("scale-0");
+    useEffect(() => {
+        setTimeout(() => {
+            setScale("scale-1")
+        }, 1000);
+    }, []);
+
   return (
-    <div className="relative">
+    <div className={`transition-all duration-150 ease-out relative ${scale}`}>
       <div className="w-full flex flex-row">
         <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="flex flex-row">

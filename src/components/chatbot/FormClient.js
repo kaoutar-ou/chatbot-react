@@ -88,10 +88,10 @@ function FormClient(props) {
       else {
         // setIsSent(true)
         // setClientInfosErrors((prev) => ({...prev, server_error:""}))
-        props.handleAddNewMessage(<BotMessage content={response?.data?.message} />)
+        props.handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content={response?.data?.message} />)
         setTimeout(() => {
           // TODO deactivate main input until finish
-          props.handleAddNewMessage(<BotMessage content={"Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."} />)
+          props.handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content={"Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."} />)
           props.setMainInputDisabled(false)
         }, 2000);
       }
@@ -110,12 +110,16 @@ function FormClient(props) {
 
     const [isSent, setIsSent] = useState(false);
 
+    const generateKey = (pre) => {
+      return `${ pre }_${ new Date().getTime() }`;
+    }
+
     useEffect(() => {
       // TODO or clientToken
       if (isSent) {
         setTimeout(() => {
           console.log(clientToken)
-          props.handleAddNewMessage(<BotMessage content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)" />)
+          props.handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)" />)
           setTimeout(() => {
             console.log(clientToken)
             props.handleAddNewMessage(<RatingForm key={"ClientRatingForm"} sendRating={sendRating} token={clientToken} userType={"client"} setMainInputDisabled={props.setMainInputDisabled} handleAddNewMessage={props.handleAddNewMessage}/>)
@@ -144,7 +148,7 @@ function FormClient(props) {
         setClientToken(response.data.token)
         setIsSent(true)
         setClientInfosErrors((prev) => ({...prev, server_error:""}))
-        props.handleAddNewMessage(<BotMessage content={response?.data?.message} />)
+        props.handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content={response?.data?.message} />)
         console.log(clientToken)
         // setTimeout(() => {
         //   console.log(clientToken)
@@ -157,12 +161,17 @@ function FormClient(props) {
         // TODO .. show a success message or error
       }
     }
-
+    const [scale, setScale] = useState("scale-0");
+    useEffect(() => {
+        setTimeout(() => {
+            setScale("scale-1")
+        }, 1000);
+    }, []);
 // TODO is active in calendar apres recoi de l email
   return (
     <>
     {/* <RatingForm setRating={setRating}/> */}
-    <div className="relative">
+    <div className={`transition-all duration-150 ease-out relative ${scale}`}>
       <div className="w-full flex flex-row">
         <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="w-11/12 p-3 ml-3">
@@ -248,7 +257,7 @@ function FormClient(props) {
 
 
 
-
+// Tooltip .. error msgs .. animation
 
 
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BotMessage from "../messages/BotMessage";
 
 const RatingForm = (props) => {
@@ -57,8 +57,15 @@ const RatingForm = (props) => {
     setIsSent(true)
   }
 
+  const [scale, setScale] = useState("scale-0");
+    useEffect(() => {
+        setTimeout(() => {
+            setScale("scale-1")
+        }, 1000);
+    }, []);
+
   return (
-    <div key={(props?.key) ? props.key : "RatingForm"} className="relative">
+    <div className={`transition-all duration-150 ease-out relative ${scale}`}>
       <div className="w-full flex flex-row">
         <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="flex flex-row m-6 p-2 justify-center outline-dotted outline-1 outline-gray-500 bg-gray-100 rounded-xl">

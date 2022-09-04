@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
+import BotMessage from "../messages/BotMessage";
 
 const RatingForm = (props) => {
-  const { content, sendRating, token, userType, ...others } = props;
+  const { content, sendRating, token, userType, setMainInputDisabled, handleAddNewMessage, ...others } = props;
   const [stars, setStars] = useState({
     1: false,
     2: false,
@@ -49,6 +50,12 @@ const RatingForm = (props) => {
     sendRating(rating);
     setIsSent(true)
   };
+
+  const handleLater = () => {
+    props.handleAddNewMessage(<BotMessage content={"Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."} />)
+    setMainInputDisabled(false)
+    setIsSent(true)
+  }
 
   return (
     <div key={(props?.key) ? props.key : "RatingForm"} className="relative">
@@ -103,6 +110,7 @@ const RatingForm = (props) => {
             </button>
             <button 
                 className="w-2/5 mx-6 rounded-md text-gray-500 enabled:hover:text-gray-800"
+                onClick={handleLater}
                 disabled={isSent}
             >
               Plus tard ...

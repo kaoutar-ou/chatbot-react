@@ -81,6 +81,10 @@ export const verifyClientInfos = (client_infos) => {
     errors["comment"] = "Veuillez ne pas dépasser 255 caractères";
   }
 
+  if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(client_infos.email)) {
+    errors["email"] = "Le format de votre email n'est pas valide";
+  }
+
   // TODO email verification
   // TODO service existant
 

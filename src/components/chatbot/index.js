@@ -31,10 +31,13 @@ function Chatbot() {
 
   const [keyState, setKeyState] = useState(2);
 
+  const [isDisabled, setIsDisabled] = useState(false);
+
   useEffect(() => {
     console.log(formOrChat)
     setIsLoading(true)
     if(formOrChat === "form_choice") {
+      setIsDisabled(true)
       setTimeout(() => {
         handleAddNewMessage(<BotMessage key={keyState} content="Parmi les quatres type, qui est le plus proche à votre situation ?" />)
         handleAddNewMessage(<MultiChoices key={"MultiChoices"} content={userTypeChoices} handleConfirm={setUserType}/>)
@@ -50,8 +53,9 @@ function Chatbot() {
     setIsLoading(true)
     if(userType === "type_client") {
       setTimeout(() => {
+        // TODO add cancel to cancel process and enable main input
         handleAddNewMessage(<BotMessage key={keyState} content="Bienvenue cher client, veuillez nous fournir plus d'information en remplissant le formulaire suivant." />)
-        handleAddNewMessage(<FormClient key={"FormClient"} handleAddNewMessage={handleAddNewMessage}/>)
+        handleAddNewMessage(<FormClient key={"FormClient"} handleAddNewMessage={handleAddNewMessage} setMainInputDisabled={setIsDisabled}/>)
         setIsLoading(false)
     }, [3000])
     } else {
@@ -102,7 +106,7 @@ function Chatbot() {
         {/* <BotMessage /> */}
       </div>
       {/* Footer */}
-      <ChatbotFooter />
+      <ChatbotFooter isDisabled={isDisabled} />
     </div>
   );
 }

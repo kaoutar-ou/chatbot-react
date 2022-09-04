@@ -92,10 +92,11 @@ function FormClient(props) {
         setTimeout(() => {
           // TODO deactivate main input until finish
           props.handleAddNewMessage(<BotMessage content={"Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."} />)
+          props.setMainInputDisabled(false)
         }, 2000);
       }
     }
-
+// TODO .. plus tard case
     const last_page = 4
     const [page, setPage] = useState(1);
 
@@ -117,7 +118,7 @@ function FormClient(props) {
           props.handleAddNewMessage(<BotMessage content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)" />)
           setTimeout(() => {
             console.log(clientToken)
-            props.handleAddNewMessage(<RatingForm key={"ClientRatingForm"} sendRating={sendRating} token={clientToken} userType={"client"}/>)
+            props.handleAddNewMessage(<RatingForm key={"ClientRatingForm"} sendRating={sendRating} token={clientToken} userType={"client"} setMainInputDisabled={props.setMainInputDisabled} handleAddNewMessage={props.handleAddNewMessage}/>)
           }, 1000);
         }, 2000);
       }

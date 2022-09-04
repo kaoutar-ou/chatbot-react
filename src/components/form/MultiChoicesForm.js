@@ -16,6 +16,8 @@ function MultiChoices(props) {
     props.handleConfirm(type);
   };
 
+  // TODO add tooltip
+
   return (
     <div className="relative">
       <div className="w-full flex flex-row">
@@ -25,7 +27,7 @@ function MultiChoices(props) {
               <button
                 className={`w-5/6 bg-gray-100 rounded-xl m-1 p-2 last:mb-4 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 ${
                   choice[0] === type
-                    ? "bg-teal-500 text-white"
+                    ? "bg-teal-500 text-white disabled:outline disabled:outline-1 disabled:outline-teal-500"
                     : "enabled:hover:bg-amber-200"
                 }`}
                 key={choice[0]}

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 
 const RatingForm = (props) => {
-  const { content, ...others } = props;
+  const { content, sendRating, token, userType, ...others } = props;
   const [stars, setStars] = useState({
     1: false,
     2: false,
@@ -11,6 +11,8 @@ const RatingForm = (props) => {
   });
 
   let commentRef = useRef();
+
+  const [isSent, setIsSent] = useState(false);
 
   const handleStars = (star) => {
     let newStars = {};
@@ -25,7 +27,10 @@ const RatingForm = (props) => {
   };
 
   const handleRating = () => {
+    // TODO set token to "" if inexistant
     let rating = {
+        user_type:userType,
+      token: token,
       rate: 0,
       comment: commentRef.current.value,
     };
@@ -36,19 +41,23 @@ const RatingForm = (props) => {
       }
     }
 
+    console.log(token)
     console.log(rating);
 
-    props.setRating(rating);
+    console.log(props);
+
+    sendRating(rating);
+    setIsSent(true)
   };
 
   return (
-    <div className="relative">
+    <div key={(props?.key) ? props.key : "RatingForm"} className="relative">
       <div className="w-full flex flex-row">
         <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="flex flex-row m-6 p-2 justify-center outline-dotted outline-1 outline-gray-500 bg-gray-100 rounded-xl">
             {Object.entries(stars).map((star) => {
               return (
-                <button key={star[0]} onClick={() => handleStars(star[0])}>
+                <button key={star[0]} onClick={() => handleStars(star[0])} disabled={isSent}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -58,7 +67,7 @@ const RatingForm = (props) => {
                     className={
                       star[1]
                         ? "stroke-amber-400 w-10 h-10 fill-yellow-400"
-                        : "stroke-amber-400 stroke-1 w-10 h-10 hover:fill-yellow-200"
+                        : "stroke-gray-500 stroke-1 w-10 h-10 hover:fill-yellow-200"
                     }
                   >
                     <path
@@ -73,7 +82,7 @@ const RatingForm = (props) => {
           </div>
           <div className="my-3 mx-6">
             <textarea
-              className="w-full resize-none rounded-lg p-2 focus:outline-none"
+              className="w-full resize-none rounded-lg p-2 focus:outline-none disabled:outline disabled:outline-1 disabled:outline-teal-500"
               id={"comment"}
               name={"comment"}
               rows="4"
@@ -81,13 +90,23 @@ const RatingForm = (props) => {
               cols="50"
               placeholder="Votre Avis ..."
               maxLength={1000}
+              disabled={isSent}
             ></textarea>
           </div>
           <div className="flex justify-center mt-4">
-            <button className="w-1/4 mx-10 outline-dotted outline-1 outline-gray-500 rounded-md bg-amber-200 hover:outline-offset-1 hover:bg-amber-400 hover:text-white">
+            <button
+              className="w-2/5 mx-6 outline-dotted outline-1 outline-gray-500 rounded-md bg-gray-100 text-gray-600 hover:outline-offset-1 enabled:hover:bg-amber-400 enabled:hover:text-white"
+              onClick={handleRating}
+              disabled={isSent}
+            >
               Confirmer
             </button>
-            <button className="w-1/4 mx-10 rounded-md text-gray-500 hover:text-gray-800">Plus tard ...</button>
+            <button 
+                className="w-2/5 mx-6 rounded-md text-gray-500 enabled:hover:text-gray-800"
+                disabled={isSent}
+            >
+              Plus tard ...
+            </button>
           </div>
         </div>
       </div>

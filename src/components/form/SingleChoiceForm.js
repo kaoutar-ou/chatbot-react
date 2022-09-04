@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 const SingleChoiceForm = (props) => {
-    const {content, choices, setInfos, infos, setInfosErrors, infosErrors, ...others} = props
+    const {content, choices, setInfos, infos, setInfosErrors, infosErrors, isSent, ...others} = props
     const [choiceState, setChoice] = useState(null);
 
     const handleChoiceClick = (e) => {
@@ -28,9 +28,10 @@ const SingleChoiceForm = (props) => {
                                 value={choice[1].id} 
                                 className={`w-full bg-gray-100 rounded-xl m-1 p-1 outline-dotted outline-1 outline-gray-500 ${
                                     choice[1].id == infos[content[0]]
-                                      ? "bg-teal-500 text-white"
+                                      ? "bg-teal-500 text-white disabled:outline disabled:outline-1 disabled:outline-teal-500"
                                       : "enabled:hover:bg-amber-200"
                                   } hover:outline-offset-2`}
+                                  disabled={isSent}
                             >
                                 {choice[1].name}
                             </button>

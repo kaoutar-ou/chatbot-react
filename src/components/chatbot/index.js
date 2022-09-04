@@ -36,6 +36,7 @@ function Chatbot() {
     setIsLoading(true)
     if(formOrChat === "form_choice") {
       setTimeout(() => {
+        handleAddNewMessage(<BotMessage key={keyState} content="Parmi les quatres type, qui est le plus proche à votre situation ?" />)
         handleAddNewMessage(<MultiChoices key={"MultiChoices"} content={userTypeChoices} handleConfirm={setUserType}/>)
         setIsLoading(false)
     }, [3000])
@@ -49,7 +50,8 @@ function Chatbot() {
     setIsLoading(true)
     if(userType === "type_client") {
       setTimeout(() => {
-        handleAddNewMessage(<FormClient key={"FormClient"} />)
+        handleAddNewMessage(<BotMessage key={keyState} content="Bienvenue cher client, veuillez nous fournir plus d'information en remplissant le formulaire suivant." />)
+        handleAddNewMessage(<FormClient key={"FormClient"} handleAddNewMessage={handleAddNewMessage}/>)
         setIsLoading(false)
     }, [3000])
     } else {
@@ -63,7 +65,7 @@ function Chatbot() {
   
   // TODO Content aleatoire .. multi choices here random choice
   const [messages, setMessages] = useState([<BotMessage content="Bonjour .. nous espérons que vous allez bien"/>]);
-  // TODO if null then welcome screen
+  // TODO if null then welcome screen .. logo architeo
 
   const handleAddNewMessage = (new_message) => {
     setKeyState((prev) => (prev + 1))

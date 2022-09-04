@@ -6,9 +6,11 @@ import SingleChoiceForm from "../form/SingleChoiceForm";
 import "../style.css"
 import * as clientFormService from "../../services/ClientFormService"
 import * as serviceService from "../../services/ServiceServices"
+import * as ratingService from "../../services/RatingService"
+import BotMessage from "../messages/BotMessage";
 
 
-function FormClient() {
+function FormClient(props) {
     const [clientInfos, setClientInfos] = useState({
         raison_sociale: "",
         email: "",
@@ -67,6 +69,33 @@ function FormClient() {
         comment: "",
     });
 
+    const sendRating = async (sentRating) => {
+      setRating(sentRating)
+      ////////////////////////// TODO   add total votes
+      // adding emojis
+      console.log(clientToken)
+      let response = await ratingService.saveRating(sentRating)
+      console.log(response)
+
+      if(Object.keys(response.errors).length > 0) {
+        console.log(response.errors)
+        if(response.errors.server_error !== undefined && response.errors.server_error !== null) {
+          // setClientInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
+        } else {
+          // setClientInfosErrors(response.errors)
+        }
+      }
+      else {
+        // setIsSent(true)
+        // setClientInfosErrors((prev) => ({...prev, server_error:""}))
+        props.handleAddNewMessage(<BotMessage content={response?.data?.message} />)
+        setTimeout(() => {
+          // TODO deactivate main input until finish
+          props.handleAddNewMessage(<BotMessage content={"Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."} />)
+        }, 2000);
+      }
+    }
+
     const last_page = 4
     const [page, setPage] = useState(1);
 
@@ -77,6 +106,22 @@ function FormClient() {
     const handleNext = () => {
         (page < last_page) ? setPage((page) => page + 1) : setPage(last_page)
     }
+
+    const [isSent, setIsSent] = useState(false);
+
+    useEffect(() => {
+      // TODO or clientToken
+      if (isSent) {
+        setTimeout(() => {
+          console.log(clientToken)
+          props.handleAddNewMessage(<BotMessage content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)" />)
+          setTimeout(() => {
+            console.log(clientToken)
+            props.handleAddNewMessage(<RatingForm key={"ClientRatingForm"} sendRating={sendRating} token={clientToken} userType={"client"}/>)
+          }, 1000);
+        }, 2000);
+      }
+    }, [isSent]);
 
     const handleSendForm = async () => {
       let response = await clientFormService.saveClient(clientInfos)
@@ -96,7 +141,18 @@ function FormClient() {
       else {
         console.log(response.data.token)
         setClientToken(response.data.token)
+        setIsSent(true)
         setClientInfosErrors((prev) => ({...prev, server_error:""}))
+        props.handleAddNewMessage(<BotMessage content={response?.data?.message} />)
+        console.log(clientToken)
+        // setTimeout(() => {
+        //   console.log(clientToken)
+        //   props.handleAddNewMessage(<BotMessage content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)" />)
+        //   setTimeout(() => {
+        //     console.log(clientToken)
+        //     props.handleAddNewMessage(<RatingForm sendRating={sendRating} token={clientToken}/>)
+        //   }, 1000);
+        // }, 2000);
         // TODO .. show a success message or error
       }
     }
@@ -111,16 +167,16 @@ function FormClient() {
           <div className="w-11/12 p-3 ml-3">
             {
                 (page === 1) ? (
-                    <InputsForm key={"FirstClientInputsForm"} content={firstPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                    <InputsForm key={"FirstClientInputsForm"} content={firstPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors} isSent={isSent}/>
                 ) : (
                     (page === 2) ? (
-                        <InputsForm key={"SecondClientInputsForm"} content={secondPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                        <InputsForm key={"SecondClientInputsForm"} content={secondPage} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors} isSent={isSent}/>
                     ) : (
                         (page === 3) ? (
-                            <SingleChoiceForm key={"ClientSingleChoiceForm"} content={Object.entries(thirdPage).at(0)} choices={services} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                            <SingleChoiceForm key={"ClientSingleChoiceForm"} content={Object.entries(thirdPage).at(0)} choices={services} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors} isSent={isSent}/>
                         ) : (
                             <>
-                              <CommentForm content={Object.entries(fourthPage).at(0)} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors}/>
+                              <CommentForm content={Object.entries(fourthPage).at(0)} setInfos={setClientInfos} infos={clientInfos} setInfosErrors={setClientInfosErrors} infosErrors={clientInfosErrors} isSent={isSent}/>
                               {
                                 (clientInfosErrors["server_error"] && clientInfosErrors["server_error"] !== "") ? (
                                   <div className='text-red-500'>{clientInfosErrors["server_error"]}</div>
@@ -174,7 +230,7 @@ function FormClient() {
       </div>
       <button 
         className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 enabled:hover:bg-teal-500 enabled:hover:text-white disabled:text-gray-300"
-        disabled={(page === last_page && (clientToken === null || clientToken === "" || clientToken === undefined)) ? false : true}
+        disabled={(page === last_page && !isSent) ? false : true}
         onClick={handleSendForm}
       >
         OK

@@ -95,6 +95,7 @@ export const saveClient = async (client_infos) => {
 
   let res;
 
+  // TODO constants and language
   let server_error_message =
     "Nous sommes désolés, nous avons rencontré une erreur interne !";
   let comment =

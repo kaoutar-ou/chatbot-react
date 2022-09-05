@@ -25,6 +25,9 @@ function Chatbot() {
     type_candidat: "Candidat"
   }
 
+  // FIXME Reunion presentielle ou a distance ???
+  // TODO Qr Code
+  
   const [formOrChat, setFormOrChat] = useState(null);
 
   const [userType, setUserType] = useState(null);

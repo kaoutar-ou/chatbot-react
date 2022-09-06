@@ -68,7 +68,7 @@ function FormClient(props) {
   const sendRating = async (sentRating) => {
     setRating(sentRating);
     ////////////////////////// TODO   add total votes
-    // adding emojis
+    // TODO adding emojis
     let response = await ratingService.saveRating(sentRating);
 
 
@@ -97,7 +97,7 @@ function FormClient(props) {
           />
         );
         props.setMainInputDisabled(false);
-      }, 2000);
+      }, 1000);
     }
   };
   // TODO .. plus tard case

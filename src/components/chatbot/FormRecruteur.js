@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import CommentForm from '../form/CommentForm';
 import InputsForm from '../form/InputsForm';
+import RatingForm from "../form/RatingForm";
 import SingleChoiceForm from '../form/SingleChoiceForm';
 import BotMessage from '../messages/BotMessage';
 import * as recruteurService from "../../services/RecruteurService";
 import * as domaineExpertiseService from "../../services/DomaineExpertiseService";
+import * as ratingService from "../../services/RatingService";
 import CalendarForm from '../form/CalendarForm';
 
 function FormRecruteur(props) {
@@ -30,6 +32,11 @@ function FormRecruteur(props) {
         nombre_personnes_a_recruter: "",
         domaine_expertise: "",
         calendar: "",
+        comment: "",
+      });
+
+      const [rating, setRating] = useState({
+        rate: null,
         comment: "",
       });
 
@@ -83,6 +90,7 @@ function FormRecruteur(props) {
       };
     
       const [isConfirmed, setIsConfirmed] = useState(false);
+      // const [showBotMessage, setShowBotMessage] = useState(false);
       const [isSent, setIsSent] = useState(false);
     
       const generateKey = (pre) => {
@@ -106,10 +114,23 @@ function FormRecruteur(props) {
             setRecruteurInfosErrors(response);
           }
         } else {
-          setIsConfirmed(true);
+          // if(!showBotMessage) {
+          //   setShowBotMessage(true);
+          // }
+          props.handleAddNewMessage(
+            <BotMessage
+              key={generateKey("chatbot")}
+              content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+            />
+          );
+          setTimeout(() => {
+            setIsConfirmed(true);
+          }, 1000);
           setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
       }
     }
+
+    // TODO prevent inputs from typing letters .. only numbers
 
       const handleSendForm = async (calendar) => {
         let response = await recruteurService.saveRecruteur(recruteurInfos, calendar);
@@ -195,6 +216,64 @@ function FormRecruteur(props) {
       //   }
       // }, [isConfirmed]);
 
+      const sendRating = async (sentRating) => {
+        setRating(sentRating);
+        let response = await ratingService.saveRating(sentRating);
+    
+        if (Object.keys(response.errors).length > 0) {
+          if (
+            response.errors.server_error !== undefined &&
+            response.errors.server_error !== null
+          ) {
+            // setRecruteurInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
+          }
+        } else {
+          props.handleAddNewMessage(
+            <BotMessage
+              key={generateKey("chatbot")}
+              content={response?.data?.message}
+            />
+          );
+          setTimeout(() => {
+            props.handleAddNewMessage(
+              <BotMessage
+                key={generateKey("chatbot")}
+                content={
+                  "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
+                }
+              />
+            );
+            props.setMainInputDisabled(false);
+          }, 1000);
+        }
+      };
+
+      useEffect(() => {
+        // TODO or RecruteurToken
+        if (isSent) {
+          setTimeout(() => {
+            props.handleAddNewMessage(
+              <BotMessage
+                key={generateKey("chatbot")}
+                content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
+              />
+            );
+            setTimeout(() => {
+              props.handleAddNewMessage(
+                <RatingForm
+                  key={"RecruteurRatingForm"}
+                  sendRating={sendRating}
+                  token={recruteurToken}
+                  userType={"recruteur"}
+                  setMainInputDisabled={props.setMainInputDisabled}
+                  handleAddNewMessage={props.handleAddNewMessage}
+                />
+              );
+            }, 1000);
+          }, 2000);
+        }
+      }, [isSent]);
+
     const [scale, setScale] = useState("scale-0");
     useEffect(() => {
         setTimeout(() => {
@@ -205,6 +284,7 @@ function FormRecruteur(props) {
         <>
           {
             (isConfirmed) ? (
+              <>
               <CalendarForm
                   key={"RecruteurCalendarForm"}
                   handleSendForm={handleSendForm}
@@ -214,8 +294,21 @@ function FormRecruteur(props) {
                   infosErrors={recruteurInfosErrors}
                   isSent={isSent}
                 />
+                {/* <BotMessage
+                key={generateKey("chatbot")}
+                content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables qui vous convient."
+              /> */}
+                </>
             ) : null
           } 
+          {
+            // (showBotMessage) ? (
+            //   <BotMessage
+            //     key={generateKey("chatbot")}
+            //     content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables qui vous convient."
+            //   />
+            // ) : null
+          }
           <div className={`transition-all duration-150 ease-out relative ${scale}`}>
             <div className="w-full flex flex-row">
               <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">

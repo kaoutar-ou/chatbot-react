@@ -157,6 +157,7 @@ function CalendarForm(props) {
               <div className="-mt-2 -mb-3 text-left ml-5">
                 <button className="place-self-start flex place-items-center disabled:text-gray-500"
                   onClick={() => setIsTimeView(false)}
+                  disabled={isSent}
                 >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

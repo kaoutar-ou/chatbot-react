@@ -17,6 +17,7 @@ function FormRecruteur(props) {
         nombre_employes: "",
         nombre_personnes_a_recruter: "",
         domaine_expertise: "",
+        calendar: "",
         comment: "",
       });
     
@@ -28,11 +29,12 @@ function FormRecruteur(props) {
         nombre_employes: "",
         nombre_personnes_a_recruter: "",
         domaine_expertise: "",
+        calendar: "",
         comment: "",
       });
 
       useEffect(() => {
-        console.log(recruteurInfos);
+        // console.log(recruteurInfos);
       }, [recruteurInfos]);
 
       const firstPage = {
@@ -62,7 +64,6 @@ function FormRecruteur(props) {
         const getAllDomainesExpertise = async () => {
           let response = await domaineExpertiseService.getAllDomainesExpertise();
           setDomainesExpertise(response?.data?.domaines_expertise);
-          console.log(response?.data?.domaines_expertise);
         };
     
         getAllDomainesExpertise();
@@ -81,37 +82,59 @@ function FormRecruteur(props) {
         page < last_page ? setPage((page) => page + 1) : setPage(last_page);
       };
     
+      const [isConfirmed, setIsConfirmed] = useState(false);
       const [isSent, setIsSent] = useState(false);
     
       const generateKey = (pre) => {
         return `${pre}_${new Date().getTime()}`;
       };
 
+      const handleConfirmForm = async () => {
 
+        let response = await recruteurService.verifyRecruteurInfos(recruteurInfos);
+        setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
+        if (Object.keys(response).length > 0) {
+          if (
+            response.server_error !== undefined &&
+            response.server_error !== null
+          ) {
+            setRecruteurInfosErrors((prev) => ({
+              ...prev,
+              server_error: response.server_error,
+            }));
+          } else {
+            setRecruteurInfosErrors(response);
+          }
+        } else {
+          setIsConfirmed(true);
+          setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
+      }
+    }
 
       const handleSendForm = async () => {
         let response = await recruteurService.saveRecruteur(recruteurInfos);
-        console.log(response);
+        
         setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
         if (Object.keys(response.errors).length > 0) {
-          console.log(response.errors);
+          
           if (
             response.errors.server_error !== undefined &&
             response.errors.server_error !== null
           ) {
-            console.log("server");
-            console.log(response.errors.server_error);
+            
+            
             setRecruteurInfosErrors((prev) => ({
               ...prev,
               server_error: response.errors.server_error,
             }));
           } else {
-            console.log("here");
+            
             setRecruteurInfosErrors(response.errors);
           }
         } else {
-          console.log(response.data.token);
+          
           setRecruteurToken(response.data.token);
+          // setIsConfirmed(true);
           setIsSent(true);
           setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
           props.handleAddNewMessage(
@@ -120,37 +143,52 @@ function FormRecruteur(props) {
               content={response?.data?.message}
             />
           );
-          console.log(recruteurToken);
+          
           // TODO .. show a success message or error
         }
       };
 
+      // const [calendar, setCalendar] = useState("");
+      
       useEffect(() => {
-        if (isSent) {
+        // setRecruteurInfos((prev) => ({...prev, calendar:5}))
+        console.log(recruteurInfos)
+        setRecruteurInfos(recruteurInfos)
+      }, [recruteurInfos]);
+
+      const handleSetCalendarInfo = (calendar) => {
+        console.log(calendar)
+        setRecruteurInfos((prev) => ({...prev, calendar:calendar}))
+        console.log(recruteurInfos)
+      }
+
+      useEffect(() => {
+        if (isConfirmed) {
           setTimeout(() => {
-            console.log(recruteurToken);
+            
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
-                content="Veuillez choisir l'un des créneaux valables qui vous convient."
+                content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables qui vous convient."
               />
             );
             setTimeout(() => {
-              console.log(recruteurToken);
+              
               props.handleAddNewMessage(
                 <CalendarForm
-                  key={"CalendarForm"}
-                  token={recruteurToken}
-                  // sendCalendar={sendCalendar}
-                  userType={"recruteur"}
-                  setMainInputDisabled={props.setMainInputDisabled}
-                  handleAddNewMessage={props.handleAddNewMessage}
+                  key={"RecruteurCalendarForm"}
+                  handleSendForm={handleSendForm}
+                  handleSetCalendarInfo={setRecruteurInfos}
+                  infos={recruteurInfos}
+                  setInfosErrors={setRecruteurInfosErrors}
+                  infosErrors={recruteurInfosErrors}
+                  isSent={isSent}
                 />
               );
             }, 1000);
           }, 2000);
         }
-      }, [isSent]);
+      }, [isConfirmed]);
 
     const [scale, setScale] = useState("scale-0");
     useEffect(() => {
@@ -172,7 +210,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isSent}
+                      isConfirmed={isConfirmed}
                     />
                   ) : page === 2 ? (
                     <InputsForm
@@ -182,7 +220,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isSent}
+                      isConfirmed={isConfirmed}
                     />
                   ) : page === 3 ? (
                     <InputsForm
@@ -192,7 +230,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isSent}
+                      isConfirmed={isConfirmed}
                     />
                   ) : page === 4 ? (
                         // (domainesExpertise != null && domainesExpertise != undefined) ? (
@@ -204,7 +242,7 @@ function FormRecruteur(props) {
                                 infos={recruteurInfos}
                                 setInfosErrors={setRecruteurInfosErrors}
                                 infosErrors={recruteurInfosErrors}
-                                isSent={isSent}
+                                isConfirmed={isConfirmed}
                             />
                         // ) : (
                         //     <></>
@@ -217,7 +255,7 @@ function FormRecruteur(props) {
                         infos={recruteurInfos}
                         setInfosErrors={setRecruteurInfosErrors}
                         infosErrors={recruteurInfosErrors}
-                        isSent={isSent}
+                        isConfirmed={isConfirmed}
                       />
                       {recruteurInfosErrors["server_error"] &&
                       recruteurInfosErrors["server_error"] !== "" ? (
@@ -276,8 +314,8 @@ function FormRecruteur(props) {
             </div>
             <button
               className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 enabled:hover:bg-teal-500 enabled:hover:text-white disabled:text-gray-300"
-              disabled={page === last_page && !isSent ? false : true}
-              onClick={handleSendForm}
+              disabled={page === last_page && !isConfirmed ? false : true}
+              onClick={handleConfirmForm}
             >
               OK
             </button>

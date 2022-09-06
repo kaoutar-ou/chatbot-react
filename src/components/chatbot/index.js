@@ -45,7 +45,6 @@ function Chatbot() {
   };
 
   useEffect(() => {
-    console.log(formOrChat);
     setIsLoading(true);
     if (formOrChat === "form_choice") {
       setIsDisabled(true);
@@ -88,7 +87,6 @@ function Chatbot() {
   }, [formOrChat]);
 
   useEffect(() => {
-    console.log(userType);
     setIsLoading(true);
     if (userType === "type_client") {
       setTimeout(() => {
@@ -132,7 +130,7 @@ function Chatbot() {
   }, [userType]);
 
   useEffect(() => {
-    console.log(userType);
+    // console.log(userType);
   }, [userType]);
 
   // TODO Content aleatoire .. multi choices here random choice
@@ -187,9 +185,9 @@ function Chatbot() {
       {/* Body */}
       <div className="overflow-y-scroll min-h-screen max-h-screen flex flex-col-reverse py-20 chatbot-messages">
         {isLoading ? <DotsMessage /> : null}
-        <CalendarForm
+        {/* <CalendarForm
                   key={"CalendarForm"}
-                />
+                /> */}
         {messages.map((message) => message)}
         {/* <BotMessage /> */}
       </div>

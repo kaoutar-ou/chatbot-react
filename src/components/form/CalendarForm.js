@@ -1,8 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import * as calendarService from "../../services/CalendarService"
+import SingleChoiceForm from "./SingleChoiceForm";
 
-function CalendarForm() {
+function CalendarForm(props) {
+
+    const {handleSetCalendarInfo, infos, setInfosErrors, infosErrors, handleSendForm, isSent, ...others} = props
+
   const [value, onChange] = useState(new Date());
   useEffect(() => {
     console.log(value);
@@ -20,6 +24,9 @@ function CalendarForm() {
 
   const [freeCalendar, setFreeCalendar] = useState({});
   const [freeDays, setFreeDays] = useState([]);
+  const [freeTime, setFreeTime] = useState([]);
+  const [isTimeView, setIsTimeView] = useState(false);
+//   const [isSent, setIsSent] = useState(false);
 
   useEffect(() => {
     const getAllFreeCalendar = async () => {
@@ -28,13 +35,43 @@ function CalendarForm() {
         console.log(response.data.calendars);
         let days = []
         Object.entries(response.data.calendars).map((value) => (
-            days.push(new Date(value[1].date).toLocaleDateString('fr-FR').replaceAll('/','-'))
+            // days.push(new Date(value[1].date).toLocaleDateString('fr-FR').replaceAll('/','-'))
+            days.push(new Date(value[1].date).toLocaleDateString('fr-FR'))
         ))
         setFreeDays(days)
         console.log(days)
       };
       getAllFreeCalendar();
   }, []);
+
+  const getFreeTime = (date) => {
+    // handleSetCalendarInfo(8);
+    // console.log(infos)
+
+    console.log(date.toLocaleDateString())
+    let times = []
+    Object.entries(freeCalendar).map((value) => {
+        console.log(new Date(value[1].date).toLocaleDateString('fr-FR'))
+        console.log(date.toLocaleDateString('fr-FR'))
+        if (date.toLocaleDateString('fr-FR') === new Date(value[1].date).toLocaleDateString('fr-FR')) {
+            times.push({id: value[1].id, name: value[1].time})
+        }
+    }
+    // days.push(new Date(value[1].date).toLocaleDateString('fr-FR'))
+    )
+    console.log(times)
+    setFreeTime(times)
+  }
+
+  useEffect(() => {
+    if(freeTime.length !== 0) {
+        setIsTimeView(true)
+    }
+  }, [freeTime]);
+
+  const timePage = {
+    calendar: "Heure",
+  };
 
   const [scale, setScale] = useState("scale-0");
   useEffect(() => {
@@ -47,6 +84,8 @@ function CalendarForm() {
       <div className="w-full flex flex-row">
         <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="flex flex-row bg-slate-100 m-5 rounded-xl outline-dotted outline-1 outline-gray-500">
+            {
+            (!isTimeView) ? (
             <Calendar
               className={"w-full p-3"}
               onChange={onChange}
@@ -71,9 +110,11 @@ function CalendarForm() {
               // tileClassName={({ date, view }) => view === 'month' && date.getDay() === 0 ? 'bg-teal-500' : null}
               // TODO .. only after today
               tileClassName={({ date, view }) =>
-                view === "month" &&
+                // view === "month" &&
+                // date == new Date()
                 freeDays.includes(
-                  date.toLocaleDateString("fr-FR").replaceAll("/", "-")
+                //   date.toLocaleDateString("fr-FR").replaceAll("/", "-")
+                  date.toLocaleDateString("fr-FR")
                 )
                   ? "h-9 bg-amber-200 rounded-full hover:bg-teal-500"
                   : "h-9 rounded-full"
@@ -82,25 +123,39 @@ function CalendarForm() {
               // tileContent={({ date, view }) => view === 'month' && date.getDay() === 0 ? <p>Weekend</p> : null}
               tileDisabled={({ activeStartDate, date, view }) =>
                 !freeDays.includes(
-                  date.toLocaleDateString("fr-FR").replaceAll("/", "-")
+                //   date.toLocaleDateString("fr-FR").replaceAll("/", "-")
+                  date.toLocaleDateString("fr-FR")
                 )
               }
               // TODO ... date utils
-              onClickDay={(value, event) =>
-                console.log(
-                //   value.toLocaleDateString("fr-FR").replaceAll("/", "-")
-                value.toLocaleDateString()
-                    // new Date(value.getFullYear(), value.getMonth(), value.getDate())
-                )
+              onClickDay={(value, event) => getFreeTime(value)
+                // console.log(
+                // //   value.toLocaleDateString("fr-FR").replaceAll("/", "-")
+                // value.toLocaleDateString()
+                //     // new Date(value.getFullYear(), value.getMonth(), value.getDate())
+                // )
               }
             />
+            ) : (
+                <SingleChoiceForm
+                    key={"CalendarSingleChoiceForm"}
+                    content={Object.entries(timePage).at(0)}
+                    choices={freeTime}
+                    setInfos={handleSetCalendarInfo}
+                    infos={infos}
+                    setInfosErrors={setInfosErrors}
+                    infosErrors={infosErrors}
+                    isSent={isSent}
+                />
+            )
+            }
           </div>
         </div>
       </div>
       <button
         className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 enabled:hover:bg-teal-500 enabled:hover:text-white disabled:text-gray-300"
-        // onClick={handleSendChoice}
-        // disabled={isSent}
+        onClick={handleSendForm}
+        disabled={isSent || !isTimeView}
       >
         OK
       </button>
@@ -128,6 +183,7 @@ const PreviousTwo = () => {
     </div>
   );
 };
+
 const NextTwo = () => {
   return (
     <div className="mx-3">
@@ -200,3 +256,8 @@ const getDay = (date, locale) => {
   return <div>{date.toLocaleDateString(locale, { weekday: "short" })}</div>;
 };
 export default CalendarForm;
+
+
+// TODO email .. click here to confirm .. then .. here are your infos
+
+// TODO two choices .. check if != "" before OK click

@@ -7,7 +7,6 @@ const TwoChoicesForm = (props) => {
   const [isSent, setIsSent] = useState(false);
 
   const handleChoice = (res) => {
-    console.log(res);
     setChoice(res);
   };
 

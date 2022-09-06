@@ -123,6 +123,11 @@ export const saveRecruteur = async (recruteur_infos) => {
     "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
 
   response.errors = verifyRecruteurInfos(recruteur_infos);
+  
+  console.log(recruteur_infos)
+  if (recruteur_infos.calendar === undefined || recruteur_infos.calendar === "") {
+    response.errors["calendar"] = "Vous devez choisir un créneau";
+  }
 
   if (Object.keys(response.errors).length > 0) {
     response.errors = { ...response.errors, comment: comment };

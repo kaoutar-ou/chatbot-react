@@ -50,11 +50,6 @@ const RatingForm = (props) => {
       }
     }
 
-    console.log(token);
-    console.log(rating);
-
-    console.log(props);
-
     sendRating(rating);
     setIsSent(true);
   };

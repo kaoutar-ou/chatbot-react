@@ -7,7 +7,6 @@ function MultiChoices(props) {
   const [isSent, setIsSent] = useState(false);
 
   const handleChoice = (res) => {
-    console.log(res);
     setType(res);
   };
 

@@ -14,7 +14,7 @@ export const getBotResponse = async (user_message) => {
     let server_error_message = "Nous sommes désolés, nous avons rencontré une erreur interne !";
 
     try {
-        res = await api.getBotResponse(user_message)
+        res = await api.getBotResponse({user_message})
         console.log(res);
         if (res?.data?.error != null && res?.data?.error !== undefined) {
           response.errors = { ...response.errors, server_error: res.data.error };

@@ -1,9 +1,57 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import send from "../../send.svg";
 import voice from "../../micro.svg";
 
+import * as chatbotService from "../../services/ChatbotService"
+import BotMessage from "../messages/BotMessage";
+import UserMessage from "../messages/UserMessage";
+
 function ChatbotFooter(props) {
-  const { isDisabled, ...others } = props;
+
+  const [userMessage, setUserMessage] = useState("");
+
+  let userMessageRef = useRef();
+
+  const generateKey = (pre) => {
+    return `${ pre }_${ new Date().getTime() }`;
+  }
+
+  const handleSendUserMessage = async () => {
+    
+      let user_message = userMessageRef.current.value
+      setUserMessage(user_message)
+      
+      console.log(user_message)
+
+      handleAddNewMessage(<UserMessage key={ generateKey("chatbot") } content={user_message} />)
+
+      let response = await chatbotService.getBotResponse(user_message)
+
+      console.log(response)
+
+      if(Object.keys(response.errors).length > 0) {
+        console.log(response.errors)
+        if(response.errors.server_error !== undefined && response.errors.server_error !== null) {
+          // setClientInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
+        } else {
+          // setClientInfosErrors(response.errors)
+        }
+      }
+      else {
+        // setIsSent(true)
+        // setClientInfosErrors((prev) => ({...prev, server_error:""}))
+        handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content={response?.data?.bot_message} />)
+        userMessageRef.current.value = ""
+        // setTimeout(() => {
+        //   // TODO deactivate main input until finish
+        //   props.handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content={"Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."} />)
+        //   props.setMainInputDisabled(false)
+        // }, 2000);
+      }
+  }
+
+  const { isDisabled, handleAddNewMessage, ...others } = props;
+
   return (
     <div className="bg-gradient-to-l from-teal-500 to-amber-300 flex bottom-0 absolute h-16 w-full shadow-md items-center">
       <div className="flex-auto">
@@ -13,6 +61,7 @@ function ChatbotFooter(props) {
             type={"text"}
             placeholder="Type something here ..."
             disabled={isDisabled}
+            ref={userMessageRef}
           ></input>
         </div>
       </div>
@@ -43,6 +92,7 @@ function ChatbotFooter(props) {
           <button
             className="p-1 w-10 h-10 rounded-full hover:outline-dashed hover:outline-1 hover:outline-gray-600 focus:outline-offset-2 hover:bg-gradient-to-t hover:from-amber-300"
             disabled={isDisabled}
+            onClick={handleSendUserMessage}
           >
             {/* <img width={25} src={send} alt="send"></img> */}
             <svg

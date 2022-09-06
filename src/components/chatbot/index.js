@@ -51,12 +51,15 @@ function Chatbot() {
         handleAddNewMessage(<MultiChoices key={"MultiChoices"} content={userTypeChoices} handleConfirm={setUserType}/>)
         setIsLoading(false)
     }, [3000])
-    } else {
+    } else if (formOrChat === "chat_choice") {
       handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content="Vous avez choisi de poser des questions ..." />)
       // TODO .. message = feel free to
       // TODO .. send language with user message
-      handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content="Vous pouvez demander ce que vous voulez :)" />)
-    console.log(formOrChat)
+      setTimeout(() => {
+        handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content="Vous pouvez demander ce que vous voulez :)" />)
+      }, 1000);
+    } else {
+      console.log(formOrChat)
     }
   }, [formOrChat]);
 
@@ -118,7 +121,7 @@ function Chatbot() {
         {/* <BotMessage /> */}
       </div>
       {/* Footer */}
-      <ChatbotFooter isDisabled={isDisabled} />
+      <ChatbotFooter isDisabled={isDisabled} handleAddNewMessage={handleAddNewMessage} />
     </div>
   );
 }

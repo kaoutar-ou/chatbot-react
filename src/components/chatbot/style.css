@@ -1,4 +1,4 @@
-/*.chatbot-messages {
+.chatbot-messages {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -6,7 +6,7 @@
 .chatbot-messages::-webkit-scrollbar {
   display: none;
 }
-
+/*
 .chatbot {
     font-family: monospace;
 }*/

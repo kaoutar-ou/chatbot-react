@@ -5,6 +5,7 @@ import SingleChoiceForm from '../form/SingleChoiceForm';
 import BotMessage from '../messages/BotMessage';
 import * as recruteurService from "../../services/RecruteurService";
 import * as domaineExpertiseService from "../../services/DomaineExpertiseService";
+import CalendarForm from '../form/CalendarForm';
 
 function FormRecruteur(props) {
 
@@ -123,6 +124,33 @@ function FormRecruteur(props) {
           // TODO .. show a success message or error
         }
       };
+
+      useEffect(() => {
+        if (isSent) {
+          setTimeout(() => {
+            console.log(recruteurToken);
+            props.handleAddNewMessage(
+              <BotMessage
+                key={generateKey("chatbot")}
+                content="Veuillez choisir l'un des créneaux valables qui vous convient."
+              />
+            );
+            setTimeout(() => {
+              console.log(recruteurToken);
+              props.handleAddNewMessage(
+                <CalendarForm
+                  key={"CalendarForm"}
+                  token={recruteurToken}
+                  // sendCalendar={sendCalendar}
+                  userType={"recruteur"}
+                  setMainInputDisabled={props.setMainInputDisabled}
+                  handleAddNewMessage={props.handleAddNewMessage}
+                />
+              );
+            }, 1000);
+          }, 2000);
+        }
+      }, [isSent]);
 
     const [scale, setScale] = useState("scale-0");
     useEffect(() => {

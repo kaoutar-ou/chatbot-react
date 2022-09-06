@@ -9,6 +9,7 @@ import UserMessage from "../messages/UserMessage";
 import "./style.css";
 import TwoChoicesForm from "../form/TwoChoicesForm";
 import FormRecruteur from "./FormRecruteur";
+import CalendarForm from "../form/CalendarForm";
 
 function Chatbot() {
   // TODO isLoading
@@ -184,6 +185,9 @@ function Chatbot() {
       {/* Body */}
       <div className="overflow-y-scroll min-h-screen max-h-screen flex flex-col-reverse py-20 chatbot-messages">
         {isLoading ? <DotsMessage /> : null}
+        <CalendarForm
+                  key={"CalendarForm"}
+                />
         {messages.map((message) => message)}
         {/* <BotMessage /> */}
       </div>

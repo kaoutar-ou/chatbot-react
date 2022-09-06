@@ -22,7 +22,7 @@ function ChatbotFooter(props) {
     handleAddNewMessage(
       <UserMessage key={generateKey("chatbot")} content={user_message} />
     );
-
+    userMessageRef.current.value = "";
     let response = await chatbotService.getBotResponse(user_message);
 
     console.log(response);
@@ -38,7 +38,6 @@ function ChatbotFooter(props) {
           content={response?.data?.bot_message}
         />
       );
-      userMessageRef.current.value = "";
     }
   };
 

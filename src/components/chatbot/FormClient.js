@@ -4,7 +4,7 @@ import InputsForm from "../form/InputsForm";
 import RatingForm from "../form/RatingForm";
 import SingleChoiceForm from "../form/SingleChoiceForm";
 import "../style.css";
-import * as clientFormService from "../../services/ClientFormService";
+import * as clientFormService from "../../services/ClientService";
 import * as serviceService from "../../services/ServiceServices";
 import * as ratingService from "../../services/RatingService";
 import BotMessage from "../messages/BotMessage";

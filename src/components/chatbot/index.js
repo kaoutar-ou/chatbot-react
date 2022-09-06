@@ -8,6 +8,7 @@ import DotsMessage from "../messages/DotsMessage";
 import UserMessage from "../messages/UserMessage";
 import "./style.css";
 import TwoChoicesForm from "../form/TwoChoicesForm";
+import FormRecruteur from "./FormRecruteur";
 
 function Chatbot() {
   // TODO isLoading
@@ -103,7 +104,25 @@ function Chatbot() {
           />
         );
         setIsLoading(false);
-      }, [3000]);
+      }, [2000]);
+    } else if(userType === "type_recruteur") {
+      setTimeout(() => {
+        handleAddNewMessage(
+          <BotMessage
+            key={generateKey("chatbot")}
+            content="Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+          />
+        );
+        // TODO ... change this key to be unique
+        handleAddNewMessage(
+          <FormRecruteur
+            key={"FormRecruteur"}
+            handleAddNewMessage={handleAddNewMessage}
+            setMainInputDisabled={setIsDisabled}
+          />
+        );
+        setIsLoading(false);
+      }, [2000]);
     } else {
       console.log(userType);
     }

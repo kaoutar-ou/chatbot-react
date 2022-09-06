@@ -5,7 +5,7 @@ import SingleChoiceForm from "./SingleChoiceForm";
 
 function CalendarForm(props) {
 
-    const {handleSetCalendarInfo, infos, setInfosErrors, infosErrors, handleSendForm, isSent, ...others} = props
+    const {setInfos, infos, setInfosErrors, infosErrors, handleSendForm, isSent, ...others} = props
 
   const [value, onChange] = useState(new Date());
   useEffect(() => {
@@ -66,6 +66,8 @@ function CalendarForm(props) {
   useEffect(() => {
     if(freeTime.length !== 0) {
         setIsTimeView(true)
+    } else {
+      setIsTimeView(false)
     }
   }, [freeTime]);
 
@@ -141,7 +143,7 @@ function CalendarForm(props) {
                     key={"CalendarSingleChoiceForm"}
                     content={Object.entries(timePage).at(0)}
                     choices={freeTime}
-                    setInfos={handleSetCalendarInfo}
+                    setInfos={setInfos}
                     infos={infos}
                     setInfosErrors={setInfosErrors}
                     infosErrors={infosErrors}
@@ -150,6 +152,31 @@ function CalendarForm(props) {
             )
             }
           </div>
+          {
+            (isTimeView) ? (
+              <div className="-mt-2 -mb-3 text-left ml-5">
+                <button className="place-self-start flex place-items-center disabled:text-gray-500"
+                  onClick={() => setIsTimeView(false)}
+                >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-3 h-3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 19.5L8.25 12l7.5-7.5"
+                  />
+                </svg>
+                <div className="mx-1">précédent</div>
+                </button>
+              </div>
+            ) : null
+          }
         </div>
       </div>
       <button

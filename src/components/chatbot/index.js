@@ -52,7 +52,7 @@ function Chatbot() {
         handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Parmi les quatres type, qui est le plus proche à votre situation ?"
+            content="Parmi les quatres types, qui est le plus proche à votre situation ?"
           />
         );
         handleAddNewMessage(
@@ -63,7 +63,7 @@ function Chatbot() {
           />
         );
         setIsLoading(false);
-      }, [3000]);
+      }, [1000]);
     } else if (formOrChat === "chat_choice") {
       handleAddNewMessage(
         <BotMessage
@@ -105,7 +105,7 @@ function Chatbot() {
           />
         );
         setIsLoading(false);
-      }, [2000]);
+      }, [1000]);
     } else if(userType === "type_recruteur") {
       setTimeout(() => {
         handleAddNewMessage(
@@ -117,13 +117,13 @@ function Chatbot() {
         // TODO ... change this key to be unique
         handleAddNewMessage(
           <FormRecruteur
-            key={"FormRecruteur"}
+            key={generateKey("FormRecruteur")}
             handleAddNewMessage={handleAddNewMessage}
             setMainInputDisabled={setIsDisabled}
           />
         );
         setIsLoading(false);
-      }, [2000]);
+      }, [1000]);
     } else {
       console.log(userType);
     }
@@ -175,8 +175,8 @@ function Chatbot() {
           />
         );
         setIsLoading(false);
-      }, [2000]);
-    }, 3000);
+      }, [1000]);
+    }, 1000);
   }, []);
   return (
     <div className="h-screen chatbot">

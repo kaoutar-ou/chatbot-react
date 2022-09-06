@@ -130,7 +130,9 @@ export const saveRecruteur = async (recruteur_infos) => {
   }
 
   if (Object.keys(response.errors).length > 0) {
-    response.errors = { ...response.errors, comment: comment };
+    if (response.errors["calendar"] === "") {
+      response.errors = { ...response.errors, comment: comment };
+    }
     return response;
   }
 

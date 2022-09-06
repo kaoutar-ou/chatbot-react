@@ -89,9 +89,9 @@ function FormRecruteur(props) {
         return `${pre}_${new Date().getTime()}`;
       };
 
-      const handleConfirmForm = async () => {
+      const handleConfirmForm = async (calendar) => {
 
-        let response = await recruteurService.verifyRecruteurInfos(recruteurInfos);
+        let response = await recruteurService.verifyRecruteurInfos(recruteurInfos, calendar);
         setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
         if (Object.keys(response).length > 0) {
           if (
@@ -111,8 +111,8 @@ function FormRecruteur(props) {
       }
     }
 
-      const handleSendForm = async () => {
-        let response = await recruteurService.saveRecruteur(recruteurInfos);
+      const handleSendForm = async (calendar) => {
+        let response = await recruteurService.saveRecruteur(recruteurInfos, calendar);
         
         setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
         if (Object.keys(response.errors).length > 0) {
@@ -126,7 +126,7 @@ function FormRecruteur(props) {
             setRecruteurInfosErrors((prev) => ({
               ...prev,
               server_error: response.errors.server_error,
-            }));
+            })); 
           } else {
             
             setRecruteurInfosErrors(response.errors);
@@ -150,45 +150,50 @@ function FormRecruteur(props) {
 
       // const [calendar, setCalendar] = useState("");
       
-      useEffect(() => {
-        // setRecruteurInfos((prev) => ({...prev, calendar:5}))
-        console.log(recruteurInfos)
-        setRecruteurInfos(recruteurInfos)
-      }, [recruteurInfos]);
+      // useEffect(() => {
+      //   // setRecruteurInfos((prev) => ({...prev, calendar:5}))
+      //   console.log(recruteurInfos)
+        
+      //   const set = async () => {
+      //     await setRecruteurInfos(recruteurInfos)
+      //   };
+    
+      //   set();
+      // }, [recruteurInfos]);
 
-      const handleSetCalendarInfo = (calendar) => {
-        console.log(calendar)
-        setRecruteurInfos((prev) => ({...prev, calendar:calendar}))
-        console.log(recruteurInfos)
-      }
+      // const handleSetCalendarInfo = (calendar) => {
+      //   console.log(calendar)
+      //   setRecruteurInfos((prev) => ({...prev, calendar:calendar}))
+      //   console.log(recruteurInfos)
+      // }
 
-      useEffect(() => {
-        if (isConfirmed) {
-          setTimeout(() => {
+      // useEffect(() => {
+      //   if (isConfirmed) {
+      //     setTimeout(() => {
             
-            props.handleAddNewMessage(
-              <BotMessage
-                key={generateKey("chatbot")}
-                content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables qui vous convient."
-              />
-            );
-            setTimeout(() => {
+      //       props.handleAddNewMessage(
+      //         <BotMessage
+      //           key={generateKey("chatbot")}
+      //           content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables qui vous convient."
+      //         />
+      //       );
+      //       setTimeout(() => {
               
-              props.handleAddNewMessage(
-                <CalendarForm
-                  key={"RecruteurCalendarForm"}
-                  handleSendForm={handleSendForm}
-                  handleSetCalendarInfo={setRecruteurInfos}
-                  infos={recruteurInfos}
-                  setInfosErrors={setRecruteurInfosErrors}
-                  infosErrors={recruteurInfosErrors}
-                  isSent={isSent}
-                />
-              );
-            }, 1000);
-          }, 2000);
-        }
-      }, [isConfirmed]);
+      //         props.handleAddNewMessage(
+      //           <CalendarForm
+      //             key={"RecruteurCalendarForm"}
+      //             handleSendForm={handleSendForm}
+      //             handleSetCalendarInfo={setRecruteurInfos}
+      //             infos={recruteurInfos}
+      //             setInfosErrors={setRecruteurInfosErrors}
+      //             infosErrors={recruteurInfosErrors}
+      //             isSent={isSent}
+      //           />
+      //         );
+      //       }, 1000);
+      //     }, 1000);
+      //   }
+      // }, [isConfirmed]);
 
     const [scale, setScale] = useState("scale-0");
     useEffect(() => {
@@ -198,6 +203,19 @@ function FormRecruteur(props) {
     }, []);
     return (
         <>
+          {
+            (isConfirmed) ? (
+              <CalendarForm
+                  key={"RecruteurCalendarForm"}
+                  handleSendForm={handleSendForm}
+                  setInfos={setRecruteurInfos}
+                  infos={recruteurInfos}
+                  setInfosErrors={setRecruteurInfosErrors}
+                  infosErrors={recruteurInfosErrors}
+                  isSent={isSent}
+                />
+            ) : null
+          } 
           <div className={`transition-all duration-150 ease-out relative ${scale}`}>
             <div className="w-full flex flex-row">
               <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">

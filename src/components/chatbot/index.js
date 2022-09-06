@@ -52,6 +52,10 @@ function Chatbot() {
         setIsLoading(false)
     }, [3000])
     } else {
+      handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content="Vous avez choisi de poser des questions ..." />)
+      // TODO .. message = feel free to
+      // TODO .. send language with user message
+      handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content="Vous pouvez demander ce que vous voulez :)" />)
     console.log(formOrChat)
     }
   }, [formOrChat]);

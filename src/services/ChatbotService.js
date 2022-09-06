@@ -1,8 +1,8 @@
-import * as api from "../api"
+import * as api from "../api";
 
-export const saveRating = async (rating) => {
-    // console.log(rating)
-    // await api.saveRating(rating)
+export const getBotResponse = async (user_message) => {
+    // console.log(user_message)
+    // await api.getBotResponse(user_message)
 
     let response = {
         data: {},
@@ -14,7 +14,7 @@ export const saveRating = async (rating) => {
     let server_error_message = "Nous sommes désolés, nous avons rencontré une erreur interne !";
 
     try {
-        res = await api.saveRating(rating)
+        res = await api.getBotResponse(user_message)
         console.log(res);
         if (res?.data?.error != null && res?.data?.error !== undefined) {
           response.errors = { ...response.errors, server_error: res.data.error };

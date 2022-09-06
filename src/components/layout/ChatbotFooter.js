@@ -1,54 +1,46 @@
 import React, { useRef, useState } from "react";
-import send from "../../send.svg";
-import voice from "../../micro.svg";
 
-import * as chatbotService from "../../services/ChatbotService"
+import * as chatbotService from "../../services/ChatbotService";
 import BotMessage from "../messages/BotMessage";
 import UserMessage from "../messages/UserMessage";
 
 function ChatbotFooter(props) {
-
   const [userMessage, setUserMessage] = useState("");
 
   let userMessageRef = useRef();
 
   const generateKey = (pre) => {
-    return `${ pre }_${ new Date().getTime() }`;
-  }
+    return `${pre}_${new Date().getTime()}`;
+  };
 
   const handleSendUserMessage = async () => {
-    
-      let user_message = userMessageRef.current.value
-      setUserMessage(user_message)
-      
-      console.log(user_message)
+    let user_message = userMessageRef.current.value;
+    setUserMessage(user_message);
 
-      handleAddNewMessage(<UserMessage key={ generateKey("chatbot") } content={user_message} />)
+    console.log(user_message);
 
-      let response = await chatbotService.getBotResponse(user_message)
+    handleAddNewMessage(
+      <UserMessage key={generateKey("chatbot")} content={user_message} />
+    );
 
-      console.log(response)
+    let response = await chatbotService.getBotResponse(user_message);
 
-      if(Object.keys(response.errors).length > 0) {
-        console.log(response.errors)
-        if(response.errors.server_error !== undefined && response.errors.server_error !== null) {
-          // setClientInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
-        } else {
-          // setClientInfosErrors(response.errors)
-        }
-      }
-      else {
-        // setIsSent(true)
-        // setClientInfosErrors((prev) => ({...prev, server_error:""}))
-        handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content={response?.data?.bot_message} />)
-        userMessageRef.current.value = ""
-        // setTimeout(() => {
-        //   // TODO deactivate main input until finish
-        //   props.handleAddNewMessage(<BotMessage key={ generateKey("chatbot") } content={"Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."} />)
-        //   props.setMainInputDisabled(false)
-        // }, 2000);
-      }
-  }
+    console.log(response);
+
+    if (Object.keys(response.errors).length > 0) {
+      console.log(response.errors);
+      // if(response.errors.server_error !== undefined && response.errors.server_error !== null) {
+      // }
+    } else {
+      handleAddNewMessage(
+        <BotMessage
+          key={generateKey("chatbot")}
+          content={response?.data?.bot_message}
+        />
+      );
+      userMessageRef.current.value = "";
+    }
+  };
 
   const { isDisabled, handleAddNewMessage, ...others } = props;
 

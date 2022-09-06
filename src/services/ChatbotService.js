@@ -1,9 +1,7 @@
 import * as api from "../api";
 
 export const getBotResponse = async (user_message) => {
-    // console.log(user_message)
-    // await api.getBotResponse(user_message)
-
+  
     let response = {
         data: {},
         errors: {},

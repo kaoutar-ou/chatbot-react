@@ -1,8 +1,6 @@
 import * as api from "../api"
 
 export const saveRating = async (rating) => {
-    // console.log(rating)
-    // await api.saveRating(rating)
 
     let response = {
         data: {},

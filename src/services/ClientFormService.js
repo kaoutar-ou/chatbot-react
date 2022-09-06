@@ -23,7 +23,7 @@ export const verifyClientInfos = (client_infos) => {
 
   // TODO if errors .. page 5 with .. return to previous pages
 
-  // Verifications in backend
+  // TODO Verifications in backend
 
   // Format
   if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(client_infos.email)) {

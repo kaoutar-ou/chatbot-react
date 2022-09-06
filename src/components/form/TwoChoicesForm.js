@@ -12,16 +12,16 @@ const TwoChoicesForm = (props) => {
   };
 
   const handleSendChoice = () => {
-    setIsSent(true)
+    setIsSent(true);
     props.handleConfirm(choice);
   };
 
   const [scale, setScale] = useState("scale-0");
-    useEffect(() => {
-        setTimeout(() => {
-            setScale("scale-1")
-        }, 1000);
-    }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setScale("scale-1");
+    }, 1000);
+  }, []);
 
   return (
     <div className={`transition-all duration-150 ease-out relative ${scale}`}>

@@ -17,11 +17,11 @@ function MultiChoices(props) {
   };
 
   const [scale, setScale] = useState("scale-0");
-    useEffect(() => {
-        setTimeout(() => {
-            setScale("scale-1")
-        }, 1000);
-    }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setScale("scale-1");
+    }, 1000);
+  }, []);
 
   // TODO add tooltip
 

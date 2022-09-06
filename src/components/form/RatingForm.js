@@ -2,7 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import BotMessage from "../messages/BotMessage";
 
 const RatingForm = (props) => {
-  const { content, sendRating, token, userType, setMainInputDisabled, handleAddNewMessage, ...others } = props;
+  const {
+    content,
+    sendRating,
+    token,
+    userType,
+    setMainInputDisabled,
+    handleAddNewMessage,
+    ...others
+  } = props;
   const [stars, setStars] = useState({
     1: false,
     2: false,
@@ -30,7 +38,7 @@ const RatingForm = (props) => {
   const handleRating = () => {
     // TODO set token to "" if inexistant
     let rating = {
-        user_type:userType,
+      user_type: userType,
       token: token,
       rate: 0,
       comment: commentRef.current.value,
@@ -42,27 +50,33 @@ const RatingForm = (props) => {
       }
     }
 
-    console.log(token)
+    console.log(token);
     console.log(rating);
 
     console.log(props);
 
     sendRating(rating);
-    setIsSent(true)
+    setIsSent(true);
   };
 
   const handleLater = () => {
-    props.handleAddNewMessage(<BotMessage content={"Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."} />)
-    setMainInputDisabled(false)
-    setIsSent(true)
-  }
+    props.handleAddNewMessage(
+      <BotMessage
+        content={
+          "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
+        }
+      />
+    );
+    setMainInputDisabled(false);
+    setIsSent(true);
+  };
 
   const [scale, setScale] = useState("scale-0");
-    useEffect(() => {
-        setTimeout(() => {
-            setScale("scale-1")
-        }, 1000);
-    }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setScale("scale-1");
+    }, 1000);
+  }, []);
 
   return (
     <div className={`transition-all duration-150 ease-out relative ${scale}`}>
@@ -71,7 +85,11 @@ const RatingForm = (props) => {
           <div className="flex flex-row m-6 p-2 justify-center outline-dotted outline-1 outline-gray-500 bg-gray-100 rounded-xl">
             {Object.entries(stars).map((star) => {
               return (
-                <button key={star[0]} onClick={() => handleStars(star[0])} disabled={isSent}>
+                <button
+                  key={star[0]}
+                  onClick={() => handleStars(star[0])}
+                  disabled={isSent}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -115,22 +133,16 @@ const RatingForm = (props) => {
             >
               Confirmer
             </button>
-            <button 
-                className="w-2/5 mx-6 rounded-md text-gray-500 enabled:hover:text-gray-800"
-                onClick={handleLater}
-                disabled={isSent}
+            <button
+              className="w-2/5 mx-6 rounded-md text-gray-500 enabled:hover:text-gray-800"
+              onClick={handleLater}
+              disabled={isSent}
             >
               Plus tard ...
             </button>
           </div>
         </div>
       </div>
-      {/* <button
-        className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 hover:bg-teal-500 hover:text-white"
-        onClick={handleRating}
-      >
-        OK
-      </button> */}
     </div>
   );
 };

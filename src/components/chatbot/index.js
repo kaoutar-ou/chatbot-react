@@ -11,6 +11,8 @@ import TwoChoicesForm from "../form/TwoChoicesForm";
 import FormRecruteur from "./FormRecruteur";
 import CalendarForm from "../form/CalendarForm";
 
+// TODO PREVENT SEND WITHOUT CHOICE
+// FIXME PREVENT SEND WITHOUT CHOICE
 function Chatbot() {
   // TODO isLoading
   // TODO button to choice form after chatting .. u can click above to fill ...

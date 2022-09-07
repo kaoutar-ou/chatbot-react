@@ -225,8 +225,10 @@ function FormPartenaire(props) {
           
           setPartenaireToken(response.data.token);
 
-          setDocumentJointInfos((prev) => ({...prev, token:response.data.token}))
 
+          // setDocumentJointInfos((prev) => ({...prev, token:response.data.token}))
+          handleSetDocumentsJoinInfos(response.data.token)
+          console.log(documentJointInfos)
           let responseDocs = await handleSaveDocumentJoint(response.data.token)
           setPartenaireInfosErrors((prev) => ({ ...prev, comment: "" }));
 
@@ -257,6 +259,11 @@ function FormPartenaire(props) {
         }
       };
 
+      const handleSetDocumentsJoinInfos = (token) => {
+        setDocumentJointInfos((prev) => ({...prev, token:token}))
+        console.log(documentJointInfos)
+
+      }
 
       const handleSaveDocumentJoint = async (token) => {
         console.log(documentJointInfos)
@@ -299,7 +306,7 @@ function FormPartenaire(props) {
                       infos={partenaireInfos}
                       setInfosErrors={setPartenaireInfosErrors}
                       infosErrors={partenaireInfosErrors}
-                      isConfirmed={isConfirmed}
+                      isSent={isConfirmed}
                     />
                   ) : page === 2 ? (
                     <InputsForm
@@ -309,7 +316,7 @@ function FormPartenaire(props) {
                       infos={partenaireInfos}
                       setInfosErrors={setPartenaireInfosErrors}
                       infosErrors={partenaireInfosErrors}
-                      isConfirmed={isConfirmed}
+                      isSent={isConfirmed}
                     />
                   ) : page === 3 ? (
                             <SingleChoiceForm
@@ -331,7 +338,7 @@ function FormPartenaire(props) {
                             infos={documentJointInfos}
                             setInfosErrors={setDocumentJointInfosErrors}
                             infosErrors={documentJointInfosErrors}
-                            isConfirmed={isConfirmed}
+                            isSent={isConfirmed}
                           />
                         </>
                     ) : (
@@ -342,7 +349,7 @@ function FormPartenaire(props) {
                         infos={partenaireInfos}
                         setInfosErrors={setPartenaireInfosErrors}
                         infosErrors={partenaireInfosErrors}
-                        isConfirmed={isConfirmed}
+                        isSent={isConfirmed}
                       />
                       {partenaireInfosErrors["server_error"] &&
                       partenaireInfosErrors["server_error"] !== "" ? (

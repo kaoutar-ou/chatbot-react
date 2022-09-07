@@ -258,7 +258,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isConfirmed={isConfirmed}
+                      isSent={isConfirmed}
                     />
                   ) : page === 2 ? (
                     <InputsForm
@@ -268,7 +268,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isConfirmed={isConfirmed}
+                      isSent={isConfirmed}
                     />
                   ) : page === 3 ? (
                     <InputsForm
@@ -278,7 +278,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isConfirmed={isConfirmed}
+                      isSent={isConfirmed}
                     />
                   ) : page === 4 ? (
                             <SingleChoiceForm
@@ -289,7 +289,7 @@ function FormRecruteur(props) {
                                 infos={recruteurInfos}
                                 setInfosErrors={setRecruteurInfosErrors}
                                 infosErrors={recruteurInfosErrors}
-                                isConfirmed={isConfirmed}
+                                isSent={isConfirmed}
                             />
                     ) : (
                     <>
@@ -299,7 +299,7 @@ function FormRecruteur(props) {
                         infos={recruteurInfos}
                         setInfosErrors={setRecruteurInfosErrors}
                         infosErrors={recruteurInfosErrors}
-                        isConfirmed={isConfirmed}
+                        isSent={isConfirmed}
                       />
                       {recruteurInfosErrors["server_error"] &&
                       recruteurInfosErrors["server_error"] !== "" ? (

@@ -11,6 +11,7 @@ import TwoChoicesForm from "../form/TwoChoicesForm";
 import FormRecruteur from "./FormRecruteur";
 import CalendarForm from "../form/CalendarForm";
 import FormPartenaire from "./FormPartenaire";
+import FormCandidat from "./FormCandidat";
 
 // TODO PREVENT SEND WITHOUT CHOICE
 // FIXME PREVENT SEND WITHOUT CHOICE
@@ -108,7 +109,7 @@ function Chatbot() {
         );
         setIsLoading(false);
       }, [1000]);
-    } else if(userType === "type_recruteur") {
+    } else if (userType === "type_recruteur") {
       setTimeout(() => {
         handleAddNewMessage(
           <BotMessage
@@ -126,7 +127,7 @@ function Chatbot() {
         );
         setIsLoading(false);
       }, [1000]);
-    } else if(userType === "type_partenaire") {
+    } else if (userType === "type_partenaire") {
       setTimeout(() => {
         handleAddNewMessage(
           <BotMessage
@@ -144,8 +145,24 @@ function Chatbot() {
         );
         setIsLoading(false);
       }, [1000]);
-    } else {
+    } else if (userType === "type_candidat") {
       // console.log(userType);
+      setTimeout(() => {
+        handleAddNewMessage(
+          <BotMessage
+            key={generateKey("chatbot")}
+            content="Bienvenue cher candidat, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+          />
+        );
+        handleAddNewMessage(
+          <FormCandidat
+            key={generateKey("FormCandidat")}
+            handleAddNewMessage={handleAddNewMessage}
+            setMainInputDisabled={setIsDisabled}
+          />
+        );
+        setIsLoading(false);
+      }, [1000]);
     }
   }, [userType]);
 

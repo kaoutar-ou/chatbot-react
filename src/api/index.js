@@ -14,6 +14,10 @@ const getAllDomainesExpertiseUrl = "chatbot/get_all_domaines_expertise"
 
 const getAllFreeCalendarUrl = "chatbot/get_all_free_calendar"
 
+const savePartenaireUrl = "chatbot/add_partenaire_type"
+
+const getAllPartenariatsUrl = "chatbot/get_all_partenariats"
+
 export const saveClient = async (client_infos) => await axios.post(saveClientUrl, client_infos);
 
 export const getAllServices = async () => await axios.get(getAllServicesUrl);
@@ -27,3 +31,7 @@ export const saveRecruteur = async (recruteur_infos) => await axios.post(saveRec
 export const getAllDomainesExpertise = async () => await axios.get(getAllDomainesExpertiseUrl);
 
 export const getAllFreeCalendar = async () => await axios.get(getAllFreeCalendarUrl);
+
+export const savePartenaire = async (partenaire_infos) => await axios.post(savePartenaireUrl, partenaire_infos);
+
+export const getAllPartenariats = async () => await axios.get(getAllPartenariatsUrl);

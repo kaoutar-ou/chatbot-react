@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from 'react'
+import CalendarForm from '../form/CalendarForm';
 import CommentForm from '../form/CommentForm';
 import InputsForm from '../form/InputsForm';
-import RatingForm from "../form/RatingForm";
 import SingleChoiceForm from '../form/SingleChoiceForm';
 import BotMessage from '../messages/BotMessage';
-import * as recruteurService from "../../services/RecruteurService";
-import * as domaineExpertiseService from "../../services/DomaineExpertiseService";
+
+import * as partenaireService from "../../services/PartenaireService";
+import * as partenariatService from "../../services/PartenariatService";
 import * as ratingService from "../../services/RatingService";
-import CalendarForm from '../form/CalendarForm';
+import RatingForm from '../form/RatingForm';
 
-function FormRecruteur(props) {
+function FormPartenaire(props) {
 
-    const [recruteurInfos, setRecruteurInfos] = useState({
+    const generateKey = (pre) => {
+        return `${pre}_${new Date().getTime()}`;
+      };
+
+    const [partenaireInfos, setPartenaireInfos] = useState({
         raison_sociale: "",
         email: "",
         telephone: "",
         adresse: "",
         nombre_employes: "",
-        nombre_personnes_a_recruter: "",
-        domaine_expertise: "",
+        partenariat: "",
         calendar: "",
         comment: "",
       });
     
-      const [recruteurInfosErrors, setRecruteurInfosErrors] = useState({
+      const [partenaireInfosErrors, setPartenaireInfosErrors] = useState({
         raison_sociale: "",
         email: "",
         telephone: "",
         adresse: "",
         nombre_employes: "",
-        nombre_personnes_a_recruter: "",
-        domaine_expertise: "",
+        partenariat: "",
         calendar: "",
         comment: "",
       });
@@ -40,9 +43,20 @@ function FormRecruteur(props) {
         comment: "",
       });
 
-      useEffect(() => {
-        // console.log(recruteurInfos);
-      }, [recruteurInfos]);
+// TODO ... date d expiration du token
+
+      // TODO ... Handle inexistance case
+      const [partenariats, setPartenariats] = useState({});
+
+    const [partenaireToken, setPartenaireToken] = useState(null);
+    
+    const [page, setPage] = useState(1);
+
+    const [isConfirmed, setIsConfirmed] = useState(false);
+
+      const [isSent, setIsSent] = useState(false);
+
+    const last_page = 5;
 
       const firstPage = {
         raison_sociale: "Raison sociale",
@@ -51,119 +65,61 @@ function FormRecruteur(props) {
       const secondPage = {
         telephone: "Telephone",
         adresse: "Adresse",
+        nombre_employes: "Nombre d'employés",
       };
       const thirdPage = {
-        nombre_employes: "Nombre d'employés",
-        nombre_personnes_a_recruter: "Nombre de personnes à recruter",
+        partenariat: "Type du partenariat",
       };
       const fourthPage = {
-        domaine_expertise: "Domaine d'expertise",
-      };
+        document_joint: "Document joint"
+      }
       const fifthPage = {
         comment: "Commentaire",
       };
 
-      const [domainesExpertise, setDomainesExpertise] = useState({});
-
-    const [recruteurToken, setRecruteurToken] = useState(null);
-
-    useEffect(() => {
-        const getAllDomainesExpertise = async () => {
-          let response = await domaineExpertiseService.getAllDomainesExpertise();
-          setDomainesExpertise(response?.data?.domaines_expertise);
-        };
-    
-        getAllDomainesExpertise();
-      }, []);
-
-    // TODO .. use state above then then ... ordering ...
-
-    const last_page = 5;
-    const [page, setPage] = useState(1);
-
-    const handlePrevious = () => {
+      const handlePrevious = () => {
         page > 1 ? setPage((page) => page - 1) : setPage(1);
       };
     
       const handleNext = () => {
         page < last_page ? setPage((page) => page + 1) : setPage(last_page);
       };
+
+
+      useEffect(() => {
+        const getAllPartenariats = async () => {
+          let response = await partenariatService.getAllPartenariats();
+          setPartenariats(response?.data?.partenariats);
+        };
     
-      const [isConfirmed, setIsConfirmed] = useState(false);
+        getAllPartenariats();
+      }, []);
 
-      const [isSent, setIsSent] = useState(false);
-    
-      const generateKey = (pre) => {
-        return `${pre}_${new Date().getTime()}`;
-      };
-
-      const handleConfirmForm = async () => {
-
-        let response = await recruteurService.verifyRecruteurInfos(recruteurInfos);
-        setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
-        if (Object.keys(response).length > 0) {
-          if (
-            response.server_error !== undefined &&
-            response.server_error !== null
-          ) {
-            setRecruteurInfosErrors((prev) => ({
-              ...prev,
-              server_error: response.server_error,
-            }));
-          } else {
-            setRecruteurInfosErrors(response);
-          }
-        } else {
-          props.handleAddNewMessage(
-            <BotMessage
-              key={generateKey("chatbot")}
-              content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
-            />
-          );
+      useEffect(() => {
+        // TODO or partenaireToken
+        if (isSent) {
           setTimeout(() => {
-            setIsConfirmed(true);
-          }, 1000);
-          setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
-      }
-    }
-
-    // TODO prevent inputs from typing letters .. only numbers
-
-      const handleSendForm = async () => {
-        let response = await recruteurService.saveRecruteur(recruteurInfos);
-        
-        setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
-        if (Object.keys(response.errors).length > 0) {
-          
-          if (
-            response.errors.server_error !== undefined &&
-            response.errors.server_error !== null
-          ) {
-            
-            
-            setRecruteurInfosErrors((prev) => ({
-              ...prev,
-              server_error: response.errors.server_error,
-            })); 
-          } else {
-            
-            setRecruteurInfosErrors(response.errors);
-          }
-        } else {
-          
-          setRecruteurToken(response.data.token);
-          setIsSent(true);
-          setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
-          props.handleAddNewMessage(
-            <BotMessage
-              key={generateKey("chatbot")}
-              content={response?.data?.message}
-            />
-          );
-          
-          // TODO .. show a success message or error
+            props.handleAddNewMessage(
+              <BotMessage
+                key={generateKey("chatbot")}
+                content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
+              />
+            );
+            setTimeout(() => {
+              props.handleAddNewMessage(
+                <RatingForm
+                  key={"PartenaireRatingForm"}
+                  sendRating={sendRating}
+                  token={partenaireToken}
+                  userType={"partenaire"}
+                  setMainInputDisabled={props.setMainInputDisabled}
+                  handleAddNewMessage={props.handleAddNewMessage}
+                />
+              );
+            }, 1000);
+          }, 2000);
         }
-      };
+      }, [isSent]);
 
       const sendRating = async (sentRating) => {
         setRating(sentRating);
@@ -174,7 +130,7 @@ function FormRecruteur(props) {
             response.errors.server_error !== undefined &&
             response.errors.server_error !== null
           ) {
-            // setRecruteurInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
+            // setPartenaireInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
           }
         } else {
           props.handleAddNewMessage(
@@ -197,50 +153,94 @@ function FormRecruteur(props) {
         }
       };
 
-      useEffect(() => {
-        // TODO or RecruteurToken
-        if (isSent) {
-          setTimeout(() => {
-            props.handleAddNewMessage(
-              <BotMessage
-                key={generateKey("chatbot")}
-                content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
-              />
-            );
-            setTimeout(() => {
-              props.handleAddNewMessage(
-                <RatingForm
-                  key={"RecruteurRatingForm"}
-                  sendRating={sendRating}
-                  token={recruteurToken}
-                  userType={"recruteur"}
-                  setMainInputDisabled={props.setMainInputDisabled}
-                  handleAddNewMessage={props.handleAddNewMessage}
-                />
-              );
-            }, 1000);
-          }, 2000);
-        }
-      }, [isSent]);
+      const handleConfirmForm = async () => {
 
-    const [scale, setScale] = useState("scale-0");
+        let response = await partenaireService.verifyPartenaireInfos(partenaireInfos);
+        setPartenaireInfosErrors((prev) => ({ ...prev, comment: "" }));
+        if (Object.keys(response).length > 0) {
+          if (
+            response.server_error !== undefined &&
+            response.server_error !== null
+          ) {
+            setPartenaireInfosErrors((prev) => ({
+              ...prev,
+              server_error: response.server_error,
+            }));
+          } else {
+            setPartenaireInfosErrors(response);
+          }
+        } else {
+          props.handleAddNewMessage(
+            <BotMessage
+              key={generateKey("chatbot")}
+              content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+            />
+          );
+          setTimeout(() => {
+            setIsConfirmed(true);
+          }, 1000);
+          setPartenaireInfosErrors((prev) => ({ ...prev, server_error: "" }));
+      }
+    }
+
+// TODO .. if partenariat / domaine / sevice vide .. say sorry .. 
+
+    const handleSendForm = async () => {
+        let response = await partenaireService.savePartenaire(partenaireInfos);
+        
+        setPartenaireInfosErrors((prev) => ({ ...prev, comment: "" }));
+        if (Object.keys(response.errors).length > 0) {
+          
+          if (
+            response.errors.server_error !== undefined &&
+            response.errors.server_error !== null
+          ) {
+            
+            
+            setPartenaireInfosErrors((prev) => ({
+              ...prev,
+              server_error: response.errors.server_error,
+            })); 
+          } else {
+            
+            setPartenaireInfosErrors(response.errors);
+          }
+        } else {
+          
+          setPartenaireToken(response.data.token);
+          setIsSent(true);
+          setPartenaireInfosErrors((prev) => ({ ...prev, server_error: "" }));
+          props.handleAddNewMessage(
+            <BotMessage
+              key={generateKey("chatbot")}
+              content={response?.data?.message}
+            />
+          );
+          
+          // TODO .. show a success message or error
+        }
+      };
+
+
+
+      const [scale, setScale] = useState("scale-0");
     useEffect(() => {
         setTimeout(() => {
         setScale("scale-1");
         }, 1000);
     }, []);
-    return (
-        <>
+  return (
+    <>
           {
             (isConfirmed) ? (
               <>
               <CalendarForm
-                  key={"RecruteurCalendarForm"}
+                  key={"PartenaireCalendarForm"}
                   handleSendForm={handleSendForm}
-                  setInfos={setRecruteurInfos}
-                  infos={recruteurInfos}
-                  setInfosErrors={setRecruteurInfosErrors}
-                  infosErrors={recruteurInfosErrors}
+                  setInfos={setPartenaireInfos}
+                  infos={partenaireInfos}
+                  setInfosErrors={setPartenaireInfosErrors}
+                  infosErrors={partenaireInfosErrors}
                   isSent={isSent}
                 />
                 </>
@@ -252,59 +252,51 @@ function FormRecruteur(props) {
                 <div className="w-11/12 p-3 ml-3">
                   {page === 1 ? (
                     <InputsForm
-                      key={"FirstRecruteurInputsForm"}
+                      key={"FirstPartenaireInputsForm"}
                       content={firstPage}
-                      setInfos={setRecruteurInfos}
-                      infos={recruteurInfos}
-                      setInfosErrors={setRecruteurInfosErrors}
-                      infosErrors={recruteurInfosErrors}
+                      setInfos={setPartenaireInfos}
+                      infos={partenaireInfos}
+                      setInfosErrors={setPartenaireInfosErrors}
+                      infosErrors={partenaireInfosErrors}
                       isConfirmed={isConfirmed}
                     />
                   ) : page === 2 ? (
                     <InputsForm
-                      key={"SecondRecruteurInputsForm"}
+                      key={"SecondPartenaireInputsForm"}
                       content={secondPage}
-                      setInfos={setRecruteurInfos}
-                      infos={recruteurInfos}
-                      setInfosErrors={setRecruteurInfosErrors}
-                      infosErrors={recruteurInfosErrors}
+                      setInfos={setPartenaireInfos}
+                      infos={partenaireInfos}
+                      setInfosErrors={setPartenaireInfosErrors}
+                      infosErrors={partenaireInfosErrors}
                       isConfirmed={isConfirmed}
                     />
                   ) : page === 3 ? (
-                    <InputsForm
-                      key={"SecondRecruteurInputsForm"}
-                      content={thirdPage}
-                      setInfos={setRecruteurInfos}
-                      infos={recruteurInfos}
-                      setInfosErrors={setRecruteurInfosErrors}
-                      infosErrors={recruteurInfosErrors}
-                      isConfirmed={isConfirmed}
-                    />
-                  ) : page === 4 ? (
                             <SingleChoiceForm
-                                key={"RecruteurSingleChoiceForm"}
-                                content={Object.entries(fourthPage).at(0)}
-                                choices={domainesExpertise}
-                                setInfos={setRecruteurInfos}
-                                infos={recruteurInfos}
-                                setInfosErrors={setRecruteurInfosErrors}
-                                infosErrors={recruteurInfosErrors}
+                                key={"PartenaireSingleChoiceForm"}
+                                content={Object.entries(thirdPage).at(0)}
+                                choices={partenariats}
+                                setInfos={setPartenaireInfos}
+                                infos={partenaireInfos}
+                                setInfosErrors={setPartenaireInfosErrors}
+                                infosErrors={partenaireInfosErrors}
                                 isConfirmed={isConfirmed}
                             />
+                    ) : page === 4 ? (
+                        <></>
                     ) : (
                     <>
                       <CommentForm
                         content={Object.entries(fifthPage).at(0)}
-                        setInfos={setRecruteurInfos}
-                        infos={recruteurInfos}
-                        setInfosErrors={setRecruteurInfosErrors}
-                        infosErrors={recruteurInfosErrors}
+                        setInfos={setPartenaireInfos}
+                        infos={partenaireInfos}
+                        setInfosErrors={setPartenaireInfosErrors}
+                        infosErrors={partenaireInfosErrors}
                         isConfirmed={isConfirmed}
                       />
-                      {recruteurInfosErrors["server_error"] &&
-                      recruteurInfosErrors["server_error"] !== "" ? (
+                      {partenaireInfosErrors["server_error"] &&
+                      partenaireInfosErrors["server_error"] !== "" ? (
                         <div className="text-red-500">
-                          {recruteurInfosErrors["server_error"]}
+                          {partenaireInfosErrors["server_error"]}
                         </div>
                       ) : null}
                     </>
@@ -365,6 +357,7 @@ function FormRecruteur(props) {
             </button>
           </div>
         </>
-      );
-                      }
-export default FormRecruteur;
+  )
+}
+
+export default FormPartenaire

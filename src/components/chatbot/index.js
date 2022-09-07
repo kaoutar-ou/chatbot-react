@@ -10,6 +10,7 @@ import "./style.css";
 import TwoChoicesForm from "../form/TwoChoicesForm";
 import FormRecruteur from "./FormRecruteur";
 import CalendarForm from "../form/CalendarForm";
+import FormPartenaire from "./FormPartenaire";
 
 // TODO PREVENT SEND WITHOUT CHOICE
 // FIXME PREVENT SEND WITHOUT CHOICE
@@ -88,6 +89,7 @@ function Chatbot() {
 
   useEffect(() => {
     setIsLoading(true);
+    // TODO Switch case here
     if (userType === "type_client") {
       setTimeout(() => {
         // TODO add cancel to cancel process and enable main input
@@ -118,6 +120,24 @@ function Chatbot() {
         handleAddNewMessage(
           <FormRecruteur
             key={generateKey("FormRecruteur")}
+            handleAddNewMessage={handleAddNewMessage}
+            setMainInputDisabled={setIsDisabled}
+          />
+        );
+        setIsLoading(false);
+      }, [1000]);
+    } else if(userType === "type_partenaire") {
+      setTimeout(() => {
+        handleAddNewMessage(
+          <BotMessage
+            key={generateKey("chatbot")}
+            content="Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+          />
+        );
+        // TODO ... change this key to be unique
+        handleAddNewMessage(
+          <FormPartenaire
+            key={generateKey("FormPartenaire")}
             handleAddNewMessage={handleAddNewMessage}
             setMainInputDisabled={setIsDisabled}
           />

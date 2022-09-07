@@ -29,6 +29,8 @@ const SingleChoiceForm = (props) => {
   console.log(choices)
   console.log(content)
 
+
+  // TODO .. if choices defined
   return (
     <div
       className="w-full flex p-2 place-items-center flex-col"

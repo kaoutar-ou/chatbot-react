@@ -26,7 +26,10 @@ const SingleChoiceFormCondition = (props) => {
   };
 
   const handleChoiceType = (res) => {
-    console.log(res)
+    if (infosErrors["type"] !== "") {
+      setInfosErrors((previous) => ({ ...previous, type: "" }));
+    }
+    // console.log(res)
     setChoiceType(res);
     setInfos((previous) => ({ ...previous, type: res }));
     console.log(choiceType)

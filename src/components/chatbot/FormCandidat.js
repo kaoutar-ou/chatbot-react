@@ -176,19 +176,18 @@ function FormCandidat(props) {
       const handleConfirmForm = async () => {
 
         let response = await candidatService.verifyCandidatInfos(candidatInfos);
+
+        let responseCandidature = await candidatureService.verifyCandidatureInfos(candidatureInfos)
+        
         setCandidatInfosErrors((prev) => ({ ...prev, comment: "" }));
-        if (Object.keys(response).length > 0) {
-          if (
-            response.server_error !== undefined &&
-            response.server_error !== null
-          ) {
-            setCandidatInfosErrors((prev) => ({
-              ...prev,
-              server_error: response.server_error,
-            }));
-          } else {
-            setCandidatInfosErrors(response);
-          }
+        
+        if (Object.keys(response).length > 0 || Object.keys(responseCandidature).length > 0) {
+            if (Object.keys(response).length > 0 ) {
+          
+            setCandidatInfosErrors(response);}
+            if (Object.keys(responseCandidature).length > 0) {
+                setCandidatureInfosErrors(responseCandidature);
+            }
         } else {
           props.handleAddNewMessage(
             <BotMessage
@@ -346,7 +345,7 @@ function FormCandidat(props) {
                     ) : (
                     <>
                       <CommentForm
-                        content={Object.entries(fifthPage)}
+                        content={Object.entries(fifthPage).at(0)}
                         setInfos={setCandidatInfos}
                         infos={candidatInfos}
                         setInfosErrors={setCandidatInfosErrors}

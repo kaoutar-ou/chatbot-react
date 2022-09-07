@@ -93,6 +93,13 @@ export const verifyPartenaireInfos = (partenaire_infos) => {
     errors["nombre_employes"] = "Veuillez ne pas dépasser " + max_nombre_employes + " personnes";
   }
 
+  let comment =
+    "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
+
+  if (Object.keys(errors).length > 0) {
+     errors = { ...errors, comment: comment };
+  }
+  
   return errors;
 };
 

@@ -19,15 +19,9 @@ export const verifyCandidatureInfos = (document_joint_infos) => {
   }
 
   if (
-    document_joint_infos.token === undefined ||
-    document_joint_infos.token === ""
-  ) {
-    errors["token"] = "Votre session a expirée";
-  }
-
-  if (
-    document_joint_infos.offre === undefined ||
-    document_joint_infos.offre === ""
+    document_joint_infos.type === "choix_offre" &&
+    (document_joint_infos.offre === undefined ||
+    document_joint_infos.offre === "") 
   ) {
     errors["offre"] = "Votre devez choisir un offre";
   }
@@ -63,6 +57,12 @@ export const saveCandidature = async (document_joint_infos, token) => {
 
   response.errors = verifyCandidatureInfos(document_joint_infos);
   
+  if (
+    token === undefined ||
+    token === ""
+  ) {
+    response.errors["token"] = "Votre session a expirée";
+  }
 
   if (Object.keys(response.errors).length > 0) {
       response.errors = { ...response.errors, comment: comment };

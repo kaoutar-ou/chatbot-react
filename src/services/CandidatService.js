@@ -88,6 +88,12 @@ export const verifyCandidatInfos = (candidat_infos) => {
     errors["comment"] = "Veuillez ne pas dépasser 255 caractères";
   }
 
+  let comment =
+    "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
+
+  if (Object.keys(errors).length > 0) {
+     errors = { ...errors, comment: comment };
+  }
   return errors;
 };
 
@@ -97,6 +103,7 @@ export const saveCandidat = async (candidat_infos) => {
     errors: {},
   };
 
+  console.log(candidat_infos)
   let res;
 
   let server_error_message =

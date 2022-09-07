@@ -172,19 +172,18 @@ function FormPartenaire(props) {
       const handleConfirmForm = async () => {
 
         let response = await partenaireService.verifyPartenaireInfos(partenaireInfos);
+        
+        let responseDocs = await documentJointService.verifyDocumentJointInfos(documentJointInfos)
+
         setPartenaireInfosErrors((prev) => ({ ...prev, comment: "" }));
-        if (Object.keys(response).length > 0) {
-          if (
-            response.server_error !== undefined &&
-            response.server_error !== null
-          ) {
-            setPartenaireInfosErrors((prev) => ({
-              ...prev,
-              server_error: response.server_error,
-            }));
-          } else {
+        
+        if (Object.keys(response).length > 0 || Object.keys(responseDocs).length > 0) {
+          if (Object.keys(response).length > 0) {
             setPartenaireInfosErrors(response);
           }
+        if (Object.keys(responseDocs).length > 0) {
+          setDocumentJointInfosErrors(responseDocs)
+        }
         } else {
           props.handleAddNewMessage(
             <BotMessage
@@ -341,7 +340,7 @@ function FormPartenaire(props) {
                     ) : (
                     <>
                       <CommentForm
-                        content={Object.entries(fifthPage)}
+                        content={Object.entries(fifthPage).at(0)}
                         setInfos={setPartenaireInfos}
                         infos={partenaireInfos}
                         setInfosErrors={setPartenaireInfosErrors}

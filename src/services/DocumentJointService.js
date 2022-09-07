@@ -17,13 +17,6 @@ export const verifyDocumentJointInfos = (document_joint_infos) => {
     errors["path"] = "Vous devez fournir un document";
   }
 
-  if (
-    document_joint_infos.token === undefined ||
-    document_joint_infos.token === ""
-  ) {
-    errors["token"] = "Votre session a expirée";
-  }
-
   // TODO Check if token exists in database
 
   // TODO manyFiles
@@ -48,6 +41,12 @@ export const saveDocumentJoint = async (document_joint_infos, token) => {
 
   response.errors = verifyDocumentJointInfos(document_joint_infos);
   
+  if (
+    token === undefined ||
+    token === ""
+  ) {
+    response.errors["token"] = "Votre session a expirée";
+  }
 
   if (Object.keys(response.errors).length > 0) {
       response.errors = { ...response.errors, comment: comment };

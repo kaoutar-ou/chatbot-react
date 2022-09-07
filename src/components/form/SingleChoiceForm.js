@@ -19,16 +19,10 @@ const SingleChoiceForm = (props) => {
     }
     let value = e.target.value;
     setChoice(value);
-    console.log(value);
-    console.log(content[0]);
+    // console.log(value);
+    // console.log(content[0]);
     setInfos((previous) => ({ ...previous, [content[0]]: value }));
   };
-
-  console.log(infos)
-  console.log(infosErrors)
-  console.log(choices)
-  console.log(content)
-
 
   // TODO .. if choices defined
   return (

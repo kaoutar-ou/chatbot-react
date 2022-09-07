@@ -32,9 +32,6 @@ export const verifyDocumentJointInfos = (document_joint_infos) => {
 };
 
 export const saveDocumentJoint = async (document_joint_infos, token) => {
-  console.log("saveDocumentJoint")
-  console.log(document_joint_infos)
-  console.log(token)
   let response = {
     data: {},
     errors: {},
@@ -48,8 +45,6 @@ export const saveDocumentJoint = async (document_joint_infos, token) => {
     "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
 
     document_joint_infos = {...document_joint_infos, token:token}
-
-  console.log(document_joint_infos)
 
   response.errors = verifyDocumentJointInfos(document_joint_infos);
   
@@ -65,14 +60,13 @@ export const saveDocumentJoint = async (document_joint_infos, token) => {
 
   try {
     res = await api.saveDocumentJoint(form_data);
-    console.log(res);
     if (res.data.error != null && res.data.error !== undefined) {
       response.errors = { ...response.errors, server_error: res.data.error };
     } else {
       response.data = res.data;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     response.errors = {
       ...response.errors,
       server_error: res?.data?.error ? res.data.error : server_error_message,

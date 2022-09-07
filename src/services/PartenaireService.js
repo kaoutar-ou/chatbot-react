@@ -111,7 +111,6 @@ export const savePartenaire = async (partenaire_infos) => {
 
   response.errors = verifyPartenaireInfos(partenaire_infos);
   
-  console.log(partenaire_infos)
   if (partenaire_infos.calendar === undefined || partenaire_infos.calendar === "") {
     response.errors["calendar"] = "Vous devez choisir un créneau";
   }
@@ -125,14 +124,13 @@ export const savePartenaire = async (partenaire_infos) => {
 
   try {
     res = await api.savePartenaire(partenaire_infos);
-    console.log(res);
     if (res.data.error != null && res.data.error !== undefined) {
       response.errors = { ...response.errors, server_error: res.data.error };
     } else {
       response.data = res.data;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     response.errors = {
       ...response.errors,
       server_error: res?.data?.error ? res.data.error : server_error_message,

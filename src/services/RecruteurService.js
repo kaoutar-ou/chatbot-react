@@ -124,7 +124,6 @@ export const saveRecruteur = async (recruteur_infos) => {
 
   response.errors = verifyRecruteurInfos(recruteur_infos);
   
-  console.log(recruteur_infos)
   if (recruteur_infos.calendar === undefined || recruteur_infos.calendar === "") {
     response.errors["calendar"] = "Vous devez choisir un créneau";
   }
@@ -138,14 +137,13 @@ export const saveRecruteur = async (recruteur_infos) => {
 
   try {
     res = await api.saveRecruteur(recruteur_infos);
-    console.log(res);
     if (res.data.error != null && res.data.error !== undefined) {
       response.errors = { ...response.errors, server_error: res.data.error };
     } else {
       response.data = res.data;
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     response.errors = {
       ...response.errors,
       server_error: res?.data?.error ? res.data.error : server_error_message,

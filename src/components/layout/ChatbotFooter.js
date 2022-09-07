@@ -25,7 +25,7 @@ function ChatbotFooter(props) {
 
 
     if (Object.keys(response.errors).length > 0) {
-      console.log(response.errors);
+      // console.log(response.errors);
       // if(response.errors.server_error !== undefined && response.errors.server_error !== null) {
       // }
     } else {

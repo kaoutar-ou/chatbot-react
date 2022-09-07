@@ -15,15 +15,15 @@ const FileForm = (props) => {
   const key = Object.keys(content).at(0);
   const val = Object.values(content).at(0);
 
-  console.log(Object.keys(content).at(0));
-  console.log(Object.values(content).at(0));
+//   console.log(Object.keys(content).at(0));
+//   console.log(Object.values(content).at(0));
 
   const handleInputChange = (e) => {
     if (infosErrors[key] !== "") {
       setInfosErrors((previous) => ({ ...previous, [key]: "" }));
     }
     let value = e.target.files[0];
-    console.log(value);
+    // console.log(value);
     setInfos((previous) => ({ ...previous, [key]: value }));
   };
 

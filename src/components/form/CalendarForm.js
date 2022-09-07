@@ -9,7 +9,7 @@ function CalendarForm(props) {
 
   const [value, onChange] = useState(new Date());
   useEffect(() => {
-    console.log(value);
+    // console.log(value);
   }, [value]);
 
   let calendarRef = useRef();
@@ -34,34 +34,28 @@ function CalendarForm(props) {
     const getAllFreeCalendar = async () => {
         let response = await calendarService.getAllFreeCalendar();
         setFreeCalendar(response.data.calendars);
-        console.log(response.data.calendars);
         let days = []
         Object.entries(response.data.calendars).map((value) => (
             // days.push(new Date(value[1].date).toLocaleDateString('fr-FR').replaceAll('/','-'))
             days.push(new Date(value[1].date).toLocaleDateString('fr-FR'))
         ))
         setFreeDays(days)
-        console.log(days)
       };
       getAllFreeCalendar();
   }, []);
 
   const getFreeTime = (date) => {
-    // handleSetCalendarInfo(8);
-    // console.log(infos)
-
-    console.log(date.toLocaleDateString())
+    // console.log(date.toLocaleDateString())
     let times = []
     Object.entries(freeCalendar).map((value) => {
-        console.log(new Date(value[1].date).toLocaleDateString('fr-FR'))
-        console.log(date.toLocaleDateString('fr-FR'))
+        // console.log(new Date(value[1].date).toLocaleDateString('fr-FR'))
+        // console.log(date.toLocaleDateString('fr-FR'))
         if (date.toLocaleDateString('fr-FR') === new Date(value[1].date).toLocaleDateString('fr-FR')) {
             times.push({id: value[1].id, name: value[1].time})
         }
     }
     // days.push(new Date(value[1].date).toLocaleDateString('fr-FR'))
     )
-    console.log(times)
     setFreeTime(times)
   }
 

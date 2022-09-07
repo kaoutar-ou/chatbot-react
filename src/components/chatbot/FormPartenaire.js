@@ -228,7 +228,6 @@ function FormPartenaire(props) {
 
           // setDocumentJointInfos((prev) => ({...prev, token:response.data.token}))
           handleSetDocumentsJoinInfos(response.data.token)
-          console.log(documentJointInfos)
           let responseDocs = await handleSaveDocumentJoint(response.data.token)
           setPartenaireInfosErrors((prev) => ({ ...prev, comment: "" }));
 
@@ -261,12 +260,10 @@ function FormPartenaire(props) {
 
       const handleSetDocumentsJoinInfos = (token) => {
         setDocumentJointInfos((prev) => ({...prev, token:token}))
-        console.log(documentJointInfos)
-
+        // console.log(documentJointInfos)
       }
 
       const handleSaveDocumentJoint = async (token) => {
-        console.log(documentJointInfos)
         return await documentJointService.saveDocumentJoint(documentJointInfos, token);
       }
 

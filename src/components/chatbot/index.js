@@ -83,7 +83,7 @@ function Chatbot() {
         );
       }, 1000);
     } else {
-      console.log(formOrChat);
+      // console.log(formOrChat);
     }
   }, [formOrChat]);
 
@@ -145,7 +145,7 @@ function Chatbot() {
         setIsLoading(false);
       }, [1000]);
     } else {
-      console.log(userType);
+      // console.log(userType);
     }
   }, [userType]);
 

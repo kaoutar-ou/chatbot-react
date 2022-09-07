@@ -13,14 +13,13 @@ export const saveRating = async (rating) => {
 
     try {
         res = await api.saveRating(rating)
-        console.log(res);
         if (res?.data?.error != null && res?.data?.error !== undefined) {
           response.errors = { ...response.errors, server_error: res.data.error };
         } else {
           response.data = res.data;
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         response.errors = {
           ...response.errors,
           server_error: res?.data?.error ? res.data.error : server_error_message,

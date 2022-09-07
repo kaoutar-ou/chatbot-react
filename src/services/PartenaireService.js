@@ -49,7 +49,7 @@ export const verifyPartenaireInfos = (partenaire_infos) => {
   }
 
   if (partenaire_infos.partenariat === undefined || partenaire_infos.partenariat === "") {
-    errors["partenariat"] = "Vous devez séléctionner un domaine d'expertise";
+    errors["partenariat"] = "Vous devez séléctionner un type de partenariat";
   }
 
   // Length

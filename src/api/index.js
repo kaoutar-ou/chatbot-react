@@ -16,6 +16,8 @@ const getAllFreeCalendarUrl = "chatbot/get_all_free_calendar"
 
 const savePartenaireUrl = "chatbot/add_partenaire_type"
 
+const saveDocumentJointUrl = "chatbot/save_document_joint"
+
 const getAllPartenariatsUrl = "chatbot/get_all_partenariats"
 
 export const saveClient = async (client_infos) => await axios.post(saveClientUrl, client_infos);
@@ -33,5 +35,11 @@ export const getAllDomainesExpertise = async () => await axios.get(getAllDomaine
 export const getAllFreeCalendar = async () => await axios.get(getAllFreeCalendarUrl);
 
 export const savePartenaire = async (partenaire_infos) => await axios.post(savePartenaireUrl, partenaire_infos);
+
+export const saveDocumentJoint = async (document_joint_form_data) => await axios.post(saveDocumentJointUrl, document_joint_form_data, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  });
 
 export const getAllPartenariats = async () => await axios.get(getAllPartenariatsUrl);

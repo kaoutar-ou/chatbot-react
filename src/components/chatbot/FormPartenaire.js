@@ -8,7 +8,9 @@ import BotMessage from '../messages/BotMessage';
 import * as partenaireService from "../../services/PartenaireService";
 import * as partenariatService from "../../services/PartenariatService";
 import * as ratingService from "../../services/RatingService";
+import * as documentJointService from "../../services/DocumentJointService";
 import RatingForm from '../form/RatingForm';
+import FileForm from '../form/FileForm';
 
 function FormPartenaire(props) {
 
@@ -23,6 +25,7 @@ function FormPartenaire(props) {
         adresse: "",
         nombre_employes: "",
         partenariat: "",
+        // path: "",
         calendar: "",
         comment: "",
       });
@@ -34,8 +37,21 @@ function FormPartenaire(props) {
         adresse: "",
         nombre_employes: "",
         partenariat: "",
+        // path: "",
         calendar: "",
         comment: "",
+      });
+
+      const [documentJointInfos, setDocumentJointInfos] = useState({
+        // title: "",
+        path: "",
+        token: "",
+      });
+    
+      const [documentJointInfosErrors, setDocumentJointInfosErrors] = useState({
+        // title: "",
+        path: "",
+        token: "",
       });
 
       const [rating, setRating] = useState({
@@ -71,7 +87,7 @@ function FormPartenaire(props) {
         partenariat: "Type du partenariat",
       };
       const fourthPage = {
-        document_joint: "Document joint"
+        path: "Document joint"
       }
       const fifthPage = {
         comment: "Commentaire",
@@ -208,19 +224,44 @@ function FormPartenaire(props) {
         } else {
           
           setPartenaireToken(response.data.token);
-          setIsSent(true);
-          setPartenaireInfosErrors((prev) => ({ ...prev, server_error: "" }));
-          props.handleAddNewMessage(
-            <BotMessage
-              key={generateKey("chatbot")}
-              content={response?.data?.message}
-            />
-          );
+
+          setDocumentJointInfos((prev) => ({...prev, token:response.data.token}))
+
+          let responseDocs = await handleSaveDocumentJoint(response.data.token)
+          setPartenaireInfosErrors((prev) => ({ ...prev, comment: "" }));
+
+          if (Object.keys(responseDocs.errors).length > 0) {
           
+            if (
+              responseDocs.errors.server_error !== undefined &&
+              responseDocs.errors.server_error !== null
+            ) {
+              setPartenaireInfosErrors((prev) => ({
+                ...prev,
+                server_error: responseDocs.errors.server_error,
+              })); 
+            } else {
+              setPartenaireInfosErrors(responseDocs.errors);
+            }
+          } else {
+            setIsSent(true);
+            setPartenaireInfosErrors((prev) => ({ ...prev, server_error: "" }));
+            props.handleAddNewMessage(
+              <BotMessage
+                key={generateKey("chatbot")}
+                content={response?.data?.message}
+              />
+            );
+          }
           // TODO .. show a success message or error
         }
       };
 
+
+      const handleSaveDocumentJoint = async (token) => {
+        console.log(documentJointInfos)
+        return await documentJointService.saveDocumentJoint(documentJointInfos, token);
+      }
 
 
       const [scale, setScale] = useState("scale-0");
@@ -282,11 +323,21 @@ function FormPartenaire(props) {
                                 isConfirmed={isConfirmed}
                             />
                     ) : page === 4 ? (
-                        <></>
+                        <>
+                          <FileForm 
+                            key={"PartenaireDocumentJointForm"}
+                            content={fourthPage}
+                            setInfos={setDocumentJointInfos}
+                            infos={documentJointInfos}
+                            setInfosErrors={setDocumentJointInfosErrors}
+                            infosErrors={documentJointInfosErrors}
+                            isConfirmed={isConfirmed}
+                          />
+                        </>
                     ) : (
                     <>
                       <CommentForm
-                        content={Object.entries(fifthPage).at(0)}
+                        content={Object.entries(fifthPage)}
                         setInfos={setPartenaireInfos}
                         infos={partenaireInfos}
                         setInfosErrors={setPartenaireInfosErrors}

@@ -29,7 +29,7 @@ function FormClient(props) {
   });
 
   useEffect(() => {
-    console.log(clientInfos);
+    // console.log(clientInfos);
   }, [clientInfos]);
 
   const firstPage = {
@@ -55,7 +55,6 @@ function FormClient(props) {
     const getAllServices = async () => {
       let response = await serviceService.getAllServices();
       setServices(response.data.services);
-      console.log(response.data.services);
     };
 
     getAllServices();
@@ -69,13 +68,11 @@ function FormClient(props) {
   const sendRating = async (sentRating) => {
     setRating(sentRating);
     ////////////////////////// TODO   add total votes
-    // adding emojis
-    console.log(clientToken);
+    // TODO adding emojis
     let response = await ratingService.saveRating(sentRating);
-    console.log(response);
+
 
     if (Object.keys(response.errors).length > 0) {
-      console.log(response.errors);
       if (
         response.errors.server_error !== undefined &&
         response.errors.server_error !== null
@@ -100,7 +97,7 @@ function FormClient(props) {
           />
         );
         props.setMainInputDisabled(false);
-      }, 2000);
+      }, 1000);
     }
   };
   // TODO .. plus tard case
@@ -125,7 +122,6 @@ function FormClient(props) {
     // TODO or clientToken
     if (isSent) {
       setTimeout(() => {
-        console.log(clientToken);
         props.handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
@@ -133,7 +129,6 @@ function FormClient(props) {
           />
         );
         setTimeout(() => {
-          console.log(clientToken);
           props.handleAddNewMessage(
             <RatingForm
               key={"ClientRatingForm"}
@@ -151,26 +146,25 @@ function FormClient(props) {
 
   const handleSendForm = async () => {
     let response = await clientFormService.saveClient(clientInfos);
-    console.log(response);
     setClientInfosErrors((prev) => ({ ...prev, comment: "" }));
     if (Object.keys(response.errors).length > 0) {
-      console.log(response.errors);
+      
       if (
         response.errors.server_error !== undefined &&
         response.errors.server_error !== null
       ) {
-        console.log("server");
-        console.log(response.errors.server_error);
+        
+        
         setClientInfosErrors((prev) => ({
           ...prev,
           server_error: response.errors.server_error,
         }));
       } else {
-        console.log("here");
+        
         setClientInfosErrors(response.errors);
       }
     } else {
-      console.log(response.data.token);
+      
       setClientToken(response.data.token);
       setIsSent(true);
       setClientInfosErrors((prev) => ({ ...prev, server_error: "" }));
@@ -180,7 +174,7 @@ function FormClient(props) {
           content={response?.data?.message}
         />
       );
-      console.log(clientToken);
+      
       // TODO .. show a success message or error
     }
   };

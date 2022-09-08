@@ -16,12 +16,7 @@ const FormInput = (props) => {
     if (infosErrors[content[0]] !== "") {
       setInfosErrors((previous) => ({ ...previous, [content[0]]: "" }));
     }
-
-    console.log(content[0]);
-    console.log(infosErrors);
-    console.log(props);
     let value = e.target.value;
-    console.log(value);
     setInfos((previous) => ({ ...previous, [content[0]]: value }));
   };
 

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import CommentForm from '../form/CommentForm';
 import InputsForm from '../form/InputsForm';
+import RatingForm from "../form/RatingForm";
 import SingleChoiceForm from '../form/SingleChoiceForm';
 import BotMessage from '../messages/BotMessage';
 import * as recruteurService from "../../services/RecruteurService";
 import * as domaineExpertiseService from "../../services/DomaineExpertiseService";
+import * as ratingService from "../../services/RatingService";
 import CalendarForm from '../form/CalendarForm';
 
 function FormRecruteur(props) {
@@ -17,6 +19,7 @@ function FormRecruteur(props) {
         nombre_employes: "",
         nombre_personnes_a_recruter: "",
         domaine_expertise: "",
+        calendar: "",
         comment: "",
       });
     
@@ -28,11 +31,17 @@ function FormRecruteur(props) {
         nombre_employes: "",
         nombre_personnes_a_recruter: "",
         domaine_expertise: "",
+        calendar: "",
+        comment: "",
+      });
+
+      const [rating, setRating] = useState({
+        rate: null,
         comment: "",
       });
 
       useEffect(() => {
-        console.log(recruteurInfos);
+        // console.log(recruteurInfos);
       }, [recruteurInfos]);
 
       const firstPage = {
@@ -62,7 +71,6 @@ function FormRecruteur(props) {
         const getAllDomainesExpertise = async () => {
           let response = await domaineExpertiseService.getAllDomainesExpertise();
           setDomainesExpertise(response?.data?.domaines_expertise);
-          console.log(response?.data?.domaines_expertise);
         };
     
         getAllDomainesExpertise();
@@ -81,36 +89,68 @@ function FormRecruteur(props) {
         page < last_page ? setPage((page) => page + 1) : setPage(last_page);
       };
     
+      const [isConfirmed, setIsConfirmed] = useState(false);
+
       const [isSent, setIsSent] = useState(false);
     
       const generateKey = (pre) => {
         return `${pre}_${new Date().getTime()}`;
       };
 
+      const handleConfirmForm = async () => {
 
+        let response = await recruteurService.verifyRecruteurInfos(recruteurInfos);
+        setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
+        if (Object.keys(response).length > 0) {
+          if (
+            response.server_error !== undefined &&
+            response.server_error !== null
+          ) {
+            setRecruteurInfosErrors((prev) => ({
+              ...prev,
+              server_error: response.server_error,
+            }));
+          } else {
+            setRecruteurInfosErrors(response);
+          }
+        } else {
+          props.handleAddNewMessage(
+            <BotMessage
+              key={generateKey("chatbot")}
+              content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+            />
+          );
+          setTimeout(() => {
+            setIsConfirmed(true);
+          }, 1000);
+          setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
+      }
+    }
+
+    // TODO prevent inputs from typing letters .. only numbers
 
       const handleSendForm = async () => {
         let response = await recruteurService.saveRecruteur(recruteurInfos);
-        console.log(response);
+        
         setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
         if (Object.keys(response.errors).length > 0) {
-          console.log(response.errors);
+          
           if (
             response.errors.server_error !== undefined &&
             response.errors.server_error !== null
           ) {
-            console.log("server");
-            console.log(response.errors.server_error);
+            
+            
             setRecruteurInfosErrors((prev) => ({
               ...prev,
               server_error: response.errors.server_error,
-            }));
+            })); 
           } else {
-            console.log("here");
+            
             setRecruteurInfosErrors(response.errors);
           }
         } else {
-          console.log(response.data.token);
+          
           setRecruteurToken(response.data.token);
           setIsSent(true);
           setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
@@ -120,28 +160,59 @@ function FormRecruteur(props) {
               content={response?.data?.message}
             />
           );
-          console.log(recruteurToken);
+          
           // TODO .. show a success message or error
         }
       };
 
-      useEffect(() => {
-        if (isSent) {
+      const sendRating = async (sentRating) => {
+        setRating(sentRating);
+        let response = await ratingService.saveRating(sentRating);
+    
+        if (Object.keys(response.errors).length > 0) {
+          if (
+            response.errors.server_error !== undefined &&
+            response.errors.server_error !== null
+          ) {
+            // setRecruteurInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
+          }
+        } else {
+          props.handleAddNewMessage(
+            <BotMessage
+              key={generateKey("chatbot")}
+              content={response?.data?.message}
+            />
+          );
           setTimeout(() => {
-            console.log(recruteurToken);
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
-                content="Veuillez choisir l'un des créneaux valables qui vous convient."
+                content={
+                  "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
+                }
+              />
+            );
+            props.setMainInputDisabled(false);
+          }, 1000);
+        }
+      };
+
+      useEffect(() => {
+        // TODO or RecruteurToken
+        if (isSent) {
+          setTimeout(() => {
+            props.handleAddNewMessage(
+              <BotMessage
+                key={generateKey("chatbot")}
+                content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
               />
             );
             setTimeout(() => {
-              console.log(recruteurToken);
               props.handleAddNewMessage(
-                <CalendarForm
-                  key={"CalendarForm"}
+                <RatingForm
+                  key={"RecruteurRatingForm"}
+                  sendRating={sendRating}
                   token={recruteurToken}
-                  // sendCalendar={sendCalendar}
                   userType={"recruteur"}
                   setMainInputDisabled={props.setMainInputDisabled}
                   handleAddNewMessage={props.handleAddNewMessage}
@@ -160,6 +231,21 @@ function FormRecruteur(props) {
     }, []);
     return (
         <>
+          {
+            (isConfirmed) ? (
+              <>
+              <CalendarForm
+                  key={"RecruteurCalendarForm"}
+                  handleSendForm={handleSendForm}
+                  setInfos={setRecruteurInfos}
+                  infos={recruteurInfos}
+                  setInfosErrors={setRecruteurInfosErrors}
+                  infosErrors={recruteurInfosErrors}
+                  isSent={isSent}
+                />
+                </>
+            ) : null
+          }
           <div className={`transition-all duration-150 ease-out relative ${scale}`}>
             <div className="w-full flex flex-row">
               <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
@@ -172,7 +258,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isSent}
+                      isSent={isConfirmed}
                     />
                   ) : page === 2 ? (
                     <InputsForm
@@ -182,7 +268,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isSent}
+                      isSent={isConfirmed}
                     />
                   ) : page === 3 ? (
                     <InputsForm
@@ -192,10 +278,9 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isSent}
+                      isSent={isConfirmed}
                     />
                   ) : page === 4 ? (
-                        // (domainesExpertise != null && domainesExpertise != undefined) ? (
                             <SingleChoiceForm
                                 key={"RecruteurSingleChoiceForm"}
                                 content={Object.entries(fourthPage).at(0)}
@@ -204,11 +289,8 @@ function FormRecruteur(props) {
                                 infos={recruteurInfos}
                                 setInfosErrors={setRecruteurInfosErrors}
                                 infosErrors={recruteurInfosErrors}
-                                isSent={isSent}
+                                isSent={isConfirmed}
                             />
-                        // ) : (
-                        //     <></>
-                        // )
                     ) : (
                     <>
                       <CommentForm
@@ -217,7 +299,7 @@ function FormRecruteur(props) {
                         infos={recruteurInfos}
                         setInfosErrors={setRecruteurInfosErrors}
                         infosErrors={recruteurInfosErrors}
-                        isSent={isSent}
+                        isSent={isConfirmed}
                       />
                       {recruteurInfosErrors["server_error"] &&
                       recruteurInfosErrors["server_error"] !== "" ? (
@@ -276,8 +358,8 @@ function FormRecruteur(props) {
             </div>
             <button
               className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 enabled:hover:bg-teal-500 enabled:hover:text-white disabled:text-gray-300"
-              disabled={page === last_page && !isSent ? false : true}
-              onClick={handleSendForm}
+              disabled={page === last_page && !isConfirmed ? false : true}
+              onClick={handleConfirmForm}
             >
               OK
             </button>

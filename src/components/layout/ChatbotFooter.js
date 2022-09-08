@@ -17,18 +17,15 @@ function ChatbotFooter(props) {
     let user_message = userMessageRef.current.value;
     setUserMessage(user_message);
 
-    console.log(user_message);
-
     handleAddNewMessage(
       <UserMessage key={generateKey("chatbot")} content={user_message} />
     );
     userMessageRef.current.value = "";
     let response = await chatbotService.getBotResponse(user_message);
 
-    console.log(response);
 
     if (Object.keys(response.errors).length > 0) {
-      console.log(response.errors);
+      // console.log(response.errors);
       // if(response.errors.server_error !== undefined && response.errors.server_error !== null) {
       // }
     } else {

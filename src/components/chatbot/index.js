@@ -10,6 +10,8 @@ import "./style.css";
 import TwoChoicesForm from "../form/TwoChoicesForm";
 import FormRecruteur from "./FormRecruteur";
 import CalendarForm from "../form/CalendarForm";
+import FormPartenaire from "./FormPartenaire";
+import FormCandidat from "./FormCandidat";
 
 // TODO PREVENT SEND WITHOUT CHOICE
 // FIXME PREVENT SEND WITHOUT CHOICE
@@ -45,7 +47,6 @@ function Chatbot() {
   };
 
   useEffect(() => {
-    console.log(formOrChat);
     setIsLoading(true);
     if (formOrChat === "form_choice") {
       setIsDisabled(true);
@@ -53,7 +54,7 @@ function Chatbot() {
         handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Parmi les quatres type, qui est le plus proche à votre situation ?"
+            content="Parmi les quatres types, qui est le plus proche à votre situation ?"
           />
         );
         handleAddNewMessage(
@@ -64,7 +65,7 @@ function Chatbot() {
           />
         );
         setIsLoading(false);
-      }, [3000]);
+      }, [1000]);
     } else if (formOrChat === "chat_choice") {
       handleAddNewMessage(
         <BotMessage
@@ -83,13 +84,13 @@ function Chatbot() {
         );
       }, 1000);
     } else {
-      console.log(formOrChat);
+      // console.log(formOrChat);
     }
   }, [formOrChat]);
 
   useEffect(() => {
-    console.log(userType);
     setIsLoading(true);
+    // TODO Switch case here
     if (userType === "type_client") {
       setTimeout(() => {
         // TODO add cancel to cancel process and enable main input
@@ -107,8 +108,8 @@ function Chatbot() {
           />
         );
         setIsLoading(false);
-      }, [2000]);
-    } else if(userType === "type_recruteur") {
+      }, [1000]);
+    } else if (userType === "type_recruteur") {
       setTimeout(() => {
         handleAddNewMessage(
           <BotMessage
@@ -119,20 +120,54 @@ function Chatbot() {
         // TODO ... change this key to be unique
         handleAddNewMessage(
           <FormRecruteur
-            key={"FormRecruteur"}
+            key={generateKey("FormRecruteur")}
             handleAddNewMessage={handleAddNewMessage}
             setMainInputDisabled={setIsDisabled}
           />
         );
         setIsLoading(false);
-      }, [2000]);
-    } else {
-      console.log(userType);
+      }, [1000]);
+    } else if (userType === "type_partenaire") {
+      setTimeout(() => {
+        handleAddNewMessage(
+          <BotMessage
+            key={generateKey("chatbot")}
+            content="Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+          />
+        );
+        // TODO ... change this key to be unique
+        handleAddNewMessage(
+          <FormPartenaire
+            key={generateKey("FormPartenaire")}
+            handleAddNewMessage={handleAddNewMessage}
+            setMainInputDisabled={setIsDisabled}
+          />
+        );
+        setIsLoading(false);
+      }, [1000]);
+    } else if (userType === "type_candidat") {
+      // console.log(userType);
+      setTimeout(() => {
+        handleAddNewMessage(
+          <BotMessage
+            key={generateKey("chatbot")}
+            content="Bienvenue cher candidat, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+          />
+        );
+        handleAddNewMessage(
+          <FormCandidat
+            key={generateKey("FormCandidat")}
+            handleAddNewMessage={handleAddNewMessage}
+            setMainInputDisabled={setIsDisabled}
+          />
+        );
+        setIsLoading(false);
+      }, [1000]);
     }
   }, [userType]);
 
   useEffect(() => {
-    console.log(userType);
+    // console.log(userType);
   }, [userType]);
 
   // TODO Content aleatoire .. multi choices here random choice
@@ -177,8 +212,8 @@ function Chatbot() {
           />
         );
         setIsLoading(false);
-      }, [2000]);
-    }, 3000);
+      }, [1000]);
+    }, 1000);
   }, []);
   return (
     <div className="h-screen chatbot">
@@ -187,9 +222,9 @@ function Chatbot() {
       {/* Body */}
       <div className="overflow-y-scroll min-h-screen max-h-screen flex flex-col-reverse py-20 chatbot-messages">
         {isLoading ? <DotsMessage /> : null}
-        <CalendarForm
+        {/* <CalendarForm
                   key={"CalendarForm"}
-                />
+                /> */}
         {messages.map((message) => message)}
         {/* <BotMessage /> */}
       </div>

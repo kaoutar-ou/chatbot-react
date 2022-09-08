@@ -6,7 +6,8 @@ const getAllServicesUrl = "chatbot/get_all_services"
 
 const saveRatingUrl = "chatbot/add_rating"
 
-const getBotResponseUrl = "chatbot/chatbot_response_db"
+// const getBotResponseUrl = "chatbot/chatbot_response_db"
+const getBotResponseUrl = "chatbot/chatbot_response_db_all"
 
 const saveRecruteurUrl = "chatbot/add_recruteur_type"
 

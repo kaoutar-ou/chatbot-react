@@ -1,0 +1,26 @@
+{
+    "confirm":"Confirm",
+    "formOrChat": {
+        "message": "What do you prefer ?",
+        "form":"Fill in the form",
+        "chat":"Chat with us"
+    },
+    "chooseUserType": "Which of the four types is the closest to your situation ?",
+    "userType": {
+        "client":"Client",
+        "recruteur":"Recruiter",
+        "partenaire":"Partner",
+        "candidat":"Candidate"
+    },
+    "chatChoice": {
+        "choice" : "You chose to chat with us ...",
+        "message" : "You can ask whatever you want :) , I'll do my best to help you"
+    },
+    "welcomeUserType": {
+        "client":"Welcome dear client, please provide us with more information by filling out the following form.",
+        "recruteur":"Welcome dear recruiter, please provide us with more information by filling out the following form.",
+        "partenaire":"Welcome dear partner, please provide us with more information by filling out the following form.",
+        "candidat":"Welcome dear candidate, please provide us with more information by filling out the following form."
+    },
+    "welcome": "Hello.. we hope you are doing well"
+}

@@ -1,4 +1,5 @@
 import * as api from "../api"
+import i18next from '../i18n'
 
 export const getAllFreeCalendar = async () => {
     let response = {
@@ -7,6 +8,8 @@ export const getAllFreeCalendar = async () => {
     }
 
     let res
+
+    // i18next.t('my.key')
 
     try {
         res = await api.getAllFreeCalendar()

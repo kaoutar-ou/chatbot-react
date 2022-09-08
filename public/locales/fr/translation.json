@@ -1,0 +1,26 @@
+{
+    "confirm":"Confirmer",
+    "formOrChat": {
+        "message": "Qu'est ce que vous préférez ?",
+        "form":"Remplir le formulaire",
+        "chat":"Continuer à poser des questions"
+    },
+    "chooseUserType": "Parmi les quatres types, qui est le plus proche à votre situation ?",
+    "userType": {
+        "client":"Client",
+        "recruteur":"Recruteur",
+        "partenaire":"Partenaire",
+        "candidat":"Candidat"
+    },
+    "chatChoice": {
+        "choice" : "Vous avez choisi de poser des questions ...",
+        "message" : "Vous pouvez demander ce que vous voulez :)"
+    },
+    "welcomeUserType": {
+        "client":"Bienvenue cher client, veuillez nous fournir plus d'information en remplissant le formulaire suivant.",
+        "recruteur":"Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant.",
+        "partenaire":"Bienvenue cher partenaire, veuillez nous fournir plus d'information en remplissant le formulaire suivant.",
+        "candidat":"Bienvenue cher candidat, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+    },
+    "welcome": "Bonjour .. nous espérons que vous allez bien"
+}

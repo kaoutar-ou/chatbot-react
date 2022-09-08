@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
+
 import FormClient from "./FormClient";
 import MultiChoices from "../form/MultiChoicesForm";
 import ChatbotFooter from "../layout/ChatbotFooter";
@@ -16,18 +18,19 @@ import FormCandidat from "./FormCandidat";
 // TODO PREVENT SEND WITHOUT CHOICE
 // FIXME PREVENT SEND WITHOUT CHOICE
 function Chatbot() {
+  const { t, i18n } = useTranslation();
   // TODO isLoading
   // TODO button to choice form after chatting .. u can click above to fill ...
   const formOrChatChoices = {
-    form_choice: "Remplir le formulaire",
-    chat_choice: "Continuer à poser des questions",
+    form_choice: t("formOrChat.form"),
+    chat_choice: t("formOrChat.chat"),
   };
 
   const userTypeChoices = {
-    type_client: "Client",
-    type_partenaire: "Partenaire",
-    type_recruteur: "Recruteur",
-    type_candidat: "Candidat",
+    type_client: t("userType.client"),
+    type_partenaire: t("userType.partenaire"),
+    type_recruteur: t("userType.recruteur"),
+    type_candidat: t("userType.candidat"),
   };
 
   // FIXME Reunion presentielle ou a distance ???
@@ -54,7 +57,7 @@ function Chatbot() {
         handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Parmi les quatres types, qui est le plus proche à votre situation ?"
+            content={t("chooseUserType")}
           />
         );
         handleAddNewMessage(
@@ -70,16 +73,18 @@ function Chatbot() {
       handleAddNewMessage(
         <BotMessage
           key={generateKey("chatbot")}
-          content="Vous avez choisi de poser des questions ..."
+          content={t("chatChoice.choice")}
         />
       );
+
+      // TODO .. talk with a real person .. "message" : "Please wait a few seconds while we connect you to a consultant"
       // TODO .. message = feel free to
       // TODO .. send language with user message
       setTimeout(() => {
         handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Vous pouvez demander ce que vous voulez :)"
+            content={t("chatChoice.message")}
           />
         );
       }, 1000);
@@ -97,7 +102,7 @@ function Chatbot() {
         handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Bienvenue cher client, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+            content={t("welcomeUserType.client")}
           />
         );
         handleAddNewMessage(
@@ -114,7 +119,7 @@ function Chatbot() {
         handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+            content={t("welcomeUserType.recruteur")}
           />
         );
         // TODO ... change this key to be unique
@@ -132,7 +137,7 @@ function Chatbot() {
         handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+            content={t("welcomeUserType.partenaire")}
           />
         );
         // TODO ... change this key to be unique
@@ -151,7 +156,7 @@ function Chatbot() {
         handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Bienvenue cher candidat, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+            content={t("welcomeUserType.candidat")}
           />
         );
         handleAddNewMessage(
@@ -174,7 +179,7 @@ function Chatbot() {
   const [messages, setMessages] = useState([
     <BotMessage
       key={generateKey("chatbot")}
-      content="Bonjour .. nous espérons que vous allez bien"
+      content={t("welcome")}
     />,
   ]);
   // TODO if null then welcome screen .. logo architeo
@@ -197,7 +202,7 @@ function Chatbot() {
       handleAddNewMessage(
         <BotMessage
           key={generateKey("chatbot")}
-          content="Qu'est ce que vous préférez ?"
+          content={t("formOrChat.message")}
         />
       );
       setIsLoading(true);

@@ -258,6 +258,10 @@ function FormCandidat(props) {
             );
           }
           // TODO .. show a success message or error
+
+          // TODO .. count number of messages then rate
+          
+          // TODO .. presentation de l'entreprise au début
         }
       };
 

@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
+
 import BotMessage from "../messages/BotMessage";
 
 const RatingForm = (props) => {
+  const { t, i18n } = useTranslation("global");
+  
   const {
     content,
     sendRating,
@@ -58,7 +62,7 @@ const RatingForm = (props) => {
     props.handleAddNewMessage(
       <BotMessage
         content={
-          "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
+          t("rating.completed")
         }
       />
     );
@@ -115,7 +119,7 @@ const RatingForm = (props) => {
               rows="4"
               ref={commentRef}
               cols="50"
-              placeholder="Votre Avis ..."
+              placeholder={t("rating.feedbackPH")}
               maxLength={1000}
               disabled={isSent}
             ></textarea>
@@ -126,14 +130,14 @@ const RatingForm = (props) => {
               onClick={handleRating}
               disabled={isSent}
             >
-              Confirmer
+              {t("rating.confirm")}
             </button>
             <button
               className="w-2/5 mx-6 rounded-md text-gray-500 enabled:hover:text-gray-800"
               onClick={handleLater}
               disabled={isSent}
             >
-              Plus tard ...
+              {t("rating.later")}
             </button>
           </div>
         </div>

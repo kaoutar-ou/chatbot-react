@@ -1,0 +1,12 @@
+{
+    "raisonSociale": "Raison sociale",
+    "email": "Email",
+    "telephone": "Téléphone",
+    "adresse": "Adresse",
+    "service": "Service",
+    "comment": "Commentaire",
+    "completed": "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations.",
+    "wantToRate": "Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)",
+    "previous": "précédent",
+    "next": "suivant"
+}

@@ -1,0 +1,25 @@
+{
+    "comment": {
+        "leaveComment": "You can leave us a comment",
+        "leaveCommentPH": "Leave a comment ..."
+    },
+    "file": {
+        "addFile": "Add file",
+        "fileAdded": "File added"
+    },
+    "input": {
+        "enterPH": "Enter your "
+    },
+    "rating": {
+        "completed": "You have completed all the steps, you can now continue the conversation",
+        "feedbackPH": "Your feedback ...",
+        "confirm": "Confirm",
+        "later": "Later ..."
+    },
+    "singleChoice": {
+        "select": "Select the {{content}} you want"
+    },
+    "singleChoiceCondition": {
+        "select": "Select the {{content}} you want"
+    } 
+}

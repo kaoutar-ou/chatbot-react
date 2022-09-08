@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
+
 import CommentForm from "../form/CommentForm";
 import InputsForm from "../form/InputsForm";
 import RatingForm from "../form/RatingForm";
@@ -10,6 +12,8 @@ import * as ratingService from "../../services/RatingService";
 import BotMessage from "../messages/BotMessage";
 
 function FormClient(props) {
+  const { t, i18n } = useTranslation('client');
+
   const [clientInfos, setClientInfos] = useState({
     raison_sociale: "",
     email: "",
@@ -33,18 +37,18 @@ function FormClient(props) {
   }, [clientInfos]);
 
   const firstPage = {
-    raison_sociale: "Raison sociale",
-    email: "Email",
+    raison_sociale: t("raisonSociale"),
+    email: t("email"),
   };
   const secondPage = {
-    telephone: "Telephone",
-    adresse: "Adresse",
+    telephone: t("telephone"),
+    adresse: t("adresse"),
   };
   const thirdPage = {
-    service: "Service",
+    service: t("service"),
   };
   const fourthPage = {
-    comment: "Commentaire",
+    comment: t("comment"),
   };
 
   const [services, setServices] = useState(null);
@@ -92,7 +96,7 @@ function FormClient(props) {
           <BotMessage
             key={generateKey("chatbot")}
             content={
-              "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
+              t('completed')
             }
           />
         );
@@ -125,7 +129,7 @@ function FormClient(props) {
         props.handleAddNewMessage(
           <BotMessage
             key={generateKey("chatbot")}
-            content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
+            content={t("wantToRate")}
           />
         );
         setTimeout(() => {
@@ -261,14 +265,14 @@ function FormClient(props) {
                     d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
                   />
                 </svg>
-                <div className="mx-1">précédent</div>
+                <div className="mx-1">{t("previous")}</div>
               </button>
               <button
                 className="place-self-end flex place-items-center mx-3 disabled:text-gray-500"
                 onClick={handleNext}
                 disabled={page === last_page ? true : false}
               >
-                <div className="mx-1">suivant</div>
+                <div className="mx-1">{t("next")}</div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

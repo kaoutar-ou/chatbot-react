@@ -127,7 +127,7 @@ export const saveClient = async (client_infos) => {
       response.data = res.data;
     }
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     response.errors = {
       ...response.errors,
       server_error: res?.data?.error ? res.data.error : server_error_message,

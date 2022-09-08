@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 function MultiChoices(props) {
+  const { t, i18n } = useTranslation("global");
+  
   const { content, ...others } = props;
 
   const [type, setType] = useState(null);

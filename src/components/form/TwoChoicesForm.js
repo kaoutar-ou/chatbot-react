@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 const TwoChoicesForm = (props) => {
+  const { t, i18n } = useTranslation("global");
+  
   const { content, choiceValue, ...others } = props;
 
   const [choice, setChoice] = useState(null);

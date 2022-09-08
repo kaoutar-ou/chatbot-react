@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +10,10 @@ const LanguageSelector = () => {
   //   };
 
   const [lang, setLang] = useState("fr");
+
+  useEffect(() => {
+    i18n.changeLanguage("fr")
+  }, []);
 
   const changeLanguage = (language) => {
     setLang(language);

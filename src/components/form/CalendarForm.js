@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
+
 import Calendar from "react-calendar";
 import * as calendarService from "../../services/CalendarService"
 import SingleChoiceForm from "./SingleChoiceForm";
 
 function CalendarForm(props) {
+  const { t, i18n } = useTranslation("global");
 
     const {setInfos, infos, setInfosErrors, infosErrors, handleSendForm, isSent, ...others} = props
 

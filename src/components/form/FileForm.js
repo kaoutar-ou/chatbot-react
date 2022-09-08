@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import PhoneInput from "react-phone-input-2";
+import { useTranslation } from 'react-i18next';
 
 const FileForm = (props) => {
+  const { t, i18n } = useTranslation("global");
+
   const {
     content,
     setInfos,
@@ -31,22 +34,6 @@ const FileForm = (props) => {
     <div>
       <div className="w-full p-2 place-items-center" key={key}>
         <div className="w-full text-center mb-5">{val}</div>
-        {/* <input
-          className="rounded-3xl flex-auto w-4/6 col-span-2 p-2 focus:outline-none disabled:outline disabled:outline-1 disabled:outline-teal-500"
-          placeholder={"Entrer Votre " + val.toLowerCase()}
-          id={key}
-          name={key}
-          onChange={(e) => handleInputChange(e)}
-          value={infos[key]}
-          disabled={isSent}
-        ></input>
-
-        <label
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          htmlFor="small_size"
-        >
-          {val}
-        </label> */}
         <label htmlFor={key} className={`w-full bg-gray-100 rounded-xl m-1 p-2 px-10 outline-dotted outline-1 outline-gray-500 ${
                 infos[key] != ""
                   ? "bg-teal-500 text-white  disabled:outline disabled:outline-1 disabled:outline-teal-500"
@@ -54,8 +41,8 @@ const FileForm = (props) => {
               } hover:outline-offset-2`}>
                 {
                     infos[key] != ""
-                        ? "Fichier ajouté"
-                        : "Ajouter un fichier"
+                        ? t("file.fileAdded")
+                        : t("file.addFile")
                 }
               </label>
         <input

@@ -9,13 +9,20 @@ const TwoChoicesForm = (props) => {
   const [choice, setChoice] = useState(null);
   const [isSent, setIsSent] = useState(false);
 
+  const [error, setError] = useState(false);
+
   const handleChoice = (res) => {
     setChoice(res);
+    setError(false)
   };
 
   const handleSendChoice = () => {
-    setIsSent(true);
-    props.handleConfirm(choice);
+    if(choice != null) {
+      setIsSent(true);
+      props.handleConfirm(choice);
+    } else {
+      setError(true)
+    }
   };
 
   const [scale, setScale] = useState("scale-0");
@@ -55,6 +62,9 @@ const TwoChoicesForm = (props) => {
               {Object.values(content).at(1)}
             </button>
           </div>
+        {error ? (
+        <div className="text-red-500 mb-3 -mt-2">{t('twoChoices')}</div>
+      ) : null}
         </div>
       </div>
       <button

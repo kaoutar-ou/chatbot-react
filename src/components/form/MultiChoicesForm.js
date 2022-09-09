@@ -9,13 +9,20 @@ function MultiChoices(props) {
   const [type, setType] = useState(null);
   const [isSent, setIsSent] = useState(false);
 
+  const [error, setError] = useState(false);
+  
   const handleChoice = (res) => {
     setType(res);
+    setError(false)
   };
 
   const handleSendChoice = () => {
-    setIsSent(true);
-    props.handleConfirm(type);
+    if(type != null) {
+      setIsSent(true);
+      props.handleConfirm(type);
+    } else {
+      setError(true)
+    }
   };
 
   const [scale, setScale] = useState("scale-0");
@@ -48,6 +55,9 @@ function MultiChoices(props) {
               </button>
             );
           })}
+        {error ? (
+        <div className="text-red-500 mb-3 mt-2">{t('multipleChoices')}</div>
+      ) : null}
         </div>
       </div>
       <button

@@ -14,7 +14,7 @@
     },
     "chatChoice": {
         "choice" : "You chose to chat with us ...",
-        "message" : "You can ask whatever you want :) , I'll do my best to help you"
+        "message" : "Feel free to ask whatever you want :) , I'll do my best to help you"
     },
     "welcomeUserType": {
         "client":"Welcome dear client, please provide us with more information by filling out the following form.",
@@ -23,5 +23,50 @@
         "candidat":"Welcome dear candidate, please provide us with more information by filling out the following form."
     },
     "welcome": "Hello.. we hope you are doing well",
-    "internalError": "We are sorry, we've got an internal error !"
+    "internalError": "We are sorry, we've got an internal error !",
+
+
+
+    "formatError": {
+        "email": "The format of your email is not valid",
+        "telephone": "The format of your phone number is not valid",
+        "enterNumber": "Please enter a number"
+    },
+    "emptyError": {
+        "email": "Please enter your email",
+        "telephone": "Please enter your phone number",
+        "nom": "Please enter your lastname",
+        "prenom": "Please enter your firstname",
+        "raisonSociale": "Please enter the name of your company",
+        "adresse": "Please enter your address",
+        "service": "You must select a service", 
+        "document": "You must provide a document",
+        "offre": "You must choose an offer",
+        "typeCandidature": "You must specify the type of your application",
+
+        "nombreEmployes": "You must specify the number of your employees",
+        "partenariat": "You must select a type of partnership",
+        "domaineExpertise": "You must select an expertise field",
+        "nombrePersonnesARecruter": "You must specify the number of people you are looking to recruit"
+
+    },
+    "lengthError": {
+        "raisonSociale": "Your company name must be between 1 and 30 characters",
+        "adresse": {
+            "min": "Your address must contain more than 10 characters",
+            "max": "Your address must be less than 75 characters"
+        },
+        "telephone": {
+            "min": "Your phone number must be greater than or equal to ten characters",
+            "max": "Your phone number must be less than or equal to 14 characters"
+        },
+        "comment": "Please do not exceed 255 characters",
+        "nom": "Your lastname must be between 3 and 30 characters",
+        "prenom": "Your firstname must be between 3 and 30 characters",
+
+        "nePasDepasser": "Please do not exceed "
+    },
+    "goBackError": "Please go back to previous pages and double check the information filled in before confirming",
+    "calendarError": "You must choose a meeting time",
+    "tokenError": "Your session has expired"
 }

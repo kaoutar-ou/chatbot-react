@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
 import ChatbotFooter from "../layout/ChatbotFooter";
@@ -9,6 +9,8 @@ import ChatbotBody from "./chatbotBody";
 
 function Chatbot() {
   const { t, i18n } = useTranslation();
+
+  const [loading, setLoading] = useState(true);
 
   const [keyState, setKeyState] = useState(2);
   const generateKey = (pre) => {
@@ -24,6 +26,11 @@ function Chatbot() {
 
   const [isDisabled, setIsDisabled] = useState(false);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000);
+  }, []);
 
   const handleAddNewMessage = (new_message) => {
     setKeyState((prev) => prev + 1);
@@ -32,14 +39,26 @@ function Chatbot() {
 
   return (
     <div className="h-screen chatbot">
-
       <ChatbotHeader />
-
-      <ChatbotBody 
-      setIsDisabled={setIsDisabled} 
-      handleAddNewMessage={handleAddNewMessage} 
-      messages={messages}/>
-      {/* Footer */}
+      {
+        (loading) ? (
+          <div className="h-screen chatbot flex items-center justify-center">
+            <div 
+            className="w-24 h-24 outline outline-1 border border-teal-500 outline-amber-500 outline-offset-1 rounded-t-full animate-pulse rounded-br-full flex items-center justify-center"
+            >
+              <div className="w-2 h-2 rounded-3xl bg-slate-100 mx-1 animate-bounce outline-dotted outline-1 outline-gray-500"></div>
+              <div className="w-2 h-2 rounded-3xl bg-slate-100 mx-1 animate-bounce outline-dotted outline-1 outline-gray-500"></div>
+              <div className="w-2 h-2 rounded-3xl bg-slate-100 mx-1 animate-bounce outline-dotted outline-1 outline-gray-500"></div>
+            </div>
+          </div>
+        ) : (
+          <ChatbotBody 
+          setIsDisabled={setIsDisabled} 
+          handleAddNewMessage={handleAddNewMessage} 
+          messages={messages}/>
+        )
+      }
+      
       <ChatbotFooter
         isDisabled={isDisabled}
         handleAddNewMessage={handleAddNewMessage}

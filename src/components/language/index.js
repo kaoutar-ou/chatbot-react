@@ -9,10 +9,10 @@ const LanguageSelector = () => {
   //     i18n.changeLanguage(e.target.value);
   //   };
 
-  const [lang, setLang] = useState("fr");
+  const [lang, setLang] = useState("en");
 
   useEffect(() => {
-    i18n.changeLanguage("fr")
+    i18n.changeLanguage("en")
   }, []);
 
   const changeLanguage = (language) => {

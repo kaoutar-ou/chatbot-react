@@ -44,6 +44,7 @@ function ChatbotBody(props) {
     return `${pre}_${new Date().getTime()}`;
   };
 
+  // TODO .. ask about the form any time
   useEffect(() => {
     setIsLoading(true);
     if (formOrChat === "form_choice") {
@@ -73,7 +74,6 @@ function ChatbotBody(props) {
       );
 
       // TODO .. talk with a real person .. "message" : "Please wait a few seconds while we connect you to a consultant"
-      // TODO .. message = feel free to
       // TODO .. send language with user message
       setTimeout(() => {
         handleAddNewMessage(
@@ -82,6 +82,7 @@ function ChatbotBody(props) {
             content={t("chatChoice.message")}
           />
         );
+        setIsLoading(false)
       }, 1000);
     } else {
       // console.log(formOrChat);

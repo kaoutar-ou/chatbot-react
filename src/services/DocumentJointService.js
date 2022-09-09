@@ -1,6 +1,7 @@
 import * as api from "../api";
+import * as constants from "./constants";
 
-export const verifyDocumentJointInfos = (document_joint_infos) => {
+export const verifyDocumentJointInfos = async (document_joint_infos) => {
   const document_joint_infos_reference = {
     // title: "",
     path: "",
@@ -14,7 +15,7 @@ export const verifyDocumentJointInfos = (document_joint_infos) => {
     document_joint_infos.path === undefined ||
     document_joint_infos.path === ""
   ) {
-    errors["path"] = "Vous devez fournir un document";
+    errors["path"] = (await constants.emptyErrors()).documentEmptyError;
   }
 
   // TODO Check if token exists in database
@@ -33,19 +34,19 @@ export const saveDocumentJoint = async (document_joint_infos, token) => {
   let res;
 
   let server_error_message =
-    "Nous sommes désolés, nous avons rencontré une erreur interne !";
+  (await constants.errors()).internalError;
   let comment =
-    "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
-
+  (await constants.errors()).goBackError;  
+  
     document_joint_infos = {...document_joint_infos, token:token}
 
-  response.errors = verifyDocumentJointInfos(document_joint_infos);
+  response.errors = await verifyDocumentJointInfos(document_joint_infos);
   
   if (
     token === undefined ||
     token === ""
   ) {
-    response.errors["token"] = "Votre session a expirée";
+    response.errors["token"] = (await constants.errors()).tokenError;
   }
 
   if (Object.keys(response.errors).length > 0) {

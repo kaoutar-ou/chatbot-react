@@ -22,5 +22,7 @@
     "singleChoiceCondition": {
         "select": "Select the {{content}} you want"
     },
-    "typeHere": "Type something here ..."
+    "typeHere": "Type something here ...",
+    "twoChoices": "Please choose one to continue",
+    "multipleChoices": "Please choose one type to continue"
 }

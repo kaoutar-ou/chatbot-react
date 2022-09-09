@@ -22,5 +22,6 @@
         "partenaire":"Welcome dear partner, please provide us with more information by filling out the following form.",
         "candidat":"Welcome dear candidate, please provide us with more information by filling out the following form."
     },
-    "welcome": "Hello.. we hope you are doing well"
+    "welcome": "Hello.. we hope you are doing well",
+    "internalError": "We are sorry, we've got an internal error !"
 }

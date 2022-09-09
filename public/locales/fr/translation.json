@@ -22,5 +22,6 @@
         "partenaire":"Bienvenue cher partenaire, veuillez nous fournir plus d'information en remplissant le formulaire suivant.",
         "candidat":"Bienvenue cher candidat, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
     },
-    "welcome": "Bonjour .. nous espérons que vous allez bien"
+    "welcome": "Bonjour .. nous espérons que vous allez bien",
+    "internalError": "Nous sommes désooolés, nous avons rencontré une erreur interne !"
 }

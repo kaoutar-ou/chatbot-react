@@ -1,4 +1,5 @@
 import * as api from "../api";
+import * as constants from "./constants"
 
 export const verifyClientInfos = (client_infos) => {
   const client_infos_reference = {
@@ -108,7 +109,7 @@ export const saveClient = async (client_infos) => {
 
   // TODO constants and language
   let server_error_message =
-    "Nous sommes désolés, nous avons rencontré une erreur interne !";
+  (await constants.errors()).internalError;
   let comment =
     "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
 

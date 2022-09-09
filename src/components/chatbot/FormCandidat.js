@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
+
 import CalendarForm from '../form/CalendarForm';
 import CommentForm from '../form/CommentForm';
 import InputsForm from '../form/InputsForm';
@@ -13,6 +15,7 @@ import FileForm from '../form/FileForm';
 import SingleChoiceFormCondition from '../form/SingleChoiceFormCondition';
 
 function FormCandidat(props) {
+  const { t, i18n } = useTranslation('candidat');
 
     const generateKey = (pre) => {
         return `${pre}_${new Date().getTime()}`;
@@ -73,28 +76,28 @@ function FormCandidat(props) {
     const last_page = 5;
 
     const type_candidature = {
-        spontanee: "Candidature spontanée",
-        choix_offre: "Candidature par choix d'offre",
+        spontanee: t("candidatureSpontanee"),
+        choix_offre: t("candidatureOffre"),
     }
 
       const firstPage = {
-        nom: "Nom",
-        prenom: "Prénom",
-        email: "Email",
+        nom: t("nom"),
+        prenom: t("prenom"),
+        email: t("email"),
       };
       const secondPage = {
-        telephone: "Telephone",
-        adresse: "Adresse",
+        telephone: t("telephone"),
+        adresse: t("adresse"),
       };
       const thirdPage = {
-        type_candidature: "Type de la candidature",
-        offre: "Offre",
+        type_candidature: t("typeCandidature"),
+        offre: t("offre"),
       };
       const fourthPage = {
-        path: "CV"
+        path: t("cv")
       }
       const fifthPage = {
-        comment: "Commentaire",
+        comment: t("comment"),
       };
 
       const handlePrevious = () => {
@@ -122,7 +125,7 @@ function FormCandidat(props) {
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
-                content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
+                content={t("wantToRate")}
               />
             );
             setTimeout(() => {
@@ -164,7 +167,7 @@ function FormCandidat(props) {
               <BotMessage
                 key={generateKey("chatbot")}
                 content={
-                  "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
+                  t("completed")
                 }
               />
             );
@@ -192,7 +195,7 @@ function FormCandidat(props) {
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
-              content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+              content={t("calendarChoice")}
             />
           );
           setTimeout(() => {
@@ -385,14 +388,14 @@ function FormCandidat(props) {
                         d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
                       />
                     </svg>
-                    <div className="mx-1">précédent</div>
+                    <div className="mx-1">{t("previous")}</div>
                   </button>
                   <button
                     className="place-self-end flex place-items-center mx-3 disabled:text-gray-500"
                     onClick={handleNext}
                     disabled={page === last_page ? true : false}
                   >
-                    <div className="mx-1">suivant</div>
+                    <div className="mx-1">{t("next")}</div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

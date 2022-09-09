@@ -21,5 +21,6 @@
     },
     "singleChoiceCondition": {
         "select": "Séléctionner l'{{content}} que vous voulez"
-    } 
+    },
+    "typeHere": "Ecrire ici ..."
 }

@@ -69,6 +69,8 @@ function FormClient(props) {
     comment: "",
   });
 
+  // TODO .. add email .. your meet canceled
+  // TODO .. add email is_sent and option to send it if internal error occured
   const sendRating = async (sentRating) => {
     setRating(sentRating);
     ////////////////////////// TODO   add total votes

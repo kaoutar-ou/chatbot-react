@@ -21,5 +21,6 @@
     },
     "singleChoiceCondition": {
         "select": "Select the {{content}} you want"
-    } 
+    },
+    "typeHere": "Type something here ..."
 }

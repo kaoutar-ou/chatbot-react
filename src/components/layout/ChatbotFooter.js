@@ -1,10 +1,13 @@
 import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import * as chatbotService from "../../services/ChatbotService";
 import BotMessage from "../messages/BotMessage";
 import UserMessage from "../messages/UserMessage";
 
 function ChatbotFooter(props) {
+  const { t, i18n } = useTranslation('global');
+
   const [userMessage, setUserMessage] = useState("");
 
   let userMessageRef = useRef();
@@ -47,7 +50,7 @@ function ChatbotFooter(props) {
           <input
             className="w-11/12 rounded-2xl h-10 my-2 mx-2 pl-3 outline-dotted outline-1 outline-gray-500"
             type={"text"}
-            placeholder="Type something here ..."
+            placeholder={t("typeHere")}
             disabled={isDisabled}
             ref={userMessageRef}
           ></input>

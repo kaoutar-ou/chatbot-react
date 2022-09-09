@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
+
 import CalendarForm from '../form/CalendarForm';
 import CommentForm from '../form/CommentForm';
 import InputsForm from '../form/InputsForm';
@@ -13,6 +15,7 @@ import RatingForm from '../form/RatingForm';
 import FileForm from '../form/FileForm';
 
 function FormPartenaire(props) {
+  const { t, i18n } = useTranslation('partenaire');
 
     const generateKey = (pre) => {
         return `${pre}_${new Date().getTime()}`;
@@ -75,22 +78,22 @@ function FormPartenaire(props) {
     const last_page = 5;
 
       const firstPage = {
-        raison_sociale: "Raison sociale",
-        email: "Email",
+        raison_sociale: t("raisonSociale"),
+        email: t("email"),
       };
       const secondPage = {
-        telephone: "Telephone",
-        adresse: "Adresse",
-        nombre_employes: "Nombre d'employés",
+        telephone: t("telephone"),
+        adresse: t("adresse"),
+        nombre_employes: t("nombreEmployes"),
       };
       const thirdPage = {
-        partenariat: "Type du partenariat",
+        partenariat: t("typePartenariat"),
       };
       const fourthPage = {
-        path: "Document joint"
+        path: t("documentJoint")
       }
       const fifthPage = {
-        comment: "Commentaire",
+        comment: t("comment"),
       };
 
       const handlePrevious = () => {
@@ -118,7 +121,7 @@ function FormPartenaire(props) {
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
-                content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
+                content={t("wantToRate")}
               />
             );
             setTimeout(() => {
@@ -159,9 +162,7 @@ function FormPartenaire(props) {
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
-                content={
-                  "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
-                }
+                content={t("completed")}
               />
             );
             props.setMainInputDisabled(false);
@@ -188,7 +189,7 @@ function FormPartenaire(props) {
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
-              content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+              content={t("calendarChoice")}
             />
           );
           setTimeout(() => {
@@ -376,14 +377,14 @@ function FormPartenaire(props) {
                         d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
                       />
                     </svg>
-                    <div className="mx-1">précédent</div>
+                    <div className="mx-1">{t("previous")}</div>
                   </button>
                   <button
                     className="place-self-end flex place-items-center mx-3 disabled:text-gray-500"
                     onClick={handleNext}
                     disabled={page === last_page ? true : false}
                   >
-                    <div className="mx-1">suivant</div>
+                    <div className="mx-1">{t("next")}</div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

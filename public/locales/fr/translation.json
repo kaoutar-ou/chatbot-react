@@ -13,7 +13,7 @@
         "candidat":"Candidat"
     },
     "chatChoice": {
-        "choice" : "Vous avez choisi de poser des questions ...",
+        "choice" : "Vous avez choisi de poser des questions, vous pouvez à tout moment changer d'avis en revenant ici.",
         "message" : "Vous pouvez demander ce que vous voulez :)"
     },
     "welcomeUserType": {

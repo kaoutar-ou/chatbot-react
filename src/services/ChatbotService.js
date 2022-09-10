@@ -1,7 +1,7 @@
 import * as api from "../api";
 import * as constants from "./constants"
 
-export const getBotResponse = async (user_message) => {
+export const getBotResponse = async (user_message, language = "en-US") => {
   
     let response = {
         data: {},
@@ -14,7 +14,7 @@ export const getBotResponse = async (user_message) => {
 
     try {
         // res = await api.getBotResponse({user_message})
-        res = await api.getBotResponse({user_message:user_message, language:"en-US"})
+        res = await api.getBotResponse({user_message:user_message, language})
         if (res?.data?.error != null && res?.data?.error !== undefined) {
           response.errors = { ...response.errors, server_error: res.data.error };
         } else {

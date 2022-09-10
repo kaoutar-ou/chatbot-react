@@ -82,6 +82,7 @@ function ChatbotBody(props) {
             content={t("chatChoice.message")}
           />
         );
+        setIsDisabled(false)
         setIsLoading(false)
       }, 1000);
     } else {
@@ -201,7 +202,7 @@ function ChatbotBody(props) {
             key={"TwoChoicesForm"}
             content={formOrChatChoices}
             handleConfirm={setFormOrChat}
-            choiceValue={formOrChat}
+            // choiceValue={formOrChat}
           />
         );
         setIsLoading(false);

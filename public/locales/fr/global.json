@@ -23,6 +23,9 @@
         "select": "Séléctionner l'{{content}} que vous voulez"
     },
     "typeHere": "Ecrire ici ...",
-    "twoChoices": "Veuillez choisir comment continuer",
+    "twoChoices": {
+        "noChoice": "Veuillez choisir comment continuer",
+        "repeatedChat": "Vous avez déjà choisi le chat, vous avez l'autre choix si vous voulez"
+    },
     "multipleChoices": "Veuillez choisir un type pour continuer"
 }

@@ -7,7 +7,7 @@ import BotMessage from "../messages/BotMessage";
 import "./style.css";
 import ChatbotBody from "./chatbotBody";
 
-function Chatbot() {
+function Chatbot(props) {
   const { t, i18n } = useTranslation();
 
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ function Chatbot() {
     />,
   ]);
 
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -39,7 +39,7 @@ function Chatbot() {
 
   return (
     <div className="h-screen chatbot">
-      <ChatbotHeader />
+      <ChatbotHeader setLanguage={props.setLanguage}/>
       {
         (loading) ? (
           <div className="h-screen chatbot flex items-center justify-center">

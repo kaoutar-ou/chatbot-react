@@ -4,9 +4,13 @@ import { useTranslation } from 'react-i18next';
 const TwoChoicesForm = (props) => {
   const { t, i18n } = useTranslation("global");
   
-  const { content, choiceValue, ...others } = props;
+  // const { content, choiceValue, ...others } = props;
+  const { content, ...others } = props;
 
   const [choice, setChoice] = useState(null);
+  const [sentChatChoice, setSentChatChoice] = useState(false);
+  // const [sentChatChoiceError, setSentChatChoiceError] = useState(false);
+
   const [isSent, setIsSent] = useState(false);
 
   const [error, setError] = useState(false);
@@ -18,7 +22,16 @@ const TwoChoicesForm = (props) => {
 
   const handleSendChoice = () => {
     if(choice != null) {
-      setIsSent(true);
+      if(choice === Object.keys(content).at(0))
+        {
+          setIsSent(true);
+        }
+      else {
+        setSentChatChoice(true)
+      }
+      // if(sentChatChoice) {
+      //   setSentChatChoiceError(true)
+      // }
       props.handleConfirm(choice);
     } else {
       setError(true)
@@ -63,14 +76,17 @@ const TwoChoicesForm = (props) => {
             </button>
           </div>
         {error ? (
-        <div className="text-red-500 mb-3 -mt-2">{t('twoChoices')}</div>
+        <div className="text-red-500 mb-3 -mt-2">{t('twoChoices.noChoice')}</div>
+      ) : null}
+      {(sentChatChoice && choice === Object.keys(content).at(1)) ? (
+        <div className="text-amber-500 mb-3 -mt-2">{t('twoChoices.repeatedChat')}</div>
       ) : null}
         </div>
       </div>
       <button
         className="rounded-full bg-gray-100 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 w-10 h-10 absolute -mt-10 -ml-5 enabled:hover:bg-teal-500 enabled:hover:text-white disabled:text-gray-300"
         onClick={handleSendChoice}
-        disabled={isSent}
+        disabled={isSent || (sentChatChoice && choice === Object.keys(content).at(1))}
       >
         OK
       </button>

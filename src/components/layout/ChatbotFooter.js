@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { LanguageContext } from "../../App";
+import { LanguageContext, VoiceContext } from "../../App";
 
 import * as chatbotService from "../../services/ChatbotService";
 import BotMessage from "../messages/BotMessage";
@@ -16,6 +16,7 @@ function ChatbotFooter(props) {
     useSpeechRecognition();
 
     const lang = useContext(LanguageContext);
+    const isVoiceOn = useContext(VoiceContext);
 
   const startListening = () =>
     SpeechRecognition.startListening({ continuous: true, language: Object.values(lang).at(0) });
@@ -58,6 +59,11 @@ function ChatbotFooter(props) {
           content={response?.data?.bot_message}
         />
       );
+      if (isVoiceOn) {
+        let toSpeech = new SpeechSynthesisUtterance(response?.data?.bot_message)
+        toSpeech.lang = Object.keys(lang).at(0)
+        window.speechSynthesis.speak(toSpeech)
+      }
     }
   };
   const { isDisabled, handleAddNewMessage, ...others } = props;
@@ -71,7 +77,7 @@ function ChatbotFooter(props) {
     // console.log(e.keyCode)
     // console.log(e.key)
     // console.log(e.code)
-    if(e.keyCode === 13 || e.key === "Enter" || e.code === "Enter") {
+    if(e.keyCode === 13 || e.key === "Enter" || e.code === "Enter" || e.code === "NumpadEnter") {
       handleSendUserMessage()
     }
   }

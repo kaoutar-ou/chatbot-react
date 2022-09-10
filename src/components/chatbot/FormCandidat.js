@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 
 import CalendarForm from '../form/CalendarForm';
@@ -13,6 +13,7 @@ import * as offreService from "../../services/OffreService";
 import RatingForm from '../form/RatingForm';
 import FileForm from '../form/FileForm';
 import SingleChoiceFormCondition from '../form/SingleChoiceFormCondition';
+import { LanguageContext } from '../../App';
 
 function FormCandidat(props) {
   const { t, i18n } = useTranslation('candidat');
@@ -20,6 +21,8 @@ function FormCandidat(props) {
     const generateKey = (pre) => {
         return `${pre}_${new Date().getTime()}`;
       };
+
+      const lang = useContext(LanguageContext);
 
     const [candidatInfos, setCandidatInfos] = useState({
         nom: "",
@@ -29,6 +32,7 @@ function FormCandidat(props) {
         adresse: "",
         calendar: "",
         comment: "",
+        language: Object.keys(lang).at(0)
       });
     
       const [candidatInfosErrors, setCandidatInfosErrors] = useState({

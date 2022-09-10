@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
 import CommentForm from "../form/CommentForm";
@@ -10,9 +10,12 @@ import * as clientFormService from "../../services/ClientService";
 import * as serviceService from "../../services/ServiceServices";
 import * as ratingService from "../../services/RatingService";
 import BotMessage from "../messages/BotMessage";
+import { LanguageContext } from "../../App";
 
 function FormClient(props) {
   const { t, i18n } = useTranslation('client');
+
+  const lang = useContext(LanguageContext);
 
   const [clientInfos, setClientInfos] = useState({
     raison_sociale: "",
@@ -21,6 +24,7 @@ function FormClient(props) {
     adresse: "",
     service: "",
     comment: "",
+    language: Object.keys(lang).at(0)
   });
 
   const [clientInfosErrors, setClientInfosErrors] = useState({

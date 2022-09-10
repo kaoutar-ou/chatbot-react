@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 
 import CommentForm from '../form/CommentForm';
@@ -10,9 +10,12 @@ import * as recruteurService from "../../services/RecruteurService";
 import * as domaineExpertiseService from "../../services/DomaineExpertiseService";
 import * as ratingService from "../../services/RatingService";
 import CalendarForm from '../form/CalendarForm';
+import { LanguageContext } from '../../App';
 
 function FormRecruteur(props) {
   const { t, i18n } = useTranslation('recruteur');
+
+  const lang = useContext(LanguageContext);
 
     const [recruteurInfos, setRecruteurInfos] = useState({
         raison_sociale: "",
@@ -24,6 +27,7 @@ function FormRecruteur(props) {
         domaine_expertise: "",
         calendar: "",
         comment: "",
+        language: Object.keys(lang).at(0)
       });
     
       const [recruteurInfosErrors, setRecruteurInfosErrors] = useState({

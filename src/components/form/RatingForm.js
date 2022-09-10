@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { LanguageContext } from "../../App";
 
 import BotMessage from "../messages/BotMessage";
 
@@ -39,6 +40,8 @@ const RatingForm = (props) => {
     setStars(newStars);
   };
 
+  const lang = useContext(LanguageContext);
+
   const handleRating = () => {
     // TODO set token to "" if inexistant
     let rating = {
@@ -46,6 +49,7 @@ const RatingForm = (props) => {
       token: token,
       rate: 0,
       comment: commentRef.current.value,
+      language: Object.keys(lang).at(0)
     };
 
     for (let i = 1; i <= 5; i++) {

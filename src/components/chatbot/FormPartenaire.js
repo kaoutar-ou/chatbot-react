@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 
 import CalendarForm from '../form/CalendarForm';
@@ -13,6 +13,7 @@ import * as ratingService from "../../services/RatingService";
 import * as documentJointService from "../../services/DocumentJointService";
 import RatingForm from '../form/RatingForm';
 import FileForm from '../form/FileForm';
+import { LanguageContext } from '../../App';
 
 function FormPartenaire(props) {
   const { t, i18n } = useTranslation('partenaire');
@@ -20,6 +21,8 @@ function FormPartenaire(props) {
     const generateKey = (pre) => {
         return `${pre}_${new Date().getTime()}`;
       };
+
+      const lang = useContext(LanguageContext);
 
     const [partenaireInfos, setPartenaireInfos] = useState({
         raison_sociale: "",
@@ -31,6 +34,7 @@ function FormPartenaire(props) {
         // path: "",
         calendar: "",
         comment: "",
+        language: Object.keys(lang).at(0)
       });
     
       const [partenaireInfosErrors, setPartenaireInfosErrors] = useState({

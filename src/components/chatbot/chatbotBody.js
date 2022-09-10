@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
 import FormClient from "./FormClient";
@@ -10,6 +10,7 @@ import TwoChoicesForm from "../form/TwoChoicesForm";
 import FormRecruteur from "./FormRecruteur";
 import FormPartenaire from "./FormPartenaire";
 import FormCandidat from "./FormCandidat";
+import { LanguageContext, VoiceContext } from "../../App";
 
 // TODO PREVENT SEND WITHOUT CHOICE
 // FIXME PREVENT SEND WITHOUT CHOICE
@@ -44,6 +45,18 @@ function ChatbotBody(props) {
     return `${pre}_${new Date().getTime()}`;
   };
 
+  const isVoiceOn = useContext(VoiceContext);
+  const lang = useContext(LanguageContext);
+
+  const handleSpeakMessage = (message) => {
+    if (isVoiceOn) {
+      console.log("hi")
+      let toSpeech = new SpeechSynthesisUtterance(message)
+      toSpeech.lang = Object.keys(lang).at(0)
+      window.speechSynthesis.speak(toSpeech)
+    }
+  }
+
   // TODO .. ask about the form any time
   useEffect(() => {
     setIsLoading(true);
@@ -56,6 +69,7 @@ function ChatbotBody(props) {
             content={t("chooseUserType")}
           />
         );
+        handleSpeakMessage(t("chooseUserType"))
         handleAddNewMessage(
           <MultiChoices
             key={"MultiChoices"}
@@ -72,6 +86,7 @@ function ChatbotBody(props) {
           content={t("chatChoice.choice")}
         />
       );
+      handleSpeakMessage(t("chatChoice.choice"))
 
       // TODO .. talk with a real person .. "message" : "Please wait a few seconds while we connect you to a consultant"
       // TODO .. send language with user message
@@ -82,6 +97,7 @@ function ChatbotBody(props) {
             content={t("chatChoice.message")}
           />
         );
+        handleSpeakMessage(t("chatChoice.message"))
         setIsDisabled(false)
         setIsLoading(false)
       }, 1000);
@@ -102,6 +118,7 @@ function ChatbotBody(props) {
             content={t("welcomeUserType.client")}
           />
         );
+        handleSpeakMessage(t("welcomeUserType.client"))
         handleAddNewMessage(
           <FormClient
             key={"FormClient"}
@@ -119,6 +136,7 @@ function ChatbotBody(props) {
             content={t("welcomeUserType.recruteur")}
           />
         );
+        handleSpeakMessage(t("welcomeUserType.recruteur"))
         // TODO ... change this key to be unique
         handleAddNewMessage(
           <FormRecruteur
@@ -137,6 +155,7 @@ function ChatbotBody(props) {
             content={t("welcomeUserType.partenaire")}
           />
         );
+        handleSpeakMessage(t("welcomeUserType.partenaire"))
         // TODO ... change this key to be unique
         handleAddNewMessage(
           <FormPartenaire
@@ -156,6 +175,7 @@ function ChatbotBody(props) {
             content={t("welcomeUserType.candidat")}
           />
         );
+        handleSpeakMessage(t("welcomeUserType.candidat"))
         handleAddNewMessage(
           <FormCandidat
             key={generateKey("FormCandidat")}
@@ -194,6 +214,7 @@ function ChatbotBody(props) {
           content={t("formOrChat.message")}
         />
       );
+      handleSpeakMessage(t("formOrChat.message"))
       setIsLoading(true);
       setTimeout(() => {
         // TODO give a deneral name to the function .. handleConfirm

@@ -10,7 +10,7 @@ import * as clientFormService from "../../services/ClientService";
 import * as serviceService from "../../services/ServiceServices";
 import * as ratingService from "../../services/RatingService";
 import BotMessage from "../messages/BotMessage";
-import { LanguageContext } from "../../App";
+import { LanguageContext, VoiceContext } from "../../App";
 
 function FormClient(props) {
   const { t, i18n } = useTranslation('client');
@@ -75,13 +75,25 @@ function FormClient(props) {
 
   // TODO .. add email .. your meet canceled
   // TODO .. add email is_sent and option to send it if internal error occured
+
+  const isVoiceOn = useContext(VoiceContext);
+
+    const handleSpeakMessage = (message) => {
+      if (isVoiceOn) {
+        console.log("hi")
+        let toSpeech = new SpeechSynthesisUtterance(message)
+        toSpeech.lang = Object.keys(lang).at(0)
+        window.speechSynthesis.speak(toSpeech)
+      }
+    }
+
   const sendRating = async (sentRating) => {
     setRating(sentRating);
     ////////////////////////// TODO   add total votes
     // TODO adding emojis
     let response = await ratingService.saveRating(sentRating);
 
-
+    
     if (Object.keys(response.errors).length > 0) {
       if (
         response.errors.server_error !== undefined &&
@@ -96,6 +108,7 @@ function FormClient(props) {
           content={response?.data?.message}
         />
       );
+            handleSpeakMessage(response?.data?.message)
       setTimeout(() => {
         // TODO deactivate main input until finish
         props.handleAddNewMessage(
@@ -106,6 +119,7 @@ function FormClient(props) {
             }
           />
         );
+        handleSpeakMessage(t("completed"))
         props.setMainInputDisabled(false);
       }, 1000);
     }
@@ -138,6 +152,7 @@ function FormClient(props) {
             content={t("wantToRate")}
           />
         );
+        handleSpeakMessage(t("wantToRate"))
         setTimeout(() => {
           props.handleAddNewMessage(
             <RatingForm
@@ -184,6 +199,7 @@ function FormClient(props) {
           content={response?.data?.message}
         />
       );
+      handleSpeakMessage(response?.data?.message)
       
       // TODO .. show a success message or error
     }
@@ -199,7 +215,7 @@ function FormClient(props) {
     <>
       <div className={`transition-all duration-150 ease-out relative ${scale}`}>
         <div className="w-full flex flex-row">
-          <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+          <div className="w-full m-5 rounded-2xl shadow-xl break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
             <div className="w-11/12 p-3 ml-3">
               {page === 1 ? (
                 <InputsForm

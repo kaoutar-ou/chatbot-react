@@ -48,7 +48,7 @@ const TwoChoicesForm = (props) => {
   return (
     <div className={`transition-all duration-150 ease-out relative ${scale}`}>
       <div className="w-full flex flex-row">
-        <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+        <div className="w-full m-5 rounded-2xl shadow-lg break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="flex flex-row">
             <button
               className={`w-1/2 h-14 bg-gray-100 rounded-xl m-4 p-1 outline-dotted outline-1 outline-gray-500 hover:outline-offset-2 flex items-center justify-center ${
@@ -79,7 +79,7 @@ const TwoChoicesForm = (props) => {
         <div className="text-red-500 mb-3 -mt-2">{t('twoChoices.noChoice')}</div>
       ) : null}
       {(sentChatChoice && choice === Object.keys(content).at(1)) ? (
-        <div className="text-amber-500 mb-3 -mt-2">{t('twoChoices.repeatedChat')}</div>
+        <div className="text-amber-500 mb-3 -mt-2 px-3">{t('twoChoices.repeatedChat')}</div>
       ) : null}
         </div>
       </div>

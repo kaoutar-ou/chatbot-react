@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
 import ChatbotFooter from "../layout/ChatbotFooter";
@@ -6,6 +6,7 @@ import ChatbotHeader from "../layout/ChatbotHeader";
 import BotMessage from "../messages/BotMessage";
 import "./style.css";
 import ChatbotBody from "./chatbotBody";
+import { LanguageContext, VoiceContext } from "../../App";
 
 function Chatbot(props) {
   const { t, i18n } = useTranslation();
@@ -17,6 +18,18 @@ function Chatbot(props) {
     return `${pre}_${new Date().getTime()}`;
   };
   
+  const isVoiceOn = useContext(VoiceContext);
+  const lang = useContext(LanguageContext);
+
+    const handleSpeakMessage = (message) => {
+      if (isVoiceOn) {
+        console.log("hi")
+        let toSpeech = new SpeechSynthesisUtterance(message)
+        toSpeech.lang = Object.keys(lang).at(0)
+        window.speechSynthesis.speak(toSpeech)
+      }
+    }
+
   const [messages, setMessages] = useState([
     <BotMessage
       key={generateKey("chatbot")}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { LanguageContext } from "../../App";
+import { LanguageContext, VoiceContext } from "../../App";
 
 import BotMessage from "../messages/BotMessage";
 
@@ -61,6 +61,17 @@ const RatingForm = (props) => {
     sendRating(rating);
     setIsSent(true);
   };
+  
+  const isVoiceOn = useContext(VoiceContext);
+
+    const handleSpeakMessage = (message) => {
+      if (isVoiceOn) {
+        console.log("hi")
+        let toSpeech = new SpeechSynthesisUtterance(message)
+        toSpeech.lang = Object.keys(lang).at(0)
+        window.speechSynthesis.speak(toSpeech)
+      }
+    }
 
   const handleLater = () => {
     props.handleAddNewMessage(
@@ -70,6 +81,7 @@ const RatingForm = (props) => {
         }
       />
     );
+    handleSpeakMessage(t("rating.completed"))
     setMainInputDisabled(false);
     setIsSent(true);
   };
@@ -84,7 +96,7 @@ const RatingForm = (props) => {
   return (
     <div className={`transition-all duration-150 ease-out relative ${scale}`}>
       <div className="w-full flex flex-row">
-        <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+        <div className="w-full m-5 rounded-2xl shadow-xl break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="flex flex-row m-6 p-2 justify-center outline-dotted outline-1 outline-gray-500 bg-gray-100 rounded-xl">
             {Object.entries(stars).map((star) => {
               return (

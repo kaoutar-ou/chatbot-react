@@ -10,11 +10,11 @@ function ChatbotHeader(props) {
   };
 
   return (
-    <div className="flex w-full items-center h-18 fixed bg-gradient-to-r from-teal-500 to-amber-300 shadow-md z-50">
+    <div className="flex w-full items-center h-18 fixed bg-gradient-to-r from-teal-500 to-amber-500 shadow-md z-50">
       {/* <div className="flex items-center text-white font-bold text-lg p-2"> */}
       <div className="w-10/12 mr-3 flex items-center">
         <button
-          className={`w-8 text-white h-8 hover:outline-dashed hover:outline-1 hover:outline-gray-600 focus:outline-offset-2 hover:bg-gradient-to-t hover:from-amber-300 rounded-full m-2 ${
+          className={`w-8 text-white h-8 hover:outline-dashed hover:outline-1 hover:outline-gray-600 focus:outline-offset-2 hover:bg-gradient-to-t hover:from-amber-500 rounded-full m-2 ${
             isVoiceOn
               ? "outline-dashed outline-1 outline-gray-600 outline-offset-2 bg-gradient-to-t from-amber-300"
               : ""

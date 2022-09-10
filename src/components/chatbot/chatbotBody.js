@@ -124,6 +124,7 @@ function ChatbotBody(props) {
             key={"FormClient"}
             handleAddNewMessage={handleAddNewMessage}
             setMainInputDisabled={setIsDisabled}
+            setIsLoading={setIsLoading}
           />
         );
         setIsLoading(false);
@@ -143,6 +144,7 @@ function ChatbotBody(props) {
             key={generateKey("FormRecruteur")}
             handleAddNewMessage={handleAddNewMessage}
             setMainInputDisabled={setIsDisabled}
+            setIsLoading={setIsLoading}
           />
         );
         setIsLoading(false);
@@ -162,6 +164,7 @@ function ChatbotBody(props) {
             key={generateKey("FormPartenaire")}
             handleAddNewMessage={handleAddNewMessage}
             setMainInputDisabled={setIsDisabled}
+            setIsLoading={setIsLoading}
           />
         );
         setIsLoading(false);
@@ -181,6 +184,7 @@ function ChatbotBody(props) {
             key={generateKey("FormCandidat")}
             handleAddNewMessage={handleAddNewMessage}
             setMainInputDisabled={setIsDisabled}
+            setIsLoading={setIsLoading}
           />
         );
         setIsLoading(false);

@@ -88,7 +88,7 @@ function ChatbotFooter(props) {
   }
 
   return (
-    <div className="bg-gradient-to-l from-teal-500 to-amber-300 flex bottom-0 absolute h-16 w-full shadow-md items-center">
+    <div className="bg-gradient-to-l from-teal-500 to-amber-400 flex bottom-0 absolute h-16 w-full shadow-md items-center">
       <div className="flex-auto">
         <div className="rounded-lg mx-1">
           <input

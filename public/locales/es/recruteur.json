@@ -1,0 +1,15 @@
+{
+    "raisonSociale": "Nombre de empresa",
+    "email": "Correo electrónico",
+    "telephone": "Teléfono",
+    "adresse": "Dirección",
+    "comment": "Comentario",
+    "nombreEmployes": "Número de empleados",
+    "domaineExpertise": "Área de especialización",
+    "nombrePersonnesARecruter": "Número de personas a reclutar",
+    "completed": "Ha completado todos los pasos, ahora puede continuar la conversación para obtener más información.",
+    "wantToRate": "Si quieres, puedes darnos tu opinión, nos ayudará a mejorar :)",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "calendarChoice": "Para finalizar su registro, elija uno de los espacios válidos anteriores, el que más le convenga."
+}

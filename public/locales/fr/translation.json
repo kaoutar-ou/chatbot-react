@@ -23,7 +23,7 @@
         "candidat":"Bienvenue cher candidat, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
     },
     "welcome": "Bonjour .. nous espérons que vous allez bien",
-    "internalError": "Nous sommes désooolés, nous avons rencontré un erreur interne !",
+    "internalError": "Nous sommes désolés, nous avons rencontré un erreur interne !",
     "formatError": {
         "email": "Le format de votre email n'est pas valide",
         "telephone": "Le format de votre numéro de téléphone n'est pas valide",

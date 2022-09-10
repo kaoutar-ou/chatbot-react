@@ -1,0 +1,12 @@
+{
+    "raisonSociale": "Nombre de empresa",
+    "email": "Correo electrónico",
+    "telephone": "Teléfono",
+    "adresse": "Dirección",
+    "service": "Servicio",
+    "comment": "Comentario",
+    "completed": "Ha completado todos los pasos, ahora puede continuar la conversación.",
+    "wantToRate": "Si quieres puedes darnos tu opinión, nos ayudará a mejorar nuestro servicio :)",
+    "previous": "Anterior",
+    "next": "Siguiente"
+}

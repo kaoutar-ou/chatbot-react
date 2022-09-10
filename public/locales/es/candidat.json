@@ -1,0 +1,18 @@
+{
+    "nom": "El nombre de familia",
+    "prenom": "Primer nombre",
+    "email": "Correo electrónico",
+    "telephone": "Teléfono",
+    "adresse": "Dirección",
+    "comment": "Comentario",
+    "typeCandidature": "Tipo de aplicacion",
+    "candidatureSpontanee": "Candidatura espontánea",
+    "candidatureOffre": "Solicitud de elección de oferta",
+    "offre": "Oferta",
+    "cv": "CV",
+    "completed": "Ha completado todos los pasos, ahora puede continuar la conversación para obtener más información.",
+    "wantToRate": "Si quieres, puedes darnos tu opinión, nos ayudará a mejorar :)",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "calendarChoice": "Para finalizar su registro, elija uno de los espacios válidos anteriores, el que más le convenga."
+}

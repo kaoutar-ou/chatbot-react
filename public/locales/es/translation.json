@@ -1,0 +1,67 @@
+{
+    "confirm":"Confirmar",
+    "formOrChat": {
+        "message": "Qué es lo que usted prefiere ?",
+        "form":"Rellenar el formulario",
+        "chat":"Chatea con nosotros"
+    },
+    "chooseUserType": "¿Cuál de los cuatro tipos es el más cercano a tu situación?",
+    "userType": {
+        "client":"Cliente",
+        "recruteur":"reclutador",
+        "partenaire":"Socio",
+        "candidat":"Candidato"
+    },
+    "chatChoice": {
+        "choice" : "Quieres chatear con nosotros, si cambias de opinión puedes volver aquí en cualquier momento.",
+        "message" : "Siéntete libre de preguntar lo que quieras :)"
+    },
+    "welcomeUserType": {
+        "client":"Bienvenido estimado cliente, por favor proporcione más información llenando el siguiente formulario.",
+        "recruteur":"Bienvenido estimado reclutador, por favor proporcione más información llenando el siguiente formulario.",
+        "partenaire":"Bienvenido estimado socio, por favor proporcione más información llenando el siguiente formulario.",
+        "candidat":"Bienvenido estimado candidato, por favor proporcione más información llenando el siguiente formulario."
+    },
+    "welcome": "Hola... esperamos que estés bien !",
+    "internalError": "¡Lo sentimos, tenemos un error interno!",
+    "formatError": {
+        "email": "El formato de su correo electrónico no es válido",
+        "telephone": "El formato de su número de teléfono no es válido",
+        "enterNumber": "Por favor ingrese un número"
+    },
+    "emptyError": {
+        "email": "Por favor ingrese su correo electrónico",
+        "telephone": "Por favor ingrese su número de teléfono",
+        "nom": "Por favor ingrese su nombre de familia",
+        "prenom": "Por favor ingrese su primer nombre",
+        "raisonSociale": "Por favor ingrese el nombre de su empresa",
+        "adresse": "Por favor ingrese su dirección",
+        "service": "Debe seleccionar un servicio", 
+        "document": "Debe proporcionar un documento",
+        "offre": "Debes elegir una oferta",
+        "typeCandidature": "Debes especificar el tipo de tu solicitud",
+        "nombreEmployes": "Debe especificar el número de sus empleados",
+        "partenariat": "Debe seleccionar un tipo de sociedad",
+        "domaineExpertise": "Debes seleccionar un área de especialización",
+        "nombrePersonnesARecruter": "Debes especificar el número de personas que buscas reclutar"
+
+    },
+    "lengthError": {
+        "raisonSociale": "El nombre de su empresa debe tener entre 1 y 30 caracteres",
+        "adresse": {
+            "min": "Tu dirección debe tener más de 10 caracteres",
+            "max": "Tu dirección debe tener menos de 75 caracteres"
+        },
+        "telephone": {
+            "min": "Tu número de teléfono debe ser mayor o igual a diez caracteres",
+            "max": "Tu número de teléfono debe ser menor o igual a 14 caracteres"
+        },
+        "comment": "Por favor, no exceda los 255 caracteres",
+        "nom": "Tu nombre de familia debe tener entre 3 y 30 caracteres",
+        "prenom": "Tu primer nombre debe tener entre 3 y 30 caracteres",
+        "nePasDepasser": "Por favor, no exceda "
+    },
+    "goBackError": "Vuelva a las páginas anteriores y verifique dos veces la información completada antes de confirmar",
+    "calendarError": "Debes elegir una franja horaria",
+    "tokenError": "Tu sesión ha expirado"
+}

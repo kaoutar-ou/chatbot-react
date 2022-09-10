@@ -16,7 +16,7 @@ function App() {
     <LanguageContext.Provider value={language}>
     <VoiceContext.Provider value={isVoiceOn}>
       <Suspense fallback="loading">
-        <div className="App">
+        <div className="App bg-white">
             <Chatbot setLanguage={setLanguage} setIsVoiceOn={setIsVoiceOn} />
         </div>
       </Suspense>

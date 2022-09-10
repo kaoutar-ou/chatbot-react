@@ -1,6 +1,7 @@
 import * as api from "../api";
+import * as constants from "./constants"
 
-export const verifyCandidatureInfos = (document_joint_infos) => {
+export const verifyCandidatureInfos = async (document_joint_infos) => {
   const document_joint_infos_reference = {
     type: "",
     offre: "",
@@ -15,7 +16,7 @@ export const verifyCandidatureInfos = (document_joint_infos) => {
     document_joint_infos.path === undefined ||
     document_joint_infos.path === ""
   ) {
-    errors["path"] = "Vous devez fournir un document";
+    errors["path"] = (await constants.emptyErrors()).documentEmptyError;
   }
 
   if (
@@ -23,14 +24,14 @@ export const verifyCandidatureInfos = (document_joint_infos) => {
     (document_joint_infos.offre === undefined ||
     document_joint_infos.offre === "") 
   ) {
-    errors["offre"] = "Votre devez choisir un offre";
+    errors["offre"] = (await constants.emptyErrors()).offreEmptyError;
   }
 
   if (
     document_joint_infos.type === undefined ||
     document_joint_infos.type === ""
   ) {
-    errors["type"] = "Votre devez préciser le type de votre candidature";
+    errors["type"] = (await constants.emptyErrors()).typeCandidatureEmptyError;
   }
 
   // TODO Check if token exists in database
@@ -49,19 +50,19 @@ export const saveCandidature = async (document_joint_infos, token) => {
   let res;
 
   let server_error_message =
-    "Nous sommes désolés, nous avons rencontré une erreur interne !";
+  (await constants.errors()).internalError;
   let comment =
-    "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
+  (await constants.errors()).goBackError;
 
     document_joint_infos = {...document_joint_infos, token:token}
 
-  response.errors = verifyCandidatureInfos(document_joint_infos);
+  response.errors = await verifyCandidatureInfos(document_joint_infos);
   
   if (
     token === undefined ||
     token === ""
   ) {
-    response.errors["token"] = "Votre session a expirée";
+    response.errors["token"] = (await constants.errors()).tokenError;
   }
 
   if (Object.keys(response.errors).length > 0) {

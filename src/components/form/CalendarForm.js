@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
+
 import Calendar from "react-calendar";
 import * as calendarService from "../../services/CalendarService"
 import SingleChoiceForm from "./SingleChoiceForm";
 
 function CalendarForm(props) {
+  const { t, i18n } = useTranslation("global");
 
     const {setInfos, infos, setInfosErrors, infosErrors, handleSendForm, isSent, ...others} = props
 
@@ -80,7 +83,7 @@ function CalendarForm(props) {
   return (
     <div className={`transition-all duration-150 ease-out relative ${scale}`}>
       <div className="w-full flex flex-row">
-        <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+        <div className="w-full m-5 rounded-2xl shadow-xl break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="flex flex-row bg-slate-100 m-5 rounded-xl outline-dotted outline-1 outline-gray-500">
             {
             (!isTimeView) ? (

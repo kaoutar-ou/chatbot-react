@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Trans, useTranslation } from 'react-i18next';
 
 const SingleChoiceFormCondition = (props) => {
+  const { t, i18n } = useTranslation("global");
+
   const {
     content,
     choices,
@@ -75,7 +78,8 @@ const SingleChoiceFormCondition = (props) => {
 
       {infos["type"] == "choix_offre" ? (
         <div className={`p-2 rounded-3xl w-full focus:outline-none text-center max-h-32 overflow-y-auto chatbot-scrollbar-none`}>
-          <div>Sélectionner l'{Object.values(content).at(1).toLowerCase()} que vous voulez</div>
+          {/* <div>Sélectionner l'{Object.values(content).at(1).toLowerCase()} que vous voulez</div> */}
+          <Trans ns="global" i18nKey="singleChoiceCondition.select">Séléctionner l'{{content: Object.values(content).at(1).toLowerCase()}} que vous voulez</Trans>
           {Object.entries(choices).map((choice) => {
             return (
               <button

@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 function MultiChoices(props) {
+  const { t, i18n } = useTranslation("global");
+  
   const { content, ...others } = props;
 
   const [type, setType] = useState(null);
   const [isSent, setIsSent] = useState(false);
 
+  const [error, setError] = useState(false);
+  
   const handleChoice = (res) => {
     setType(res);
+    setError(false)
   };
 
   const handleSendChoice = () => {
-    setIsSent(true);
-    props.handleConfirm(type);
+    if(type != null) {
+      setIsSent(true);
+      props.handleConfirm(type);
+    } else {
+      setError(true)
+    }
   };
 
   const [scale, setScale] = useState("scale-0");
@@ -27,7 +37,7 @@ function MultiChoices(props) {
   return (
     <div className={`transition-all duration-150 ease-out relative ${scale}`}>
       <div className="w-full flex flex-row">
-        <div className="w-full m-5 py-4 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+        <div className="w-full m-5 py-4 rounded-2xl shadow-xl break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           {Object.entries(content).map((choice) => {
             return (
               <button
@@ -45,6 +55,9 @@ function MultiChoices(props) {
               </button>
             );
           })}
+        {error ? (
+        <div className="text-red-500 mb-3 mt-2">{t('multipleChoices')}</div>
+      ) : null}
         </div>
       </div>
       <button

@@ -1,0 +1,69 @@
+{
+    "confirm":"Confirmer",
+    "formOrChat": {
+        "message": "Qu'est ce que vous préférez ?",
+        "form":"Remplir le formulaire",
+        "chat":"Continuer à poser des questions"
+    },
+    "chooseUserType": "Parmi les quatres types, qui est le plus proche à votre situation ?",
+    "userType": {
+        "client":"Client",
+        "recruteur":"Recruteur",
+        "partenaire":"Partenaire",
+        "candidat":"Candidat"
+    },
+    "chatChoice": {
+        "choice" : "Vous avez choisi de poser des questions, vous pouvez à tout moment changer d'avis en revenant ici.",
+        "message" : "Vous pouvez demander ce que vous voulez :)"
+    },
+    "welcomeUserType": {
+        "client":"Bienvenue cher client, veuillez nous fournir plus d'information en remplissant le formulaire suivant.",
+        "recruteur":"Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant.",
+        "partenaire":"Bienvenue cher partenaire, veuillez nous fournir plus d'information en remplissant le formulaire suivant.",
+        "candidat":"Bienvenue cher candidat, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
+    },
+    "welcome": "Bonjour .. nous espérons que vous allez bien",
+    "internalError": "Nous sommes désooolés, nous avons rencontré un erreur interne !",
+    "formatError": {
+        "email": "Le format de votre email n'est pas valide",
+        "telephone": "Le format de votre numéro de téléphone n'est pas valide",
+        "enterNumber": "Veuillez entrer un nombre"
+    },
+    "emptyError": {
+        "email": "Veuillez saisir votre email",
+        "telephone": "Veuillez saisir votre numéro de téléphone",
+        "nom": "Veuillez saisir votre nom",
+        "prenom": "Veuillez saisir votre prénom",
+        "raisonSociale": "Veuillez saisir le nom de votre entreprise",
+        "adresse": "Veuillez saisir votre adresse",
+        "service": "Vous devez séléctionner un service", 
+        "document": "Vous devez fournir un document",
+        "offre": "Votre devez choisir un offre",
+        "typeCandidature": "Votre devez préciser le type de votre candidature",
+
+        "nombreEmployes": "Vous devez préciser le nombre de vos employés",
+        "partenariat": "Vous devez séléctionner un type de partenariat",
+        "domaineExpertise": "Vous devez séléctionner un domaine d'expertise",
+        "nombrePersonnesARecruter": "Vous devez préciser le nombre de personnes que vous cherchez à recruter"
+
+    },
+    "lengthError": {
+        "raisonSociale": "Votre raison sociale doit être comprise entre 1 et 30 caractères",
+        "adresse": {
+            "min": "Votre adresse doit être supérieure à 10 caractères",
+            "max": "Votre adresse doit être inférieure à 75 caractères"
+        },
+        "telephone": {
+            "min": "Votre numéro de téléphone doit être supérieur ou égal à dix caractères",
+            "max": "Votre numéro de téléphone doit être inférieur ou égal à 14 caractères"
+        },
+        "comment": "Veuillez ne pas dépasser 255 caractères",
+        "nom": "Votre nom doit être comprise entre 3 et 30 caractères",
+        "prenom": "Votre prénom doit être comprise entre 3 et 30 caractères",
+
+        "nePasDepasser": "Veuillez ne pas dépasser "
+    },
+    "goBackError": "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer",
+    "calendarError": "Vous devez choisir un créneau",
+    "tokenError": "Votre session a expiré"
+}

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { Trans, useTranslation } from 'react-i18next';
 
 const SingleChoiceForm = (props) => {
+  const { t, i18n } = useTranslation("global");
+
   const {
     content,
     choices,
@@ -32,7 +35,11 @@ const SingleChoiceForm = (props) => {
     >
       <div className="flex-auto w-full mb-3">{content[1]}</div>
       <div className="p-2 rounded-3xl w-full focus:outline-none text-center max-h-32 overflow-y-auto chatbot-scrollbar-none">
-        <div>Selectionner le {(content[1].toLowerCase() !== 'heure') ? content[1].toLowerCase() : "temps"} que vous voulez</div>
+        <div>
+          {/* <Trans ns="global" i18nKey="singleChoice.select" value={{content: (content[1].toLowerCase() !== 'heure') ? content[1].toLowerCase() : "temps"}}>Select the {{content}} you want</Trans> */}
+          <Trans ns="global" i18nKey="singleChoice.select">Selectionner le {{content: (content[1].toLowerCase() !== 'heure') ? content[1].toLowerCase() : "temps"}} que vous voulez</Trans>
+          {/* Selectionner le {(content[1].toLowerCase() !== 'heure') ? content[1].toLowerCase() : "temps"} que vous voulez */}
+          </div>
         {Object.entries(choices).map((choice) => {
           return (
             <button

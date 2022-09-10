@@ -1,4 +1,5 @@
 import * as api from "../api"
+import * as constants from "./constants";
 
 export const getAllDomainesExpertise = async () => {
     let response = {
@@ -12,7 +13,7 @@ export const getAllDomainesExpertise = async () => {
         res = await api.getAllDomainesExpertise()
         response.data = res.data
     } catch (error) {
-        response.errors = {...response.errors, server_error:"Nous sommes désolés, nous avons rencontré une erreur interne !"}
+        response.errors = {...response.errors, server_error:(await constants.errors()).internalError}
     }
 
     return response

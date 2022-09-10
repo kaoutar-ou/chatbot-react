@@ -1,6 +1,7 @@
 import * as api from "../api";
+import * as constants from "./constants";
 
-export const verifyRecruteurInfos = (recruteur_infos) => {
+export const verifyRecruteurInfos = async (recruteur_infos) => {
   const recruteur_infos_reference = {
     raison_sociale: "",
     email: "",
@@ -19,11 +20,11 @@ export const verifyRecruteurInfos = (recruteur_infos) => {
 
   // Format
   if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(recruteur_infos.email)) {
-    errors["email"] = "Le format de votre email n'est pas valide";
+    errors["email"] = (await constants.formatErrors()).emailFormatError;
   }
 
   if(!/^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/.test(recruteur_infos.telephone)) {
-    errors["telephone"] = "Le format de votre numéro de téléphone n'est pas valide";
+    errors["telephone"] = (await constants.formatErrors()).telephoneFormatError;
   }
 
   // Undefined / Empty
@@ -31,31 +32,31 @@ export const verifyRecruteurInfos = (recruteur_infos) => {
     recruteur_infos.raison_sociale === undefined ||
     recruteur_infos.raison_sociale === ""
   ) {
-    errors["raison_sociale"] = "Vous devez remplir la raison sociale";
+    errors["raison_sociale"] = (await constants.emptyErrors()).raisonSocialeEmptyError;
   }
 
   if (recruteur_infos.email === undefined || recruteur_infos.email === "") {
-    errors["email"] = "Vous devez fournir votre email";
+    errors["email"] = (await constants.emptyErrors()).emailEmptyError;
   }
 
   if (recruteur_infos.telephone === undefined || recruteur_infos.telephone === "") {
-    errors["telephone"] = "Vous devez fournir votre numéro de telephone";
+    errors["telephone"] = (await constants.emptyErrors()).telephoneEmptyError;
   }
 
   if (recruteur_infos.adresse === undefined || recruteur_infos.adresse === "") {
-    errors["adresse"] = "Vous devez fournir votre adresse";
+    errors["adresse"] = (await constants.emptyErrors()).adresseEmptyError;
   }
 
   if (recruteur_infos.nombre_employes === undefined || recruteur_infos.nombre_employes === "") {
-    errors["nombre_employes"] = "Vous devez préciser le nombre de vos employés";
+    errors["nombre_employes"] = (await constants.emptyErrors()).nombreEmployesEmptyError;
   }
 
   if (recruteur_infos.nombre_personnes_a_recruter === undefined || recruteur_infos.nombre_personnes_a_recruter === "") {
-    errors["nombre_personnes_a_recruter"] = "Vous devez préciser le nombre de personnes que vous voulez recruter";
+    errors["nombre_personnes_a_recruter"] = (await constants.emptyErrors()).nombrePersonnesARecruterEmptyError;
   }
 
   if (recruteur_infos.domaine_expertise === undefined || recruteur_infos.domaine_expertise === "") {
-    errors["domaine_expertise"] = "Vous devez séléctionner un domaine d'expertise";
+    errors["domaine_expertise"] = (await constants.emptyErrors()).domaineExpertiseEmptyError;
   }
 
   // Length
@@ -64,50 +65,50 @@ export const verifyRecruteurInfos = (recruteur_infos) => {
     [...recruteur_infos.raison_sociale].length > 30
   ) {
     errors["raison_sociale"] =
-      "Votre raison sociale doit être comprise entre 1 et 30 caractères";
+    (await constants.lengthErrors()).raisonSocialeLengthError;
   }
 
   if ([...recruteur_infos?.adresse].length < 10) {
-    errors["adresse"] = "Votre adresse doit être supérieure à 10 caractères";
+    errors["adresse"] = (await constants.lengthErrors()).minAdresseLengthError;
   }
 
   if ([...recruteur_infos?.adresse].length > 75) {
-    errors["adresse"] = "Votre adresse doit être inférieure à 75 caractères";
+    errors["adresse"] = (await constants.lengthErrors()).maxAdresseLengthError;
   }
 
   if ([...recruteur_infos?.telephone].length < 10) {
     errors["telephone"] =
-      "Votre numéro de téléphone doit être supérieur ou égal à dix caractères";
+    (await constants.lengthErrors()).minTelephoneLengthError;
   }
 
   if ([...recruteur_infos?.telephone].length > 13) {
     errors["telephone"] =
-      "Votre numéro de téléphone doit être inférieur ou égal à 13 caractères";
+    (await constants.lengthErrors()).maxTelephoneLengthError;
   }
 
   if ([...recruteur_infos?.comment].length > 255) {
-    errors["comment"] = "Veuillez ne pas dépasser 255 caractères";
+    errors["comment"] = (await constants.lengthErrors()).commentLengthError;
   }
 
   // TODO Force number in inputs from begening
   if (isNaN(recruteur_infos.nombre_personnes_a_recruter) || recruteur_infos.nombre_personnes_a_recruter.trim() === "") {
-    errors["nombre_personnes_a_recruter"] = "Veuillez entrer un nombre";
+    errors["nombre_personnes_a_recruter"] = (await constants.formatErrors()).enterNumberFormatError;
   }
   
   if (isNaN(recruteur_infos.nombre_employes) || recruteur_infos.nombre_employes.trim() === "") {
-    errors["nombre_employes"] = "Veuillez entrer un nombre";
+    errors["nombre_employes"] = (await constants.formatErrors()).enterNumberFormatError;
   }
 
   if (recruteur_infos.nombre_personnes_a_recruter > max_nombre_personnes_a_recruter) {
-    errors["nombre_personnes_a_recruter"] = "Veuillez ne pas dépasser " + max_nombre_personnes_a_recruter + " personnes";
+    errors["nombre_personnes_a_recruter"] = (await constants.lengthErrors()).nePasDepasserLengthError + max_nombre_personnes_a_recruter ;
   }
   
   if (recruteur_infos.nombre_employes > max_nombre_employes) {
-    errors["nombre_employes"] = "Veuillez ne pas dépasser " + max_nombre_employes + " personnes";
+    errors["nombre_employes"] = (await constants.lengthErrors()).nePasDepasserLengthError + max_nombre_employes ;
   }
 
   let comment =
-    "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
+  (await constants.errors()).goBackError;
 
   if (Object.keys(errors).length > 0) {
      errors = { ...errors, comment: comment };
@@ -125,14 +126,14 @@ export const saveRecruteur = async (recruteur_infos) => {
   let res;
 
   let server_error_message =
-    "Nous sommes désolés, nous avons rencontré une erreur interne !";
+  (await constants.errors()).internalError;
   let comment =
-    "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
+  (await constants.errors()).goBackError;
 
-  response.errors = verifyRecruteurInfos(recruteur_infos);
+  response.errors = await verifyRecruteurInfos(recruteur_infos);
   
   if (recruteur_infos.calendar === undefined || recruteur_infos.calendar === "") {
-    response.errors["calendar"] = "Vous devez choisir un créneau";
+    response.errors["calendar"] = (await constants.errors()).calendarError;
   }
 
   if (Object.keys(response.errors).length > 0) {

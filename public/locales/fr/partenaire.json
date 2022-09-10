@@ -1,0 +1,15 @@
+{
+    "raisonSociale": "Raison sociale",
+    "email": "Email",
+    "telephone": "Téléphone",
+    "adresse": "Adresse",
+    "comment": "Commentaire",
+    "nombreEmployes": "Nombre d'employés",
+    "typePartenariat": "Type du partenariat",
+    "documentJoint": "Document joint",
+    "completed": "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations.",
+    "wantToRate": "Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)",
+    "previous": "précédent",
+    "next": "suivant",
+    "calendarChoice": "Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+}

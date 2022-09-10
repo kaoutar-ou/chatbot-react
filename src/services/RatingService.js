@@ -1,4 +1,5 @@
 import * as api from "../api"
+import * as constants from "./constants";
 
 export const saveRating = async (rating) => {
 
@@ -9,7 +10,7 @@ export const saveRating = async (rating) => {
 
     let res
 
-    let server_error_message = "Nous sommes désolés, nous avons rencontré une erreur interne !";
+    let server_error_message = (await constants.errors()).internalError;
 
     try {
         res = await api.saveRating(rating)

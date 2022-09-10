@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
+
 import CommentForm from '../form/CommentForm';
 import InputsForm from '../form/InputsForm';
 import RatingForm from "../form/RatingForm";
@@ -8,8 +10,12 @@ import * as recruteurService from "../../services/RecruteurService";
 import * as domaineExpertiseService from "../../services/DomaineExpertiseService";
 import * as ratingService from "../../services/RatingService";
 import CalendarForm from '../form/CalendarForm';
+import { LanguageContext, VoiceContext } from '../../App';
 
 function FormRecruteur(props) {
+  const { t, i18n } = useTranslation('recruteur');
+
+  const lang = useContext(LanguageContext);
 
     const [recruteurInfos, setRecruteurInfos] = useState({
         raison_sociale: "",
@@ -21,6 +27,7 @@ function FormRecruteur(props) {
         domaine_expertise: "",
         calendar: "",
         comment: "",
+        language: Object.keys(lang).at(0)
       });
     
       const [recruteurInfosErrors, setRecruteurInfosErrors] = useState({
@@ -45,22 +52,22 @@ function FormRecruteur(props) {
       }, [recruteurInfos]);
 
       const firstPage = {
-        raison_sociale: "Raison sociale",
-        email: "Email",
+        raison_sociale: t("raisonSociale"),
+        email: t("email"),
       };
       const secondPage = {
-        telephone: "Telephone",
-        adresse: "Adresse",
+        telephone: t("telephone"),
+        adresse: t("adresse"),
       };
       const thirdPage = {
-        nombre_employes: "Nombre d'employés",
-        nombre_personnes_a_recruter: "Nombre de personnes à recruter",
+        nombre_employes: t("nombreEmployes"),
+        nombre_personnes_a_recruter: t("nombrePersonnesARecruter"),
       };
       const fourthPage = {
-        domaine_expertise: "Domaine d'expertise",
+        domaine_expertise: t("domaineExpertise"),
       };
       const fifthPage = {
-        comment: "Commentaire",
+        comment: t("comment"),
       };
 
       const [domainesExpertise, setDomainesExpertise] = useState({});
@@ -97,6 +104,17 @@ function FormRecruteur(props) {
         return `${pre}_${new Date().getTime()}`;
       };
 
+      const isVoiceOn = useContext(VoiceContext);
+
+    const handleSpeakMessage = (message) => {
+      if (isVoiceOn) {
+        console.log("hi")
+        let toSpeech = new SpeechSynthesisUtterance(message)
+        toSpeech.lang = Object.keys(lang).at(0)
+        window.speechSynthesis.speak(toSpeech)
+      }
+    }
+
       const handleConfirmForm = async () => {
 
         let response = await recruteurService.verifyRecruteurInfos(recruteurInfos);
@@ -117,9 +135,10 @@ function FormRecruteur(props) {
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
-              content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+              content={t("calendarChoice")}
             />
           );
+          handleSpeakMessage(t("calendarChoice"))
           setTimeout(() => {
             setIsConfirmed(true);
           }, 1000);
@@ -160,6 +179,7 @@ function FormRecruteur(props) {
               content={response?.data?.message}
             />
           );
+          handleSpeakMessage(response?.data?.message)
           
           // TODO .. show a success message or error
         }
@@ -183,15 +203,17 @@ function FormRecruteur(props) {
               content={response?.data?.message}
             />
           );
+          handleSpeakMessage(response?.data?.message)
           setTimeout(() => {
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
                 content={
-                  "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
+                  t("completed")
                 }
               />
             );
+            handleSpeakMessage(t("completed"))
             props.setMainInputDisabled(false);
           }, 1000);
         }
@@ -204,9 +226,10 @@ function FormRecruteur(props) {
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
-                content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
+                content={t("wantToRate")}
               />
             );
+            handleSpeakMessage(t("wantToRate"))
             setTimeout(() => {
               props.handleAddNewMessage(
                 <RatingForm
@@ -248,7 +271,7 @@ function FormRecruteur(props) {
           }
           <div className={`transition-all duration-150 ease-out relative ${scale}`}>
             <div className="w-full flex flex-row">
-              <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+              <div className="w-full m-5 rounded-2xl shadow-xl break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
                 <div className="w-11/12 p-3 ml-3">
                   {page === 1 ? (
                     <InputsForm
@@ -330,14 +353,14 @@ function FormRecruteur(props) {
                         d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
                       />
                     </svg>
-                    <div className="mx-1">précédent</div>
+                    <div className="mx-1">{t("previous")}</div>
                   </button>
                   <button
                     className="place-self-end flex place-items-center mx-3 disabled:text-gray-500"
                     onClick={handleNext}
                     disabled={page === last_page ? true : false}
                   >
-                    <div className="mx-1">suivant</div>
+                    <div className="mx-1">{t("next")}</div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

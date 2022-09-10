@@ -1,234 +1,77 @@
-import React, { useEffect, useState } from "react";
-import FormClient from "./FormClient";
-import MultiChoices from "../form/MultiChoicesForm";
+import React, { useContext, useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
+
 import ChatbotFooter from "../layout/ChatbotFooter";
 import ChatbotHeader from "../layout/ChatbotHeader";
 import BotMessage from "../messages/BotMessage";
-import DotsMessage from "../messages/DotsMessage";
-import UserMessage from "../messages/UserMessage";
 import "./style.css";
-import TwoChoicesForm from "../form/TwoChoicesForm";
-import FormRecruteur from "./FormRecruteur";
-import CalendarForm from "../form/CalendarForm";
-import FormPartenaire from "./FormPartenaire";
-import FormCandidat from "./FormCandidat";
+import ChatbotBody from "./chatbotBody";
+import { LanguageContext, VoiceContext } from "../../App";
 
-// TODO PREVENT SEND WITHOUT CHOICE
-// FIXME PREVENT SEND WITHOUT CHOICE
-function Chatbot() {
-  // TODO isLoading
-  // TODO button to choice form after chatting .. u can click above to fill ...
-  const formOrChatChoices = {
-    form_choice: "Remplir le formulaire",
-    chat_choice: "Continuer à poser des questions",
-  };
+function Chatbot(props) {
+  const { t, i18n } = useTranslation();
 
-  const userTypeChoices = {
-    type_client: "Client",
-    type_partenaire: "Partenaire",
-    type_recruteur: "Recruteur",
-    type_candidat: "Candidat",
-  };
-
-  // FIXME Reunion presentielle ou a distance ???
-  // TODO Qr Code
-
-  const [formOrChat, setFormOrChat] = useState(null);
-
-  const [userType, setUserType] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [keyState, setKeyState] = useState(2);
-
-  const [isDisabled, setIsDisabled] = useState(false);
-
-  // TODO make generate key global
   const generateKey = (pre) => {
     return `${pre}_${new Date().getTime()}`;
   };
+  
+  const isVoiceOn = useContext(VoiceContext);
+  const lang = useContext(LanguageContext);
 
-  useEffect(() => {
-    setIsLoading(true);
-    if (formOrChat === "form_choice") {
-      setIsDisabled(true);
-      setTimeout(() => {
-        handleAddNewMessage(
-          <BotMessage
-            key={generateKey("chatbot")}
-            content="Parmi les quatres types, qui est le plus proche à votre situation ?"
-          />
-        );
-        handleAddNewMessage(
-          <MultiChoices
-            key={"MultiChoices"}
-            content={userTypeChoices}
-            handleConfirm={setUserType}
-          />
-        );
-        setIsLoading(false);
-      }, [1000]);
-    } else if (formOrChat === "chat_choice") {
-      handleAddNewMessage(
-        <BotMessage
-          key={generateKey("chatbot")}
-          content="Vous avez choisi de poser des questions ..."
-        />
-      );
-      // TODO .. message = feel free to
-      // TODO .. send language with user message
-      setTimeout(() => {
-        handleAddNewMessage(
-          <BotMessage
-            key={generateKey("chatbot")}
-            content="Vous pouvez demander ce que vous voulez :)"
-          />
-        );
-      }, 1000);
-    } else {
-      // console.log(formOrChat);
+    const handleSpeakMessage = (message) => {
+      if (isVoiceOn) {
+        console.log("hi")
+        let toSpeech = new SpeechSynthesisUtterance(message)
+        toSpeech.lang = Object.keys(lang).at(0)
+        window.speechSynthesis.speak(toSpeech)
+      }
     }
-  }, [formOrChat]);
 
-  useEffect(() => {
-    setIsLoading(true);
-    // TODO Switch case here
-    if (userType === "type_client") {
-      setTimeout(() => {
-        // TODO add cancel to cancel process and enable main input
-        handleAddNewMessage(
-          <BotMessage
-            key={generateKey("chatbot")}
-            content="Bienvenue cher client, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
-          />
-        );
-        handleAddNewMessage(
-          <FormClient
-            key={"FormClient"}
-            handleAddNewMessage={handleAddNewMessage}
-            setMainInputDisabled={setIsDisabled}
-          />
-        );
-        setIsLoading(false);
-      }, [1000]);
-    } else if (userType === "type_recruteur") {
-      setTimeout(() => {
-        handleAddNewMessage(
-          <BotMessage
-            key={generateKey("chatbot")}
-            content="Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
-          />
-        );
-        // TODO ... change this key to be unique
-        handleAddNewMessage(
-          <FormRecruteur
-            key={generateKey("FormRecruteur")}
-            handleAddNewMessage={handleAddNewMessage}
-            setMainInputDisabled={setIsDisabled}
-          />
-        );
-        setIsLoading(false);
-      }, [1000]);
-    } else if (userType === "type_partenaire") {
-      setTimeout(() => {
-        handleAddNewMessage(
-          <BotMessage
-            key={generateKey("chatbot")}
-            content="Bienvenue cher recruteur, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
-          />
-        );
-        // TODO ... change this key to be unique
-        handleAddNewMessage(
-          <FormPartenaire
-            key={generateKey("FormPartenaire")}
-            handleAddNewMessage={handleAddNewMessage}
-            setMainInputDisabled={setIsDisabled}
-          />
-        );
-        setIsLoading(false);
-      }, [1000]);
-    } else if (userType === "type_candidat") {
-      // console.log(userType);
-      setTimeout(() => {
-        handleAddNewMessage(
-          <BotMessage
-            key={generateKey("chatbot")}
-            content="Bienvenue cher candidat, veuillez nous fournir plus d'information en remplissant le formulaire suivant."
-          />
-        );
-        handleAddNewMessage(
-          <FormCandidat
-            key={generateKey("FormCandidat")}
-            handleAddNewMessage={handleAddNewMessage}
-            setMainInputDisabled={setIsDisabled}
-          />
-        );
-        setIsLoading(false);
-      }, [1000]);
-    }
-  }, [userType]);
-
-  useEffect(() => {
-    // console.log(userType);
-  }, [userType]);
-
-  // TODO Content aleatoire .. multi choices here random choice
   const [messages, setMessages] = useState([
     <BotMessage
       key={generateKey("chatbot")}
-      content="Bonjour .. nous espérons que vous allez bien"
+      content={t("welcome")}
     />,
   ]);
-  // TODO if null then welcome screen .. logo architeo
+
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000);
+  }, []);
 
   const handleAddNewMessage = (new_message) => {
     setKeyState((prev) => prev + 1);
     setMessages((messages) => [new_message, ...messages]);
   };
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  // useEffect(() => {
-
-  // }, [isLoading]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      handleAddNewMessage(
-        <BotMessage
-          key={generateKey("chatbot")}
-          content="Qu'est ce que vous préférez ?"
-        />
-      );
-      setIsLoading(true);
-      setTimeout(() => {
-        // TODO give a deneral name to the function .. handleConfirm
-        handleAddNewMessage(
-          <TwoChoicesForm
-            key={"TwoChoicesForm"}
-            content={formOrChatChoices}
-            handleConfirm={setFormOrChat}
-            choiceValue={formOrChat}
-          />
-        );
-        setIsLoading(false);
-      }, [1000]);
-    }, 1000);
-  }, []);
   return (
     <div className="h-screen chatbot">
-      {/* Header */}
-      <ChatbotHeader />
-      {/* Body */}
-      <div className="overflow-y-scroll min-h-screen max-h-screen flex flex-col-reverse py-20 chatbot-messages">
-        {isLoading ? <DotsMessage /> : null}
-        {/* <CalendarForm
-                  key={"CalendarForm"}
-                /> */}
-        {messages.map((message) => message)}
-        {/* <BotMessage /> */}
-      </div>
-      {/* Footer */}
+      <ChatbotHeader setLanguage={props.setLanguage} setIsVoiceOn={props.setIsVoiceOn}/>
+      {
+        (loading) ? (
+          <div className="h-screen chatbot flex items-center justify-center">
+            <div 
+            className="w-24 h-24 outline outline-1 border border-teal-500 outline-amber-500 outline-offset-1 rounded-t-full animate-pulse rounded-br-full flex items-center justify-center"
+            >
+              <div className="w-2 h-2 rounded-3xl bg-slate-100 mx-1 animate-bounce outline-dotted outline-1 outline-gray-500"></div>
+              <div className="w-2 h-2 rounded-3xl bg-slate-100 mx-1 animate-bounce outline-dotted outline-1 outline-gray-500"></div>
+              <div className="w-2 h-2 rounded-3xl bg-slate-100 mx-1 animate-bounce outline-dotted outline-1 outline-gray-500"></div>
+            </div>
+          </div>
+        ) : (
+          <ChatbotBody 
+          setIsDisabled={setIsDisabled} 
+          handleAddNewMessage={handleAddNewMessage} 
+          messages={messages}/>
+        )
+      }
+      
       <ChatbotFooter
         isDisabled={isDisabled}
         handleAddNewMessage={handleAddNewMessage}

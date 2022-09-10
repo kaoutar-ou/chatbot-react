@@ -1,0 +1,18 @@
+{
+    "nom": "Nom",
+    "prenom": "Préom",
+    "email": "Email",
+    "telephone": "Téléphone",
+    "adresse": "Adresse",
+    "comment": "Commentaire",
+    "typeCandidature": "Type de la candidature",
+    "candidatureSpontanee": "Candidature spontanée",
+    "candidatureOffre": "Candidature pour choix d'offre",
+    "offre": "Offre",
+    "cv": "CV",
+    "completed": "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations.",
+    "wantToRate": "Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)",
+    "previous": "précédent",
+    "next": "suivant",
+    "calendarChoice": "Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+}

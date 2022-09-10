@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
+
 import CalendarForm from '../form/CalendarForm';
 import CommentForm from '../form/CommentForm';
 import InputsForm from '../form/InputsForm';
@@ -11,12 +13,16 @@ import * as offreService from "../../services/OffreService";
 import RatingForm from '../form/RatingForm';
 import FileForm from '../form/FileForm';
 import SingleChoiceFormCondition from '../form/SingleChoiceFormCondition';
+import { LanguageContext, VoiceContext } from '../../App';
 
 function FormCandidat(props) {
+  const { t, i18n } = useTranslation('candidat');
 
     const generateKey = (pre) => {
         return `${pre}_${new Date().getTime()}`;
       };
+
+      const lang = useContext(LanguageContext);
 
     const [candidatInfos, setCandidatInfos] = useState({
         nom: "",
@@ -26,6 +32,7 @@ function FormCandidat(props) {
         adresse: "",
         calendar: "",
         comment: "",
+        language: Object.keys(lang).at(0)
       });
     
       const [candidatInfosErrors, setCandidatInfosErrors] = useState({
@@ -73,28 +80,28 @@ function FormCandidat(props) {
     const last_page = 5;
 
     const type_candidature = {
-        spontanee: "Candidature spontanée",
-        choix_offre: "Candidature par choix d'offre",
+        spontanee: t("candidatureSpontanee"),
+        choix_offre: t("candidatureOffre"),
     }
 
       const firstPage = {
-        nom: "Nom",
-        prenom: "Prénom",
-        email: "Email",
+        nom: t("nom"),
+        prenom: t("prenom"),
+        email: t("email"),
       };
       const secondPage = {
-        telephone: "Telephone",
-        adresse: "Adresse",
+        telephone: t("telephone"),
+        adresse: t("adresse"),
       };
       const thirdPage = {
-        type_candidature: "Type de la candidature",
-        offre: "Offre",
+        type_candidature: t("typeCandidature"),
+        offre: t("offre"),
       };
       const fourthPage = {
-        path: "CV"
+        path: t("cv")
       }
       const fifthPage = {
-        comment: "Commentaire",
+        comment: t("comment"),
       };
 
       const handlePrevious = () => {
@@ -115,6 +122,17 @@ function FormCandidat(props) {
         getAllOffres();
       }, []);
 
+      const isVoiceOn = useContext(VoiceContext);
+
+      const handleSpeakMessage = (message) => {
+        if (isVoiceOn) {
+          console.log("hi")
+          let toSpeech = new SpeechSynthesisUtterance(message)
+          toSpeech.lang = Object.keys(lang).at(0)
+          window.speechSynthesis.speak(toSpeech)
+        }
+      }
+
       useEffect(() => {
         // TODO or candidatToken
         if (isSent) {
@@ -122,9 +140,10 @@ function FormCandidat(props) {
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
-                content="Si vous voulez, vous pouvez nous donner votre avis, cela nous aidera à s'améliorer :)"
+                content={t("wantToRate")}
               />
             );
+            handleSpeakMessage(t("wantToRate"))
             setTimeout(() => {
               props.handleAddNewMessage(
                 <RatingForm
@@ -159,15 +178,17 @@ function FormCandidat(props) {
               content={response?.data?.message}
             />
           );
+          handleSpeakMessage(response?.data?.message)
           setTimeout(() => {
             props.handleAddNewMessage(
               <BotMessage
                 key={generateKey("chatbot")}
                 content={
-                  "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations."
+                  t("completed")
                 }
               />
             );
+            handleSpeakMessage(t("completed"))
             props.setMainInputDisabled(false);
           }, 1000);
         }
@@ -192,9 +213,10 @@ function FormCandidat(props) {
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
-              content="Pour finir votre inscription, veuillez choisir l'un des créneaux valables en haut, celui qui vous convient."
+              content={t("calendarChoice")}
             />
           );
+          handleSpeakMessage(t("calendarChoice"))
           setTimeout(() => {
             setIsConfirmed(true);
           }, 1000);
@@ -256,8 +278,13 @@ function FormCandidat(props) {
                 content={response?.data?.message}
               />
             );
+            handleSpeakMessage(response?.data?.message)
           }
           // TODO .. show a success message or error
+
+          // TODO .. count number of messages then rate
+          
+          // TODO .. presentation de l'entreprise au début
         }
       };
 
@@ -296,7 +323,7 @@ function FormCandidat(props) {
           }
           <div className={`transition-all duration-150 ease-out relative ${scale}`}>
             <div className="w-full flex flex-row">
-              <div className="w-full m-5 rounded-2xl shadow-xl break-all outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+              <div className="w-full m-5 rounded-2xl shadow-xl break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
                 <div className="w-11/12 p-3 ml-3">
                   {page === 1 ? (
                     <InputsForm
@@ -381,14 +408,14 @@ function FormCandidat(props) {
                         d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
                       />
                     </svg>
-                    <div className="mx-1">précédent</div>
+                    <div className="mx-1">{t("previous")}</div>
                   </button>
                   <button
                     className="place-self-end flex place-items-center mx-3 disabled:text-gray-500"
                     onClick={handleNext}
                     disabled={page === last_page ? true : false}
                   >
-                    <div className="mx-1">suivant</div>
+                    <div className="mx-1">{t("next")}</div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"

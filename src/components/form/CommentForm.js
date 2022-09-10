@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 const CommentForm = (props) => {
+  const { t, i18n } = useTranslation("global");
+
   const {
     content,
     setInfos,
@@ -24,7 +27,7 @@ const CommentForm = (props) => {
       key={content[0]}
     >
       <div className="flex-auto w-full mb-3">
-        Vous pouvez nous laisser un commentaire
+        {t("comment.leaveComment")}
       </div>
       <textarea
         className="w-full resize-none rounded-lg p-2 focus:outline-none disabled:outline disabled:outline-1 disabled:outline-teal-500"
@@ -32,7 +35,7 @@ const CommentForm = (props) => {
         name={content[0]}
         rows="4"
         cols="50"
-        placeholder="Laisser un commentaire ..."
+        placeholder={t("comment.leaveCommentPH")}
         maxLength={1000}
         onChange={(e) => handleChange(e)}
         disabled={isSent}

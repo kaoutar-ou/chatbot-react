@@ -1,0 +1,31 @@
+{
+    "comment": {
+        "leaveComment": "Vous pouvez nous laisser un commentaire",
+        "leaveCommentPH": "Laisser un commentaire ..."
+    },
+    "file": {
+        "addFile": "Ajouter un fichier",
+        "fileAdded": "Fichier ajouté"
+    },
+    "input": {
+        "enterPH": "Entrez votre "
+    },
+    "rating": {
+        "completed": "Vous avez compléter toutes les étapes, vous pouvez maintenant continuer la conversation pour avoir plus d'informations.",
+        "feedbackPH": "Votre avis ...",
+        "confirm": "Confirmer",
+        "later": "Plus tard ..."
+    },
+    "singleChoice": {
+        "select": "Séléctionner le {{content}} que vous voulez"
+    },
+    "singleChoiceCondition": {
+        "select": "Séléctionner l'{{content}} que vous voulez"
+    },
+    "typeHere": "Ecrire ici ...",
+    "twoChoices": {
+        "noChoice": "Veuillez choisir comment continuer",
+        "repeatedChat": "Vous avez déjà choisi le chat, vous avez l'autre choix si vous voulez"
+    },
+    "multipleChoices": "Veuillez choisir un type pour continuer"
+}

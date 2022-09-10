@@ -1,17 +1,40 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { LanguageContext, VoiceContext } from "../../App";
 
 import * as chatbotService from "../../services/ChatbotService";
 import BotMessage from "../messages/BotMessage";
 import UserMessage from "../messages/UserMessage";
 
 function ChatbotFooter(props) {
+  const { t, i18n } = useTranslation("global");
+
+  const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
+
+    const lang = useContext(LanguageContext);
+    const isVoiceOn = useContext(VoiceContext);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true, language: Object.values(lang).at(0) });
+
   const [userMessage, setUserMessage] = useState("");
+
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    setInputValue(transcript);
+  }, [transcript]);
 
   let userMessageRef = useRef();
 
   const generateKey = (pre) => {
     return `${pre}_${new Date().getTime()}`;
   };
+
 
   const handleSendUserMessage = async () => {
     let user_message = userMessageRef.current.value;
@@ -21,8 +44,9 @@ function ChatbotFooter(props) {
       <UserMessage key={generateKey("chatbot")} content={user_message} />
     );
     userMessageRef.current.value = "";
-    let response = await chatbotService.getBotResponse(user_message);
-
+    setInputValue("")
+    resetTranscript()
+    let response = await chatbotService.getBotResponse(user_message, Object.values(lang).at(0));
 
     if (Object.keys(response.errors).length > 0) {
       // console.log(response.errors);
@@ -35,10 +59,33 @@ function ChatbotFooter(props) {
           content={response?.data?.bot_message}
         />
       );
+      if (isVoiceOn) {
+        let toSpeech = new SpeechSynthesisUtterance(response?.data?.bot_message)
+        toSpeech.lang = Object.keys(lang).at(0)
+        window.speechSynthesis.speak(toSpeech)
+      }
     }
   };
-
   const { isDisabled, handleAddNewMessage, ...others } = props;
+  
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value)
+  }
+
+  const handleInputKeyUp = (e) => {
+    // console.log(e)
+    // console.log(e.keyCode)
+    // console.log(e.key)
+    // console.log(e.code)
+    if(e.keyCode === 13 || e.key === "Enter" || e.code === "Enter" || e.code === "NumpadEnter") {
+      handleSendUserMessage()
+    }
+  }
+
+  const handleInputReset = () => {
+    setInputValue("")
+    resetTranscript()
+  }
 
   return (
     <div className="bg-gradient-to-l from-teal-500 to-amber-300 flex bottom-0 absolute h-16 w-full shadow-md items-center">
@@ -47,17 +94,21 @@ function ChatbotFooter(props) {
           <input
             className="w-11/12 rounded-2xl h-10 my-2 mx-2 pl-3 outline-dotted outline-1 outline-gray-500"
             type={"text"}
-            placeholder="Type something here ..."
+            placeholder={t("typeHere")}
             disabled={isDisabled}
             ref={userMessageRef}
+            value={inputValue}
+            onChange={e => handleInputChange(e)}
+            onKeyUp={e => handleInputKeyUp(e)}
           ></input>
         </div>
       </div>
-      <div className="flex-none w-24 flex">
+      <div className="flex-none w-36 flex">
         <div className="w-12">
           <button
             className="p-2 w-10 h-10 rounded-full hover:outline-dashed hover:outline-1 hover:outline-gray-600 focus:outline-offset-2 hover:bg-gradient-to-t hover:from-amber-300"
             disabled={isDisabled}
+            onClick={handleInputReset}
           >
             {/* <img width={25} src={voice} alt="voice"></img> */}
             <svg
@@ -66,7 +117,37 @@ function ChatbotFooter(props) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 stroke-white stroke-2"
+              className={`w-6 h-6 stroke-2 ${
+                transcript ? "stroke-red-400" : "stroke-white"
+              }`}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="w-12">
+          <button
+            className={`p-2 w-10 h-10 rounded-full hover:outline-dashed hover:outline-1 hover:outline-gray-600 focus:outline-offset-2 hover:bg-gradient-to-t hover:from-amber-300 ${transcript ? "outline-dashed outline-1 outline-gray-600 hover:outline-offset-2 bg-gradient-to-t from-amber-300" : ""}`}
+            disabled={isDisabled}
+            onTouchStart={startListening}
+            onMouseDown={startListening}
+            onTouchEnd={SpeechRecognition.stopListening}
+            onMouseUp={SpeechRecognition.stopListening}
+          >
+            {/* <img width={25} src={voice} alt="voice"></img> */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-6 h-6 stroke-2 ${
+                listening ? "stroke-red-400" : "stroke-white"
+              }`}
             >
               <path
                 strokeLinecap="round"
@@ -99,6 +180,9 @@ function ChatbotFooter(props) {
             </svg>
           </button>
         </div>
+        {!browserSupportsSpeechRecognition ? (
+          <span>Browser doesn't support speech recognition.</span>
+        ) : null}
       </div>
     </div>
   );

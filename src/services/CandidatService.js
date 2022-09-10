@@ -1,6 +1,7 @@
 import * as api from "../api";
+import * as constants from "./constants"
 
-export const verifyCandidatInfos = (candidat_infos) => {
+export const verifyCandidatInfos = async (candidat_infos) => {
   const candidat_infos_reference = {
     nom: "",
     prenom: "",
@@ -15,11 +16,11 @@ export const verifyCandidatInfos = (candidat_infos) => {
 
   // Format
   if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(candidat_infos.email)) {
-    errors["email"] = "Le format de votre email n'est pas valide";
+    errors["email"] = (await constants.formatErrors()).emailFormatError;
   }
 
   if(!/^(\+{0,})(\d{0,})([(]{1}\d{1,3}[)]{0,}){0,}(\s?\d+|\+\d{2,3}\s{1}\d+|\d+){1}[\s|-]?\d+([\s|-]?\d+){1,2}(\s){0,}$/.test(candidat_infos.telephone)) {
-    errors["telephone"] = "Le format de votre numéro de téléphone n'est pas valide";
+    errors["telephone"] = (await constants.formatErrors()).telephoneFormatError;
   }
 
   // Undefined / Empty
@@ -27,26 +28,26 @@ export const verifyCandidatInfos = (candidat_infos) => {
     candidat_infos.nom === undefined ||
     candidat_infos.nom === ""
   ) {
-    errors["nom"] = "Vous devez remplir le nom";
+    errors["nom"] = (await constants.emptyErrors()).nomEmptyError;
   }
 
   if (
     candidat_infos.prenom === undefined ||
     candidat_infos.prenom === ""
   ) {
-    errors["prenom"] = "Vous devez remplir le prénom";
+    errors["prenom"] = (await constants.emptyErrors()).prenomEmptyError;
   }
 
   if (candidat_infos.email === undefined || candidat_infos.email === "") {
-    errors["email"] = "Vous devez fournir votre email";
+    errors["email"] = (await constants.emptyErrors()).emailEmptyError;
   }
 
   if (candidat_infos.telephone === undefined || candidat_infos.telephone === "") {
-    errors["telephone"] = "Vous devez fournir votre numéro de telephone";
+    errors["telephone"] = (await constants.emptyErrors()).telephoneEmptyError;
   }
 
   if (candidat_infos.adresse === undefined || candidat_infos.adresse === "") {
-    errors["adresse"] = "Vous devez fournir votre adresse";
+    errors["adresse"] = (await constants.emptyErrors()).adresseEmptyError;
   }
 
   // Length
@@ -54,8 +55,7 @@ export const verifyCandidatInfos = (candidat_infos) => {
     [...candidat_infos?.nom].length < 3 ||
     [...candidat_infos.nom].length > 30
   ) {
-    errors["nom"] =
-      "Votre nom doit être comprise entre 3 et 30 caractères";
+    errors["nom"] = (await constants.lengthErrors()).nomLengthError;
   }
 
   if (
@@ -63,33 +63,33 @@ export const verifyCandidatInfos = (candidat_infos) => {
     [...candidat_infos.prenom].length > 30
   ) {
     errors["prenom"] =
-      "Votre prénom doit être comprise entre 3 et 30 caractères";
+    (await constants.lengthErrors()).prenomLengthError;
   }
 
   if ([...candidat_infos?.adresse].length < 10) {
-    errors["adresse"] = "Votre adresse doit être supérieure à 10 caractères";
+    errors["adresse"] = (await constants.lengthErrors()).minAdresseLengthError;
   }
 
   if ([...candidat_infos?.adresse].length > 75) {
-    errors["adresse"] = "Votre adresse doit être inférieure à 75 caractères";
+    errors["adresse"] = (await constants.lengthErrors()).maxAdresseLengthError;
   }
 
   if ([...candidat_infos?.telephone].length < 10) {
     errors["telephone"] =
-      "Votre numéro de téléphone doit être supérieur ou égal à dix caractères";
+    (await constants.lengthErrors()).minTelephoneLengthError;
   }
 
   if ([...candidat_infos?.telephone].length > 14) {
     errors["telephone"] =
-      "Votre numéro de téléphone doit être inférieur ou égal à 14 caractères";
+    (await constants.lengthErrors()).maxTelephoneLengthError;
   }
 
   if ([...candidat_infos?.comment].length > 255) {
-    errors["comment"] = "Veuillez ne pas dépasser 255 caractères";
+    errors["comment"] = (await constants.lengthErrors()).commentLengthError;
   }
 
   let comment =
-    "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
+  (await constants.errors()).goBackError;
 
   if (Object.keys(errors).length > 0) {
      errors = { ...errors, comment: comment };
@@ -107,14 +107,15 @@ export const saveCandidat = async (candidat_infos) => {
   let res;
 
   let server_error_message =
-    "Nous sommes désolés, nous avons rencontré une erreur interne !";
+  (await constants.errors()).internalError;
   let comment =
-    "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer";
+  (await constants.errors()).goBackError;
 
-  response.errors = verifyCandidatInfos(candidat_infos);
+  response.errors = await verifyCandidatInfos(candidat_infos);
   
   if (candidat_infos.calendar === undefined || candidat_infos.calendar === "") {
-    response.errors["calendar"] = "Vous devez choisir un créneau";
+    response.errors["calendar"] = 
+    (await constants.errors()).calendarError;
   }
 
   if (Object.keys(response.errors).length > 0) {

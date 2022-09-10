@@ -1,5 +1,7 @@
 import * as api from "../api"
 
+import * as constants from "./constants"
+
 export const getAllFreeCalendar = async () => {
     let response = {
         data: null,
@@ -8,11 +10,13 @@ export const getAllFreeCalendar = async () => {
 
     let res
 
+    // i18next.t('my.key')
+
     try {
         res = await api.getAllFreeCalendar()
         response.data = res.data
     } catch (error) {
-        response.errors = {...response.errors, server_error:"Nous sommes désolés, nous avons rencontré une erreur interne !"}
+        response.errors = {...response.errors, server_error:(await constants.errors()).internalError}
     }
 
     return response

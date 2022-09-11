@@ -53,11 +53,11 @@ function ChatbotHeader(props) {
             </svg>
           )}
         </button>
-      {/* </div>
-      <div className="w-6/12"> */}
+        {/* </div>
+        <div className="w-6/12"> */}
         <div className="text-white font-bold text-lg p-2">Architeo Chatbot</div>
       </div>
-      <div className="w-5/12">
+      <div className="w-7/12">
         <LanguageSelector setLanguage={props.setLanguage} />
       </div>
     </div>

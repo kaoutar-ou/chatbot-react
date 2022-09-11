@@ -1,13 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
 import Calendar from "react-calendar";
 import * as calendarService from "../../services/CalendarService"
 import SingleChoiceForm from "./SingleChoiceForm";
+import { LanguageContext } from "../../App";
 
 function CalendarForm(props) {
   const { t, i18n } = useTranslation("global");
 
+  const lang = useContext(LanguageContext);
     const {setInfos, infos, setInfosErrors, infosErrors, handleSendForm, isSent, ...others} = props
 
   const [value, onChange] = useState(new Date());
@@ -40,7 +42,7 @@ function CalendarForm(props) {
         let days = []
         Object.entries(response.data.calendars).map((value) => (
             // days.push(new Date(value[1].date).toLocaleDateString('fr-FR').replaceAll('/','-'))
-            days.push(new Date(value[1].date).toLocaleDateString('fr-FR'))
+            days.push(new Date(value[1].date).toLocaleDateString(Object.values(lang).at(0)))
         ))
         setFreeDays(days)
       };
@@ -53,7 +55,7 @@ function CalendarForm(props) {
     Object.entries(freeCalendar).map((value) => {
         // console.log(new Date(value[1].date).toLocaleDateString('fr-FR'))
         // console.log(date.toLocaleDateString('fr-FR'))
-        if (date.toLocaleDateString('fr-FR') === new Date(value[1].date).toLocaleDateString('fr-FR')) {
+        if (date.toLocaleDateString(Object.values(lang).at(0)) === new Date(value[1].date).toLocaleDateString(Object.values(lang).at(0))) {
             times.push({id: value[1].id, name: value[1].time})
         }
     }
@@ -101,12 +103,11 @@ function CalendarForm(props) {
               next2Label={<NextTwo />}
               minDate={new Date()}
               inputRef={calendarRef}
-              // TODO fr-FR as constante
               formatShortWeekday={(locale, date) =>
-                date.toLocaleDateString("fr-FR", { weekday: "short" })
+                date.toLocaleDateString(Object.values(lang).at(0), { weekday: "short" })
               }
               navigationLabel={({ date, label, locale, view }) =>
-                getDate(date, locale)
+                getDate(date, Object.values(lang).at(0))
               }
               // tileClassName={({ date, view }) => view === 'month' && date.getDay() === 0 ? 'bg-teal-500' : null}
               // TODO .. only after today

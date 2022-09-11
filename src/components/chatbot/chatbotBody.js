@@ -234,6 +234,7 @@ function ChatbotBody(props) {
       }, [1000]);
     }, 1000);
   }, []);
+  
   return (
     <div className="h-screen chatbot">
 

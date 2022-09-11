@@ -132,6 +132,7 @@ function FormPartenaire(props) {
       useEffect(() => {
         // TODO or partenaireToken
         if (isSent) {
+          props.setIsLoading(true)
           setTimeout(() => {
             props.handleAddNewMessage(
               <BotMessage
@@ -151,8 +152,9 @@ function FormPartenaire(props) {
                   handleAddNewMessage={props.handleAddNewMessage}
                 />
               );
+          props.setIsLoading(false)
             }, 1000);
-          }, 2000);
+          }, 1000);
         }
       }, [isSent]);
 
@@ -168,6 +170,7 @@ function FormPartenaire(props) {
             // setPartenaireInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
           }
         } else {
+          props.setIsLoading(true)
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
@@ -184,6 +187,7 @@ function FormPartenaire(props) {
             );
             handleSpeakMessage(t("completed"))
             props.setMainInputDisabled(false);
+            props.setIsLoading(false)
           }, 1000);
         }
       };
@@ -204,6 +208,7 @@ function FormPartenaire(props) {
           setDocumentJointInfosErrors(responseDocs)
         }
         } else {
+          props.setIsLoading(true)
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
@@ -213,6 +218,7 @@ function FormPartenaire(props) {
           handleSpeakMessage(t("calendarChoice"))
           setTimeout(() => {
             setIsConfirmed(true);
+            props.setIsLoading(false)
           }, 1000);
           setPartenaireInfosErrors((prev) => ({ ...prev, server_error: "" }));
       }
@@ -221,6 +227,8 @@ function FormPartenaire(props) {
 // TODO .. if partenariat / domaine / sevice vide .. say sorry .. 
 
     const handleSendForm = async () => {
+      props.setIsLoading(true)
+
         let response = await partenaireService.savePartenaire(partenaireInfos);
         
         setPartenaireInfosErrors((prev) => ({ ...prev, comment: "" }));
@@ -272,6 +280,7 @@ function FormPartenaire(props) {
                 content={response?.data?.message}
               />
             );
+            props.setIsLoading(false)
             handleSpeakMessage(response?.data?.message)
           }
           // TODO .. show a success message or error
@@ -323,7 +332,7 @@ function FormPartenaire(props) {
                       infos={partenaireInfos}
                       setInfosErrors={setPartenaireInfosErrors}
                       infosErrors={partenaireInfosErrors}
-                      isSent={isConfirmed}
+                      isSent={isSent}
                     />
                   ) : page === 2 ? (
                     <InputsForm
@@ -333,7 +342,7 @@ function FormPartenaire(props) {
                       infos={partenaireInfos}
                       setInfosErrors={setPartenaireInfosErrors}
                       infosErrors={partenaireInfosErrors}
-                      isSent={isConfirmed}
+                      isSent={isSent}
                     />
                   ) : page === 3 ? (
                             <SingleChoiceForm
@@ -344,7 +353,7 @@ function FormPartenaire(props) {
                                 infos={partenaireInfos}
                                 setInfosErrors={setPartenaireInfosErrors}
                                 infosErrors={partenaireInfosErrors}
-                                isConfirmed={isConfirmed}
+                                isConfirmed={isSent}
                             />
                     ) : page === 4 ? (
                         <>
@@ -355,7 +364,7 @@ function FormPartenaire(props) {
                             infos={documentJointInfos}
                             setInfosErrors={setDocumentJointInfosErrors}
                             infosErrors={documentJointInfosErrors}
-                            isSent={isConfirmed}
+                            isSent={isSent}
                           />
                         </>
                     ) : (
@@ -366,7 +375,7 @@ function FormPartenaire(props) {
                         infos={partenaireInfos}
                         setInfosErrors={setPartenaireInfosErrors}
                         infosErrors={partenaireInfosErrors}
-                        isSent={isConfirmed}
+                        isSent={isSent}
                       />
                       {partenaireInfosErrors["server_error"] &&
                       partenaireInfosErrors["server_error"] !== "" ? (

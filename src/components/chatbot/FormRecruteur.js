@@ -132,6 +132,7 @@ function FormRecruteur(props) {
             setRecruteurInfosErrors(response);
           }
         } else {
+          props.setIsLoading(true)
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
@@ -141,6 +142,8 @@ function FormRecruteur(props) {
           handleSpeakMessage(t("calendarChoice"))
           setTimeout(() => {
             setIsConfirmed(true);
+          props.setIsLoading(false)
+
           }, 1000);
           setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
       }
@@ -149,6 +152,8 @@ function FormRecruteur(props) {
     // TODO prevent inputs from typing letters .. only numbers
 
       const handleSendForm = async () => {
+        props.setIsLoading(true)
+
         let response = await recruteurService.saveRecruteur(recruteurInfos);
         
         setRecruteurInfosErrors((prev) => ({ ...prev, comment: "" }));
@@ -173,12 +178,14 @@ function FormRecruteur(props) {
           setRecruteurToken(response.data.token);
           setIsSent(true);
           setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
+
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
               content={response?.data?.message}
             />
           );
+          props.setIsLoading(false)
           handleSpeakMessage(response?.data?.message)
           
           // TODO .. show a success message or error
@@ -197,6 +204,8 @@ function FormRecruteur(props) {
             // setRecruteurInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
           }
         } else {
+          props.setIsLoading(true)
+
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
@@ -215,6 +224,8 @@ function FormRecruteur(props) {
             );
             handleSpeakMessage(t("completed"))
             props.setMainInputDisabled(false);
+          props.setIsLoading(false)
+
           }, 1000);
         }
       };
@@ -222,6 +233,7 @@ function FormRecruteur(props) {
       useEffect(() => {
         // TODO or RecruteurToken
         if (isSent) {
+          props.setIsLoading(true)
           setTimeout(() => {
             props.handleAddNewMessage(
               <BotMessage
@@ -241,8 +253,10 @@ function FormRecruteur(props) {
                   handleAddNewMessage={props.handleAddNewMessage}
                 />
               );
+          props.setIsLoading(false)
+
             }, 1000);
-          }, 2000);
+          }, 1000);
         }
       }, [isSent]);
 
@@ -281,7 +295,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isConfirmed}
+                      isSent={isSent}
                     />
                   ) : page === 2 ? (
                     <InputsForm
@@ -291,7 +305,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isConfirmed}
+                      isSent={isSent}
                     />
                   ) : page === 3 ? (
                     <InputsForm
@@ -301,7 +315,7 @@ function FormRecruteur(props) {
                       infos={recruteurInfos}
                       setInfosErrors={setRecruteurInfosErrors}
                       infosErrors={recruteurInfosErrors}
-                      isSent={isConfirmed}
+                      isSent={isSent}
                     />
                   ) : page === 4 ? (
                             <SingleChoiceForm
@@ -312,7 +326,7 @@ function FormRecruteur(props) {
                                 infos={recruteurInfos}
                                 setInfosErrors={setRecruteurInfosErrors}
                                 infosErrors={recruteurInfosErrors}
-                                isSent={isConfirmed}
+                                isSent={isSent}
                             />
                     ) : (
                     <>
@@ -322,7 +336,7 @@ function FormRecruteur(props) {
                         infos={recruteurInfos}
                         setInfosErrors={setRecruteurInfosErrors}
                         infosErrors={recruteurInfosErrors}
-                        isSent={isConfirmed}
+                        isSent={isSent}
                       />
                       {recruteurInfosErrors["server_error"] &&
                       recruteurInfosErrors["server_error"] !== "" ? (

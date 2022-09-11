@@ -136,6 +136,7 @@ function FormCandidat(props) {
       useEffect(() => {
         // TODO or candidatToken
         if (isSent) {
+          props.setIsLoading(true)
           setTimeout(() => {
             props.handleAddNewMessage(
               <BotMessage
@@ -155,8 +156,10 @@ function FormCandidat(props) {
                   handleAddNewMessage={props.handleAddNewMessage}
                 />
               );
+              props.setIsLoading(false)
             }, 1000);
           }, 1000);
+          
         }
       }, [isSent]);
 
@@ -172,6 +175,7 @@ function FormCandidat(props) {
             // setCandidatInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
           }
         } else {
+          props.setIsLoading(true)
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
@@ -190,6 +194,7 @@ function FormCandidat(props) {
             );
             handleSpeakMessage(t("completed"))
             props.setMainInputDisabled(false);
+          props.setIsLoading(false)
           }, 1000);
         }
       };
@@ -210,6 +215,7 @@ function FormCandidat(props) {
                 setCandidatureInfosErrors(responseCandidature);
             }
         } else {
+          props.setIsLoading(true)
           props.handleAddNewMessage(
             <BotMessage
               key={generateKey("chatbot")}
@@ -219,6 +225,7 @@ function FormCandidat(props) {
           handleSpeakMessage(t("calendarChoice"))
           setTimeout(() => {
             setIsConfirmed(true);
+          props.setIsLoading(false)
           }, 1000);
           setCandidatInfosErrors((prev) => ({ ...prev, server_error: "" }));
       }
@@ -227,7 +234,8 @@ function FormCandidat(props) {
 // TODO .. if partenariat / choix / domaine / sevice vide .. say sorry .. 
 
     const handleSendForm = async () => {
-        let response = await candidatService.saveCandidat(candidatInfos);
+      props.setIsLoading(true)
+      let response = await candidatService.saveCandidat(candidatInfos);
         
         setCandidatInfosErrors((prev) => ({ ...prev, comment: "" }));
         if (Object.keys(response.errors).length > 0) {
@@ -265,7 +273,7 @@ function FormCandidat(props) {
               setCandidatInfosErrors((prev) => ({
                 ...prev,
                 server_error: responseCandidature.errors.server_error,
-              })); 
+              }));
             } else {
               setCandidatInfosErrors(responseCandidature.errors);
             }
@@ -278,6 +286,7 @@ function FormCandidat(props) {
                 content={response?.data?.message}
               />
             );
+          props.setIsLoading(false)
             handleSpeakMessage(response?.data?.message)
           }
           // TODO .. show a success message or error
@@ -333,7 +342,7 @@ function FormCandidat(props) {
                       infos={candidatInfos}
                       setInfosErrors={setCandidatInfosErrors}
                       infosErrors={candidatInfosErrors}
-                      isSent={isConfirmed}
+                      isSent={isSent}
                     />
                   ) : page === 2 ? (
                     <InputsForm
@@ -343,7 +352,7 @@ function FormCandidat(props) {
                       infos={candidatInfos}
                       setInfosErrors={setCandidatInfosErrors}
                       infosErrors={candidatInfosErrors}
-                      isSent={isConfirmed}
+                      isSent={isSent}
                     />
                   ) : page === 3 ? (
                             <SingleChoiceFormCondition
@@ -355,7 +364,7 @@ function FormCandidat(props) {
                                 infos={candidatureInfos}
                                 setInfosErrors={setCandidatureInfosErrors}
                                 infosErrors={candidatureInfosErrors}
-                                isConfirmed={isConfirmed}
+                                isConfirmed={isSent}
                             />
                     ) : page === 4 ? (
                         <>
@@ -366,7 +375,7 @@ function FormCandidat(props) {
                             infos={candidatureInfos}
                             setInfosErrors={setCandidatureInfosErrors}
                             infosErrors={candidatureInfosErrors}
-                            isSent={isConfirmed}
+                            isSent={isSent}
                           />
                         </>
                     ) : (
@@ -377,7 +386,7 @@ function FormCandidat(props) {
                         infos={candidatInfos}
                         setInfosErrors={setCandidatInfosErrors}
                         infosErrors={candidatInfosErrors}
-                        isSent={isConfirmed}
+                        isSent={isSent}
                       />
                       {candidatInfosErrors["server_error"] &&
                       candidatInfosErrors["server_error"] !== "" ? (

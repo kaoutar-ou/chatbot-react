@@ -91,6 +91,8 @@ function FormClient(props) {
     setRating(sentRating);
     ////////////////////////// TODO   add total votes
     // TODO adding emojis
+    props.setIsLoading(true)
+
     let response = await ratingService.saveRating(sentRating);
 
     
@@ -99,6 +101,7 @@ function FormClient(props) {
         response.errors.server_error !== undefined &&
         response.errors.server_error !== null
       ) {
+        props.setIsLoading(false)
         // setClientInfosErrors((prev) => ({...prev, server_error:response.errors.server_error}) )
       }
     } else {
@@ -108,6 +111,7 @@ function FormClient(props) {
           content={response?.data?.message}
         />
       );
+
             handleSpeakMessage(response?.data?.message)
       setTimeout(() => {
         // TODO deactivate main input until finish
@@ -121,6 +125,7 @@ function FormClient(props) {
         );
         handleSpeakMessage(t("completed"))
         props.setMainInputDisabled(false);
+        props.setIsLoading(false)
       }, 1000);
     }
   };
@@ -145,6 +150,7 @@ function FormClient(props) {
   useEffect(() => {
     // TODO or clientToken
     if (isSent) {
+      props.setIsLoading(true)
       setTimeout(() => {
         props.handleAddNewMessage(
           <BotMessage
@@ -164,12 +170,16 @@ function FormClient(props) {
               handleAddNewMessage={props.handleAddNewMessage}
             />
           );
+          props.setIsLoading(false)
+
         }, 1000);
-      }, 2000);
+      }, 1000);
     }
   }, [isSent]);
 
   const handleSendForm = async () => {
+    props.setIsLoading(true)
+
     let response = await clientFormService.saveClient(clientInfos);
     setClientInfosErrors((prev) => ({ ...prev, comment: "" }));
     if (Object.keys(response.errors).length > 0) {
@@ -199,6 +209,8 @@ function FormClient(props) {
           content={response?.data?.message}
         />
       );
+      props.setIsLoading(false)
+
       handleSpeakMessage(response?.data?.message)
       
       // TODO .. show a success message or error

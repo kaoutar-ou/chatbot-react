@@ -39,7 +39,9 @@ const CommentForm = (props) => {
         maxLength={1000}
         onChange={(e) => handleChange(e)}
         disabled={isSent}
-      ></textarea>
+        value={infos[content[0]]}
+      >
+      </textarea>
       {infosErrors[content[0]] && infosErrors[content[0]] !== "" ? (
         <div className="text-amber-500">{infosErrors[content[0]]}</div>
       ) : null}

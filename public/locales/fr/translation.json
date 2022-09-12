@@ -3,7 +3,7 @@
     "formOrChat": {
         "message": "Qu'est ce que vous préférez ?",
         "form":"Remplir le formulaire",
-        "chat":"Continuer à poser des questions"
+        "chat":"Parler avec le chatbot"
     },
     "chooseUserType": "Parmi les quatres types, qui est le plus proche à votre situation ?",
     "userType": {
@@ -55,7 +55,7 @@
         },
         "telephone": {
             "min": "Votre numéro de téléphone doit être supérieur ou égal à dix caractères",
-            "max": "Votre numéro de téléphone doit être inférieur ou égal à 14 caractères"
+            "max": "Votre numéro de téléphone doit être inférieur ou égal à 15 caractères"
         },
         "comment": "Veuillez ne pas dépasser 255 caractères",
         "nom": "Votre nom doit être comprise entre 3 et 30 caractères",
@@ -65,5 +65,6 @@
     },
     "goBackError": "Veuillez revenir aux pages précédentes et revérifier les informations remplis avant de confirmer",
     "calendarError": "Vous devez choisir un créneau",
-    "tokenError": "Votre session a expiré"
+    "tokenError": "Votre session a expiré",
+    "enAttendant": "En attendant, vous pouvez choisir une autre langue ou activer le son ..."
 }

@@ -92,7 +92,7 @@ export const verifyClientInfos = async (client_infos) => {
     ).minTelephoneLengthError;
   }
 
-  if ([...client_infos?.telephone].length > 14) {
+  if ([...client_infos?.telephone].length > 15) {
     errors["telephone"] = (
       await constants.lengthErrors()
     ).maxTelephoneLengthError;

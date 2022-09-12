@@ -42,7 +42,7 @@ function CalendarForm(props) {
         let days = []
         Object.entries(response.data.calendars).map((value) => (
             // days.push(new Date(value[1].date).toLocaleDateString('fr-FR').replaceAll('/','-'))
-            days.push(new Date(value[1].date).toLocaleDateString(Object.values(lang).at(0)))
+            days.push(new Date(value[1].date).toLocaleDateString("fr-FR"))
         ))
         setFreeDays(days)
       };
@@ -55,7 +55,7 @@ function CalendarForm(props) {
     Object.entries(freeCalendar).map((value) => {
         // console.log(new Date(value[1].date).toLocaleDateString('fr-FR'))
         // console.log(date.toLocaleDateString('fr-FR'))
-        if (date.toLocaleDateString(Object.values(lang).at(0)) === new Date(value[1].date).toLocaleDateString(Object.values(lang).at(0))) {
+        if (date.toLocaleDateString("fr-FR") === new Date(value[1].date).toLocaleDateString("fr-FR")) {
             times.push({id: value[1].id, name: value[1].time})
         }
     }
@@ -85,7 +85,7 @@ function CalendarForm(props) {
   return (
     <div className={`transition-all duration-150 ease-out relative ${scale}`}>
       <div className="w-full flex flex-row">
-        <div className="w-full m-5 rounded-2xl shadow-xl break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+        <div className="w-full m-5 rounded-2xl shadow-md break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
           <div className="flex flex-row bg-slate-100 m-5 rounded-xl outline-dotted outline-1 outline-gray-500">
             {
             (!isTimeView) ? (
@@ -107,7 +107,7 @@ function CalendarForm(props) {
                 date.toLocaleDateString(Object.values(lang).at(0), { weekday: "short" })
               }
               navigationLabel={({ date, label, locale, view }) =>
-                getDate(date, Object.values(lang).at(0))
+                getDate(date, locale)
               }
               // tileClassName={({ date, view }) => view === 'month' && date.getDay() === 0 ? 'bg-teal-500' : null}
               // TODO .. only after today

@@ -12,9 +12,11 @@ export const getAllFreeCalendar = async () => {
 
     // i18next.t('my.key')
 
+    
     try {
         res = await api.getAllFreeCalendar()
         response.data = res.data
+        console.log(res.data)
     } catch (error) {
         response.errors = {...response.errors, server_error:(await constants.errors()).internalError}
     }

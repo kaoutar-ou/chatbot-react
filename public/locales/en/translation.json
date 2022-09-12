@@ -58,7 +58,7 @@
         },
         "telephone": {
             "min": "Your phone number must be greater than or equal to ten characters",
-            "max": "Your phone number must be less than or equal to 14 characters"
+            "max": "Your phone number must be less than or equal to 15 characters"
         },
         "comment": "Please do not exceed 255 characters",
         "nom": "Your lastname must be between 3 and 30 characters",
@@ -68,5 +68,6 @@
     },
     "goBackError": "Please go back to previous pages and double check the information filled in before confirming",
     "calendarError": "You must choose a meeting time",
-    "tokenError": "Your session has expired"
+    "tokenError": "Your session has expired",
+    "enAttendant": "In the meantime, you can choose another language or activate the voice ..."
 }

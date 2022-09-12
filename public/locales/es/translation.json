@@ -54,7 +54,7 @@
         },
         "telephone": {
             "min": "Tu número de teléfono debe ser mayor o igual a diez caracteres",
-            "max": "Tu número de teléfono debe ser menor o igual a 14 caracteres"
+            "max": "Tu número de teléfono debe ser menor o igual a 15 caracteres"
         },
         "comment": "Por favor, no exceda los 255 caracteres",
         "nom": "Tu nombre de familia debe tener entre 3 y 30 caracteres",
@@ -63,5 +63,6 @@
     },
     "goBackError": "Vuelva a las páginas anteriores y verifique dos veces la información completada antes de confirmar",
     "calendarError": "Debes elegir una franja horaria",
-    "tokenError": "Tu sesión ha expirado"
+    "tokenError": "Tu sesión ha expirado",
+    "enAttendant": "Mientras tanto, puedes elegir otro idioma o activar el sonido ..."
 }

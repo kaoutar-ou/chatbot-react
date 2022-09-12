@@ -79,7 +79,7 @@ export const verifyCandidatInfos = async (candidat_infos) => {
     (await constants.lengthErrors()).minTelephoneLengthError;
   }
 
-  if ([...candidat_infos?.telephone].length > 14) {
+  if ([...candidat_infos?.telephone].length > 15) {
     errors["telephone"] =
     (await constants.lengthErrors()).maxTelephoneLengthError;
   }

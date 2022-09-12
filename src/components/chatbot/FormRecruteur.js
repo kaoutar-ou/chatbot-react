@@ -152,7 +152,6 @@ function FormRecruteur(props) {
     // TODO prevent inputs from typing letters .. only numbers
 
       const handleSendForm = async () => {
-        props.setIsLoading(true)
 
         let response = await recruteurService.saveRecruteur(recruteurInfos);
         
@@ -175,6 +174,8 @@ function FormRecruteur(props) {
           }
         } else {
           
+        props.setIsLoading(true)
+
           setRecruteurToken(response.data.token);
           setIsSent(true);
           setRecruteurInfosErrors((prev) => ({ ...prev, server_error: "" }));
@@ -285,7 +286,7 @@ function FormRecruteur(props) {
           }
           <div className={`transition-all duration-150 ease-out relative ${scale}`}>
             <div className="w-full flex flex-row">
-              <div className="w-full m-5 rounded-2xl shadow-xl break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
+              <div className="w-full m-5 rounded-2xl shadow-md break-words outline-dotted outline-1 outline-gray-500 pb-6 bg-gradient-to-r from-gray-300 to-gray-200">
                 <div className="w-11/12 p-3 ml-3">
                   {page === 1 ? (
                     <InputsForm

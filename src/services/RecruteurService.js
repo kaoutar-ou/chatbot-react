@@ -81,7 +81,7 @@ export const verifyRecruteurInfos = async (recruteur_infos) => {
     (await constants.lengthErrors()).minTelephoneLengthError;
   }
 
-  if ([...recruteur_infos?.telephone].length > 13) {
+  if ([...recruteur_infos?.telephone].length > 15) {
     errors["telephone"] =
     (await constants.lengthErrors()).maxTelephoneLengthError;
   }

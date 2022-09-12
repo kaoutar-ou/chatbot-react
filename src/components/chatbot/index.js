@@ -54,7 +54,7 @@ function Chatbot(props) {
     <div className="h-screen chatbot">
       <ChatbotHeader setLanguage={props.setLanguage} setIsVoiceOn={props.setIsVoiceOn}/>
       {
-        (true) ? (
+        (loading) ? (
           <div className="h-screen chatbot flex flex-col items-center justify-center">
             <div 
             className="w-24 h-24 outline outline-1 border border-teal-500 outline-amber-500 outline-offset-1 rounded-t-full animate-pulse rounded-br-full flex items-center justify-center"

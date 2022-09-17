@@ -1,5 +1,6 @@
 import * as api from "../api";
 import * as constants from "./constants";
+import validator from 'validator';
 
 export const verifyClientInfos = async (client_infos) => {
   const client_infos_reference = {
@@ -27,7 +28,11 @@ export const verifyClientInfos = async (client_infos) => {
   // TODO Verifications in backend
 
   // Format
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(client_infos.email)) {
+  // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(client_infos.email)) {
+  //   errors["email"] = (await constants.formatErrors()).emailFormatError;
+  // }
+
+  if(!validator.isEmail(client_infos.email)) {
     errors["email"] = (await constants.formatErrors()).emailFormatError;
   }
 
